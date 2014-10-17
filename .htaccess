@@ -1,0 +1,33 @@
+# ------------------------------------------------------------------- 
+#
+#* Code written by mo.ahmed@hmi-tech.net
+#
+#* Version 0.0.0 Dated 1/JUNE/2012
+# 
+#* The complete source code is the property of
+#* ** HMI Technologies Mumbai (2012-13)   
+#* HMI Technologies (DO NOT COPY OR USE WITHOUT WRITTEN CONSENT)
+#
+#* Module: Apache rewrites (.htacess) ezSite Builder
+#
+# ------------------------------------------------------------------- 
+RewriteEngine on
+
+# Page Not found 404 redirect
+ErrorDocument 404 /Page-Not_Found.html
+
+# CMS Top Level Pages
+RewriteRule ^index.html$ index.php
+RewriteRule ^([a-zA-Z0-9-_/]*).html$ index.php?show=$1 [L,NC,QSA]
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+# Set permissions
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>

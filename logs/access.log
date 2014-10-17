@@ -1,0 +1,15 @@
+127.0.0.1 - - [09/May/2013:13:23:57 +0530] "GET / HTTP/1.1" 200 1417
+127.0.0.1 - - [09/May/2013:13:23:57 +0530] "GET /style.css HTTP/1.1" 200 1195
+127.0.0.1 - - [09/May/2013:13:23:57 +0530] "GET /main.js HTTP/1.1" 200 230
+127.0.0.1 - - [09/May/2013:13:23:57 +0530] "GET /favicon.ico HTTP/1.1" 404 2387
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login HTTP/1.1" 301 236
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/ HTTP/1.1" 200 5047
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/css/bootstrap.min.css HTTP/1.1" 200 105946
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/css/bootstrap-responsive.min.css HTTP/1.1" 200 16855
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/js/jquery.treeview/jquery.treeview.css HTTP/1.1" 200 2929
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/js/jquery.treeview/jquery.treeview.js HTTP/1.1" 200 8264
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/js/jquery-1.9.1.min.js HTTP/1.1" 200 92629
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /site-assets/HMI-logo.png HTTP/1.1" 200 3993
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/js/bootstrap.min.js HTTP/1.1" 200 28538
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/favicon.ico HTTP/1.1" 200 894
+127.0.0.1 - - [09/May/2013:13:24:01 +0530] "GET /login/img/bg.png HTTP/1.1" 200 1010

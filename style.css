@@ -1,0 +1,79 @@
+/*
+
+ * Code written by mo.ahmed@hmi-tech.net
+ * this file is located in the root
+ * Version 2.0.0 Dated 23-Dec-2012
+ * HMI Technologies Mumbai (2012-13)
+ ** CSS Document ** 
+   NOTE: The styles defined here will appear in the ckeditor drop down menu.   
+   Released for free under a Creative Commons Attribution 3.0 License
+*/
+
+@charset "utf-8";
+
+#main {
+	margin: 0 auto;
+	width: 92%;
+}
+body,td,th {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #333333;
+	border: 1;
+	
+}
+body {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a:active {
+	text-decoration: none;
+}
+h1 {
+	font-size: 36px;
+}
+h2 {
+	font-size: 24px;
+}
+h3 {
+	font-size: 18px;
+}
+h4 {
+	font-size: 16px;
+}
+h5 {
+	font-size: 14px;
+}
+h6 {
+	font-size: 12px;
+}
+span.Purple {
+	color:#CC9932;
+}
+span.Red {
+	color:#FF0000;
+}
+#header {
+	background-color: #cccccc;
+	border-radius: 20px 20px 0 0;	
+	padding: 10px;
+	margin: 0;
+}
+#footer {
+	background-color: #cccccc;
+	border-radius: 0 0 20px 20px;
+	padding: 10px;
+	margin: 0;
+}
+
+
