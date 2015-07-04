@@ -28,7 +28,7 @@ mysql_free_result($rs);
 		Unpublished: <span class="label"><?php echo $unpubCNT; ?> page(s)</span> &middot; 
 		Total: <span class="label label-inverse"><?php echo $totCNT; ?> pages</span> 
 	  </div>
-      <div class="span3"> ezCMS Ver:<strong>2.140413</strong> </div>
+      <div class="span3"> ezCMS Ver:<strong>3.141029</strong> </div>
     </div>
   </div>
 </div>
@@ -42,9 +42,4 @@ mysql_free_result($rs);
 		animated: "medium",
 		unique: true
 	});	
-</script>
-<script type='text/javascript'>
-/*
-(function () { var done = false; var script = document.createElement('script'); script.async = true; script.type = 'text/javascript'; script.src = 'https://www.purechat.com/VisitorWidget/WidgetScript'; document.getElementsByTagName('HEAD').item(0).appendChild(script); script.onreadystatechange = script.onload = function (e) { if (!done && (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete')) { var w = new PCWidget({ c: 'c87fc633-8aeb-44a1-9d15-ac643f513efb', f: true }); done = true; } }; })();
-*/
 </script>

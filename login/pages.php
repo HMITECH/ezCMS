@@ -240,6 +240,9 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>Pages &middot; ezCMS Admin</title>
+	<style>
+		.countDisplay {float: right;}
+	</style>
 	<?php include('include/head.php'); ?>
 	
 </head><body>
@@ -319,7 +322,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 						<div class="row" style="margin-left:0">
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputTitle">Title</label>
+								<label class="control-label" for="inputTitle">Title Tag</label>
 								<div class="controls">
 									<input type="text" id="txtTitle" name="txtTitle"
 										placeholder="Enter the title of the page"
@@ -327,7 +330,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 										data-toggle="tooltip" 
 										value="<?php echo $title; ?>"
 										data-placement="top"
-										class="input-block-level tooltipme2"><br>
+										class="input-block-level tooltipme2 countme2"><br>
 										<label class="checkbox" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
 										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $published; ?>>
 										  Published on site										
@@ -337,7 +340,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputName">Name</label>
+								<label class="control-label" for="inputName">Name (URL)</label>
 								<div class="controls">
 									<input type="text" id="txtName" name="txtName"
 										placeholder="Enter the name of the page"
@@ -345,7 +348,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 										data-toggle="tooltip" 
 										value="<?php echo $name; ?>"
 										data-placement="top"
-										class="input-block-level tooltipme2"><br>
+										class="input-block-level tooltipme2 countme2"><br>
 									<?php if ($published!='checked') 
 												echo '<span class="label label-important">Unpublished page only visible when logged in.</span>';
 											else 
@@ -404,27 +407,27 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 						<div class="row" style="margin-left:0">
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputDescription">Description</label>
+								<label class="control-label" for="inputDescription">Meta Description</label>
 								<div class="controls">
 									<textarea name="txtDesc" rows="5" id="txtDesc" 
 										placeholder="Enter the description of the page"
 										title="Enter the description of the page here, this is VERY IMPORTANT for SEO. Do not duplicate on all pages"
 										data-toggle="tooltip"
 										data-placement="top"
-										class="input-block-level tooltipme2"><?php echo $description; ?></textarea>
+										class="input-block-level tooltipme2 countme2"><?php echo $description; ?></textarea>
 								</div>
 							  </div>								
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputKeywords">Keywords</label>
+								<label class="control-label" for="inputKeywords">Meta Keywords</label>
 								<div class="controls">
 									<textarea name="txtKeywords" rows="5" id="txtKeywords" 
 										placeholder="Enter the Keywords of the page"
 										title="Enter list keywords of the page here, not so important now but use it anyways. Do not stuff keywords"
 										data-toggle="tooltip"
 										data-placement="top"
-										class="input-block-level tooltipme2"><?php echo $keywords; ?></textarea>
+										class="input-block-level tooltipme2 countme2"><?php echo $keywords; ?></textarea>
 								</div>
 							  </div>							
 							</div>
@@ -601,6 +604,37 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 		updater: function (item) {
 			window.location.href = item.split(']]-->>')[1];
 		}
+	});
+	
+	$('.countme2').each( function() {
+		var navKeys = [33,34,35,36,37,38,39,40];
+		var that = $(this)
+		var thisLabel = $(this).closest('.control-group').find('.control-label');
+		
+		$(thisLabel).html( $(thisLabel).text()+
+		  	' <span class="countDisplay"><span class="label label-info">'+$(that).val().length+' chars(s)</span></span>');
+		
+		// attach event on change
+		$(this).on('keyup blur paste', function(e) {
+			switch(e.type) {
+			  case 'keyup':
+				// Skip navigational key presses
+				if ($.inArray(e.which, navKeys) < 0) { 
+					$(thisLabel).find('span.label').text( $(that).val().length+' chars(s)' );
+				}
+				break;
+			  case 'paste':
+				// Wait a few miliseconds if a paste event
+				setTimeout(function () {
+					$(thisLabel).find('span.label').text( $(that).val().length+' chars(s)' );
+				}, (e.type === 'paste' ? 5 : 0));
+				break;
+			  default:
+				$(thisLabel).find('span.label').text( $(that).val().length+' chars(s)' );
+				break;
+			}
+		});
+
 	});
 	
 	$('#myTab a').click(function (e) {
