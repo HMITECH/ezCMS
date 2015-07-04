@@ -1,7 +1,7 @@
 <?php
 // mySQL configuration
 // used for accessing database
-include ($_SERVER["DOCUMENT_ROOT"] . '/config.php');
+include ('../../config.php');
 
 global  $config_table, $server, $user, $password, $base;
 $server = $databaseServer;   // replace by you mySQL server, could be something like 'localhost:3306' or 'localhost', or 'mysql.myhost.com'
