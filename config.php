@@ -5,7 +5,7 @@
 	$databaseServer = 'localhost';
 	$databaseUser   = 'root';
 	$databasePasswd = '';	
-	$databaseName   = 'ezSite_db';
+	$databaseName   = 'ezsite_db';
 	
 	
 // Do not edit the code below as it is common to the CMS

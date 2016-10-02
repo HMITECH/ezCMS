@@ -19,7 +19,7 @@ ErrorDocument 404 /Page-Not_Found.html
 # CMS Top Level Pages
 RewriteRule ^index.html$ index.php
 RewriteRule ^([a-zA-Z0-9-_/]*).html$ index.php?show=$1 [L,NC,QSA]
-IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+#IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
 
 #### Expires By Type
 <IfModule mod_expires.c>
