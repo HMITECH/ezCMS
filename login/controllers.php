@@ -1,12 +1,10 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
+ * * Version 2.010413 Dated 20/March/2013 
+ * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  *
- * Version 2.010413 Dated 20/March/2013
- * Rev: 14-Apr-2014 (2.140413)
- * HMI Technologies Mumbai (2013-14)
- *
- * View: Displays the php controller of the site
+ *View: Displays the php controller of the site
  * /index.php
  */
 require_once("include/init.php");

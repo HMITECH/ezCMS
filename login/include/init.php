@@ -1,12 +1,10 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
+ * * Version 2.010413 Dated 20/March/2013 
+ * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  *
- * Version 2.010413 Dated 20/March/2013
- * Rev: 14-Apr-2014 (2.140413)
- * HMI Technologies Mumbai (2013-14)
- *
- * Include: starts the session and checks if user is logged in and connects db
+ *Include: starts the session and checks if user is logged in and connects db
  * To be included on all logged in pages of admin
  */
 session_start();

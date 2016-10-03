@@ -1,12 +1,10 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
+ * * Version 2.010413 Dated 20/March/2013 
+ * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  *
- * Version 2.010413 Dated 20/March/2013
- * Rev: 14-Apr-2014 (2.140413)
- * HMI Technologies Mumbai (2013-14)
- *
- * Include: Displays the footer
+ *Include: Displays the footer
  * 
  */
 $sql = 'SELECT (SELECT Count(*) from pages where `published`=1) as pubCNT, (SELECT Count(*) from pages where `published`=0) as unCNT';
@@ -28,7 +26,7 @@ mysql_free_result($rs);
 		Unpublished: <span class="label"><?php echo $unpubCNT; ?> page(s)</span> &middot; 
 		Total: <span class="label label-inverse"><?php echo $totCNT; ?> pages</span> 
 	  </div>
-      <div class="span3"> ezCMS Ver:<strong>3.141029</strong> </div>
+      <div class="span3"> ezCMS Ver:<strong>4.161005</strong> </div>
     </div>
   </div>
 </div>
