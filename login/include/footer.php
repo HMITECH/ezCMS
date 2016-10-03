@@ -42,4 +42,10 @@ mysql_free_result($rs);
 		animated: "medium",
 		unique: true
 	});	
+	$('#divCmTheme').click(function (e) {
+		e.stopPropagation();
+	});
+	$('#slCmTheme').val('<?php echo $_SESSION["CMTHEME"]; ?>').change(function (e) {
+		location.href = "scripts/chg-editor-theme.php?theme="+$(this).val();
+	});/**/
 </script>

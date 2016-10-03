@@ -56,6 +56,65 @@
 				
 			  </ul>
 		  </li>
+		  <?php if ($_SESSION['EDITORTYPE'] == 3) { ?><li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench"></i> Editor Style <b class="caret"></b></a>
+			  <div id="divCmTheme" class="dropdown-menu" style="padding:10px;">
+				<blockquote>
+				  <p>Code Mirror Theme</p>
+				  <small>Change Code Mirror Theme</small>
+				</blockquote>
+				<div>
+				  <select id="slCmTheme">
+					<option selected>default</option>
+					<option>3024-day</option>
+					<option>3024-night</option>
+					<option>abcdef</option>
+					<option>ambiance</option>
+					<option>base16-dark</option>
+					<option>base16-light</option>
+					<option>bespin</option>
+					<option>blackboard</option>
+					<option>cobalt</option>
+					<option>colorforth</option>
+					<option>dracula</option>
+					<option>eclipse</option>
+					<option>elegant</option>
+					<option>erlang-dark</option>
+					<option>hopscotch</option>
+					<option>icecoder</option>
+					<option>isotope</option>
+					<option>lesser-dark</option>
+					<option>liquibyte</option>
+					<option>material</option>
+					<option>mbo</option>
+					<option>mdn-like</option>
+					<option>midnight</option>
+					<option>monokai</option>
+					<option>neat</option>
+					<option>neo</option>
+					<option>night</option>
+					<option>paraiso-dark</option>
+					<option>paraiso-light</option>
+					<option>pastel-on-dark</option>
+					<option>railscasts</option>
+					<option>rubyblue</option>
+					<option>seti</option>
+					<option>solarized dark</option>
+					<option>solarized light</option>
+					<option>the-matrix</option>
+					<option>tomorrow-night-bright</option>
+					<option>tomorrow-night-eighties</option>
+					<option>ttcn</option>
+					<option>twilight</option>
+					<option>vibrant-ink</option>
+					<option>xq-dark</option>
+					<option>xq-light</option>
+					<option>yeti</option>
+					<option>zenburn</option>
+				  </select>
+				</div>
+			  </div>
+		  </li><?php } ?>		
 		</ul>
 		
 		<ul class="nav pull-right">
@@ -66,23 +125,24 @@
 					<li><a href="profile.php"><i class="icon-comment"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<li class="nav-header">Select Editor</li>
-					<li <?php echo $cme; ?>>
+ 					<li <?php echo $cme; ?>>
 						<a href="scripts/chg-editor.php?etype=3">
-							<i class="icon-calendar"></i> Code Mirror</a></li>
+							<i class="icon-share"></i> Code Mirror</a></li> 
 					<li <?php echo $cke; ?>>
 						<a href="scripts/chg-editor.php?etype=0">
-							<i class="icon-calendar"></i> CKEditor</a></li>
+							<i class="icon-calendar"></i> CK Editor</a></li>
 					<li <?php echo $eda; ?>>
 						<a href="scripts/chg-editor.php?etype=1">
-							<i class="icon-folder-close"></i> EditArea</a></li>
+							<i class="icon-folder-close"></i> Edit Area</a></li>
 					<li <?php echo $txt; ?>>
 						<a href="scripts/chg-editor.php?etype=2">
-							<i class="icon-hdd"></i> TextArea</a></li>
+							<i class="icon-hdd"></i> Text Area</a></li>
 					<li class="divider"></li>
 					<li><a href="scripts/logout.php"><i class="icon-off"></i> Logout</a></li>
 				</ul>
 			</li>
-		</ul>		
+		</ul>
+		
 	  </div>
 	</div>
   </div>

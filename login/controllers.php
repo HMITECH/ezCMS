@@ -87,7 +87,7 @@ if ($flg=="noperms")
 	        mode: "application/x-httpd-php",
 	        indentUnit: 4,
 	        indentWithTabs: true,
-			theme: 'liquibyte',
+			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
 			lineWrapping: true,
 			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
 			foldGutter: true,

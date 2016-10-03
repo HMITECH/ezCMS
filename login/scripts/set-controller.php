@@ -12,7 +12,7 @@
 require_once("init.php");
 if (!isset($_POST["Submit"])) die('xx'); 
 if (!$_SESSION['editcontroller']) {header("Location: ../controllers.php?flg=noperms");exit;}	// permission denied
-if (isset($_POST["txtContents"])) $contents = stripslashes($_POST["txtContents"]); else die('xxx');
+if (isset($_POST["txtContents"])) $contents = $_POST["txtContents"]; else die('xxx');
 $filename = '../../index.php';
 if (is_writable($filename)) {
 	if (fwrite(fopen($filename, "w+"),$contents)) 

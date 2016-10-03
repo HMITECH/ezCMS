@@ -651,6 +651,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	var txtFooter_loaded = false;
 	var txtSide_loaded = false;
 	var txtSider_loaded = false;
+	var txtHead_loaded = false;
 	var getEditAreaJSON = function (strID) {
 		return {
 			id: strID, 
@@ -704,20 +705,20 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	<script src="codemirror/addon/fold/comment-fold.js"></script>
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
-	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
 	<script language="javascript" type="text/javascript">
 	var txtMain_loaded = false;
 	var txtHeader_loaded = false;
 	var txtFooter_loaded = false;
 	var txtSide_loaded = false;
 	var txtSider_loaded = false;
+	var txtHead_loaded = false;
 	var codeMirrorJSON = {
 		lineNumbers: true,
 		matchBrackets: true,
 		mode: "htmlmixed",
 		indentUnit: 4,
 		indentWithTabs: true,
-		theme: 'liquibyte',
+		theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
 		lineWrapping: true,
 		extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
 		foldGutter: true,

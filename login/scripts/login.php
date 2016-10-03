@@ -62,9 +62,9 @@ if ($row = mysql_fetch_assoc($result)) {
 	
 	// check editor and use it
 	$_SESSION['EDITORTYPE']=3;
+	$_SESSION['CMTHEME'] = 'default';
 	
 	// update the last login date time stamp.
-	
 	
 	$_SESSION['LOGGEDIN']  = true;
 	header("Location: ../pages.php");
