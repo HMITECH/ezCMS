@@ -32,6 +32,7 @@
 <style type="text/css"> 
 	html,body {height: 100%;}
 	body {
+		/*background: linear-gradient(to bottom, #000000 0%, #F5F5F5 100%);*/
 		background: url('img/bg.png');
 		background-attachment: fixed;
 	}
@@ -47,20 +48,17 @@
 		width:100%;
 	}		
 	#push,#footer {height: 30px;}
-	#footer {background-color: #f5f5f5;}
+	#footer {background-color: rgba(245, 245, 245, 0.75);}
 	.tooltip-inner {font-size:18px;}
 	.label, .badge {white-space:normal;}
 	.CodeMirror {height: auto;}
 	.CodeMirror-scroll { min-height:420px; }
 	div.white-boxed {
-		background: #fff;
-		border: 1px solid #036;
+		background: rgba(255, 255, 255, 0.95);
+		border: 1px solid #000;
 		padding: 10px;
 		margin-bottom:10px;
-		-webkit-box-shadow: 0 7px 4px -4px #333;
-		-moz-box-shadow: 0 7px 4px -4px #333;
-		box-shadow: 0 7px 4px -4px #333;			
-		border-radius: 10px;
+		box-shadow: 0 7px 4px -4px #333;
 	}
 	@media (max-width: 767px) {
 		#footer {
