@@ -55,10 +55,10 @@
 			  </ul>
 		  </li>
 		  <?php if ($_SESSION['EDITORTYPE'] == 3) { ?><li class="dropdown">
-			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-wrench"></i> Editor Style <b class="caret"></b></a>
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-edit"></i> Editor Style <b class="caret"></b></a>
 			  <div id="divCmTheme" class="dropdown-menu" style="padding:10px;">
 				<blockquote>
-				  <p>Code Mirror Theme</p>
+				  <p><i class="icon-edit"></i> Code Mirror Theme</p>
 				  <small>Change Code Mirror Theme</small>
 				</blockquote>
 				<div>
@@ -125,7 +125,7 @@
 					<li class="nav-header">Select Editor</li>
  					<li <?php echo $cme; ?>>
 						<a href="scripts/chg-editor.php?etype=3">
-							<i class="icon-share"></i> Code Mirror</a></li> 
+							<i class="icon-edit"></i> Code Mirror</a></li> 
 					<li <?php echo $cke; ?>>
 						<a href="scripts/chg-editor.php?etype=0">
 							<i class="icon-calendar"></i> CK Editor</a></li>

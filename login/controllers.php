@@ -42,7 +42,7 @@ if ($flg=="noperms")
 					<form id="frmHome" action="scripts/set-controller.php" method="post" enctype="multipart/form-data">
 					<div class="navbar">
 						<div class="navbar-inner">
-							<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
+							<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary ">
 						</div>
 					</div>
 					<?php echo $msg; ?>

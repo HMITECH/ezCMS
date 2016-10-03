@@ -22,9 +22,9 @@ mysql_free_result($rs);
       <div class="span3"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> 
 	  </div>
       <div class="span6"> 
-	  	Published: <span class="label label-info"><?php echo $pubCNT; ?> page(s)</span> &middot; 
-		Unpublished: <span class="label"><?php echo $unpubCNT; ?> page(s)</span> &middot; 
-		Total: <span class="label label-inverse"><?php echo $totCNT; ?> pages</span> 
+	  	<span class="label label-info">Published: <?php echo $pubCNT; ?> page(s)</span> &middot; 
+		<span class="label label-warning">Drafts: <?php echo $unpubCNT; ?> page(s)</span> &middot; 
+		<span class="label label-inverse">Total: <?php echo $totCNT; ?> pages</span> 
 	  </div>
       <div class="span3"> ezCMS Ver:<strong>4.161005</strong> </div>
     </div>

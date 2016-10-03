@@ -38,6 +38,10 @@
 	}
 	.nav-tabs > .active > a, .nav-tabs > .active > a:hover,
 	a,button { outline:none; }
+	.btn, .btn-group {
+		border-radius: 0 !important;
+		margin-right:10px;
+	}
 	#wrap {
 		min-height: 100%;
 		height: auto !important;
