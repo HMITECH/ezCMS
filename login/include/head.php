@@ -17,7 +17,18 @@
 <link type="image/x-icon" href="favicon.ico" rel="icon"/>
 <link type="image/x-icon" href="favicon.ico" rel="shortcut icon"/>
 <link href="css/bootstrap.min.css" rel="stylesheet">
-
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="js/jquery.treeview/jquery.treeview.css" rel="stylesheet">
+<?php if ((isset($_SESSION['EDITORTYPE'])) &&  ($_SESSION['EDITORTYPE'] == 3)) { ?>
+	<link href="codemirror/lib/codemirror.css" rel="stylesheet">
+	<link rel="stylesheet" href="codemirror/addon/fold/foldgutter.css" />
+	<link rel="stylesheet" href="codemirror/theme/liquibyte.css">
+	<link rel="stylesheet" href="codemirror/addon/hint/show-hint.css">
+<?php } ?>
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+<![endif]-->
 <style type="text/css"> 
 	html,body {height: 100%;}
 	body {
@@ -31,10 +42,16 @@
 		height: auto !important;
 		height: 100%;
 		margin: 0 auto -30px;}
+	#txtContents {
+		height: 420px; 
+		width:100%;
+	}		
 	#push,#footer {height: 30px;}
 	#footer {background-color: #f5f5f5;}
 	.tooltip-inner {font-size:18px;}
 	.label, .badge {white-space:normal;}
+	.CodeMirror {height: auto;}
+	.CodeMirror-scroll { min-height:420px; }
 	div.white-boxed {
 		background: #fff;
 		border: 1px solid #036;
@@ -58,10 +75,3 @@
 			padding-right: 5px;}        
 	}
 </style>
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-<link href="js/jquery.treeview/jquery.treeview.css" rel="stylesheet">
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-	<script src="js/html5shiv.js"></script>
-<![endif]-->
-

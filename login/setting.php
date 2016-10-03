@@ -149,73 +149,116 @@ if ($flg=="noperms")
 	</div>
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">
-	var txtHeader_loaded = true;
-	var txtFooter_loaded = true;
-	var txtSide_loaded = true;
-	var txtSider_loaded = true;
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(0)").addClass('active');
 	$("#top-bar li:eq(0) ul li:eq(0)").addClass('active');
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
 		$(this).tab('show');
-		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
-			editAreaLoader.init({
-				id:"txtHeader", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtHeader_loaded = true;
-		}
-		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
-			editAreaLoader.init({
-				id:"txtFooter", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtFooter_loaded = true;
-		}
-		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
-			editAreaLoader.init({
-				id:"txtrSide", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtSider_loaded = true;
-		}
-		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
-			editAreaLoader.init({
-				id:"txtSide", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtSide_loaded = true;
-		}
 	});
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 0) { ?>
+
 	<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 	<script type="text/javascript">
 	  CKEDITOR.replace( 'txtHeader', { uiColor : '#59ACFF' }); 
 	  CKEDITOR.replace( 'txtrSide' , { uiColor : '#FFD5AA' });    
 	  CKEDITOR.replace( 'txtSide'  , { uiColor : '#FFAAAA' }); 
 	  CKEDITOR.replace( 'txtFooter', { uiColor : '#CCCCCC' });	
-	</script>  
+	</script>
+
 <?php } else if ($_SESSION['EDITORTYPE'] == 1) { ?>
+
 	<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
-		<script language="javascript" type="text/javascript">
-			var txtHeader_loaded = false;
-			var txtFooter_loaded = false;
-			var txtSide_loaded = false;
-			var txtSider_loaded = false;
-		</script>
+	<script language="javascript" type="text/javascript">
+	var txtHeader_loaded = false;
+	var txtFooter_loaded = false;
+	var txtSide_loaded = false;
+	var txtSider_loaded = false;
+	var getEditAreaJSON = function (strID) {
+		return {
+			id: strID, 
+			syntax: "html",
+			allow_toggle: false,
+			start_highlight: true,
+			toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
+		}
+	}	
+	$('#myTab a').click(function (e) {
+		e.preventDefault();
+		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
+			editAreaLoader.init(getEditAreaJSON("txtHeader"));
+			txtHeader_loaded = true;
+		}
+		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
+			editAreaLoader.init(getEditAreaJSON("txtFooter"));
+			txtFooter_loaded = true;
+		}
+		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
+			editAreaLoader.init(getEditAreaJSON("txtrSide"));
+			txtSider_loaded = true;
+		}
+		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
+			editAreaLoader.init(getEditAreaJSON("txtSide"));
+			txtSide_loaded = true;
+		}
+	});
+	</script>
+
+<?php } else if ($_SESSION['EDITORTYPE'] == 3) { ?>
+
+	<script src="codemirror/lib/codemirror.js"></script>
+	<script src="codemirror/mode/javascript/javascript.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="codemirror/addon/edit/matchbrackets.js"></script>
+	<script src="codemirror/mode/xml/xml.js"></script>
+	<script src="codemirror/addon/fold/foldcode.js"></script>
+	<script src="codemirror/addon/fold/foldgutter.js"></script>
+	<script src="codemirror/addon/fold/brace-fold.js"></script>
+	<script src="codemirror/addon/fold/xml-fold.js"></script>
+	<script src="codemirror/addon/fold/markdown-fold.js"></script>
+	<script src="codemirror/addon/fold/comment-fold.js"></script>
+	<script src="codemirror/mode/css/css.js"></script>
+	<script src="codemirror/mode/clike/clike.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script language="javascript" type="text/javascript">
+	var txtHeader_loaded = false;
+	var txtFooter_loaded = false;
+	var txtSide_loaded = false;
+	var txtSider_loaded = false;
+	var codeMirrorJSON = {
+		lineNumbers: true,
+		matchBrackets: true,
+		mode: "htmlmixed",
+		indentUnit: 4,
+		indentWithTabs: true,
+		theme: 'liquibyte',
+		lineWrapping: true,
+		extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+		foldGutter: true,
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		viewportMargin: Infinity
+	}	
+	$('#myTab a').click(function (e) {
+		e.preventDefault();
+		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
+			CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
+			txtHeader_loaded = true;
+		}
+		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
+			CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
+			txtFooter_loaded = true;
+		}
+		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
+			CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
+			txtSider_loaded = true;
+		}
+		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
+			CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
+			txtSide_loaded = true;
+		}
+	});	
+	</script>
+
 <?php } ?>
 </body></html>

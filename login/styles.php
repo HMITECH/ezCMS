@@ -112,7 +112,6 @@ if ($flg=="noperms")
 	</div>
 
 <?php include('include/footer.php'); ?>
-<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 <script type="text/javascript">
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(0)").addClass('active');
@@ -138,14 +137,53 @@ if ($flg=="noperms")
 		$('#Submit').click();
 		return false;
 	});
-	
-	editAreaLoader.init({
-		id:"txtContents", 
-		syntax: "css",
-		allow_toggle: true,
-		start_highlight: true,
-		toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-	});
-	
+
 </script>
+<?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
+
+	<script src="codemirror/lib/codemirror.js"></script>
+	<script src="codemirror/mode/javascript/javascript.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="codemirror/addon/edit/matchbrackets.js"></script>
+	<script src="codemirror/mode/xml/xml.js"></script>
+	<script src="codemirror/addon/fold/foldcode.js"></script>
+	<script src="codemirror/addon/fold/foldgutter.js"></script>
+	<script src="codemirror/addon/fold/brace-fold.js"></script>
+	<script src="codemirror/addon/fold/xml-fold.js"></script>
+	<script src="codemirror/addon/fold/markdown-fold.js"></script>
+	<script src="codemirror/addon/fold/comment-fold.js"></script>
+	<script src="codemirror/mode/css/css.js"></script>
+	<script src="codemirror/mode/clike/clike.js"></script>
+	<script src="codemirror/mode/css/css.js"></script>
+	<script language="javascript" type="text/javascript">
+		var myCode = CodeMirror.fromTextArea(document.getElementById("txtContents"), {
+	        lineNumbers: true,
+	        matchBrackets: true,
+	        mode: "css",
+	        indentUnit: 4,
+	        indentWithTabs: true,
+			theme: 'liquibyte',
+			lineWrapping: true,
+			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+			foldGutter: true,
+			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+	        viewportMargin: Infinity
+		});
+	</script>
+
+<?php } else { ?>
+
+	<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
+	<script type="text/javascript">
+		editAreaLoader.init({
+			id:"txtContents", 
+			syntax: "css",
+			allow_toggle: true,
+			start_highlight: true,
+			toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
+		});
+	</script>
+	
+<?php } ?>
+
 </body></html>

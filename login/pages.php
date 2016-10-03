@@ -54,21 +54,18 @@ if (isset($_REQUEST['Submit'])) {
 	$head 			= mysql_real_escape_string($_REQUEST['txtHead']);
 	$cont 			= '';
 	
-	$redirect 	    =  ''; //($_REQUEST['txtRedirect']);
+	$redirect 	    =  ''; 
 	if (isset($_REQUEST['slGroup'])) $parentid = ($_REQUEST['slGroup']); else $parentid = '0';
 	$slLayout		= ($_REQUEST['slLayout']);
 
-	//if(isset($_REQUEST['ckRedirect' ])) $isredirected  =1; else 
-		$isredirected = '';
-	if(isset($_REQUEST['ckPublished'])) $published     =1; else $published    = '';
-	//if(isset($_REQUEST['ckInsMenu'  ])) $showinsmenu   =1; else 
-		$showinsmenu  = '';
-	//if(isset($_REQUEST['ckInMenu'   ])) $showinmenu    =1; else 
-		$showinmenu   = '';
-	if(isset($_REQUEST['ckside'     ])) $useside       =1; else $useside      = '';
-	if(isset($_REQUEST['cksider'    ])) $usesider      =1; else $usesider     = '';
-	if(isset($_REQUEST['ckHeader'   ])) $useheader     =1; else $useheader    = '';
-	if(isset($_REQUEST['ckFooter'   ])) $usefooter     =1; else $usefooter    = '';
+	$isredirected = '0';
+	if(isset($_REQUEST['ckPublished'])) $published     =1; else $published    = '0';
+	$showinsmenu  = '0';
+	$showinmenu   = '0';
+	if(isset($_REQUEST['ckside'     ])) $useside       =1; else $useside      = '0';
+	if(isset($_REQUEST['cksider'    ])) $usesider      =1; else $usesider     = '0';
+	if(isset($_REQUEST['ckHeader'   ])) $useheader     =1; else $useheader    = '0';
+	if(isset($_REQUEST['ckFooter'   ])) $usefooter     =1; else $usefooter    = '0';
 
 	if (strlen(trim($_REQUEST['txtName'])) < 1 ) {
 		$_GET["flg"] = 'noname';
@@ -152,7 +149,6 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "`isredirected`  = '" . $isredirected  . "', ";
 			$qry .= "`redirect`      = '" . $redirect      . "'  ";
 			$qry .= "WHERE `id` =" . $id . " LIMIT 1 ;";
-			//echo $qry; exit;
 			if (mysql_query($qry)) {
 				reIndexPages();
 				mysql_query('OPTIMIZE TABLE `pages`;');
@@ -562,13 +558,6 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
   </div>
 </div>
 <script type="text/javascript">
-	var txtMain_loaded = true;
-	var txtHeader_loaded = true;
-	var txtFooter_loaded = true;
-	var txtSide_loaded = true;
-	var txtSider_loaded = true;
-	var txtHead_loaded = false;
-	var txtCont_loaded = false;		
 	
 	$('.lframe').click( function() {
 		// set the src of the iframe here		
@@ -641,98 +630,130 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 		e.preventDefault();
 		$(this).tab('show');
 		window.location.hash = $(this).attr('href').replace('#d-','');
-		if ((!txtMain_loaded)&&($(this).attr('href')=='#d-content')) {
-			editAreaLoader.init({
-				id:"txtMain", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtMain_loaded = true;
-		}		
-		
-		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
-			editAreaLoader.init({
-				id:"txtHeader", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtHeader_loaded = true;
-		}
-		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
-			editAreaLoader.init({
-				id:"txtFooter", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtFooter_loaded = true;
-		}
-		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
-			editAreaLoader.init({
-				id:"txtrSide", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtSider_loaded = true;
-		}
-		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
-			editAreaLoader.init({
-				id:"txtSide", 
-				syntax: "html",
-				allow_toggle: false,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtSide_loaded = true;
-		}
-		if ((!txtHead_loaded)&&($(this).attr('href')=='#d-head')) {
-			editAreaLoader.init({
-				id:"txtHead", 
-				syntax: "html",
-				allow_toggle: true,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtHead_loaded = true;
-		}
-		if ((!txtCont_loaded)&&($(this).attr('href')=='#d-controller')) {
-			editAreaLoader.init({
-				id:"txtCont", 
-				syntax: "php",
-				allow_toggle: true,
-				start_highlight: true,
-				toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-			});
-			txtCont_loaded = true;
-		}		
 	});
+	
 </script>
 <script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 
 <?php if ($_SESSION['EDITORTYPE'] == 0) { ?>
 	<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 	<script type="text/javascript">
-	  CKEDITOR.replace( 'txtMain'  , { uiColor : '#AAAAFF' });
-	  CKEDITOR.replace( 'txtHeader', { uiColor : '#59ACFF' }); 
-	  CKEDITOR.replace( 'txtrSide' , { uiColor : '#FFD5AA' });    
-	  CKEDITOR.replace( 'txtSide'  , { uiColor : '#FFAAAA' }); 
-	  CKEDITOR.replace( 'txtFooter', { uiColor : '#CCCCCC' });	
+	CKEDITOR.replace( 'txtMain'  , { uiColor : '#AAAAFF' });
+	CKEDITOR.replace( 'txtHeader', { uiColor : '#59ACFF' }); 
+	CKEDITOR.replace( 'txtrSide' , { uiColor : '#FFD5AA' }); 
+	CKEDITOR.replace( 'txtSide'  , { uiColor : '#FFAAAA' }); 
+	CKEDITOR.replace( 'txtFooter', { uiColor : '#CCCCCC' });	
 	</script>  
 <?php } else if ($_SESSION['EDITORTYPE'] == 1) { ?>
-		<script language="javascript" type="text/javascript">
-			var txtMain_loaded = false;
-			var txtHeader_loaded = false;
-			var txtFooter_loaded = false;
-			var txtSide_loaded = false;
-			var txtSider_loaded = false;
-		</script>
+	<script language="javascript" type="text/javascript">
+	var txtMain_loaded = false;
+	var txtHeader_loaded = false;
+	var txtFooter_loaded = false;
+	var txtSide_loaded = false;
+	var txtSider_loaded = false;
+	var getEditAreaJSON = function (strID) {
+		return {
+			id: strID, 
+			syntax: "html",
+			allow_toggle: false,
+			start_highlight: true,
+			toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
+		}
+	}
+	$('#myTab a').click(function (e) {
+		e.preventDefault();
+		if ((!txtMain_loaded)&&($(this).attr('href')=='#d-content')) {
+			editAreaLoader.init(getEditAreaJSON("txtMain"));
+			txtMain_loaded = true;
+		}
+		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
+			editAreaLoader.init(getEditAreaJSON("txtHeader"));
+			txtHeader_loaded = true;
+		}
+		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
+			editAreaLoader.init(getEditAreaJSON("txtFooter"));
+			txtFooter_loaded = true;
+		}
+		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
+			editAreaLoader.init(getEditAreaJSON("txtrSide"));
+			txtSider_loaded = true;
+		}
+		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
+			editAreaLoader.init(getEditAreaJSON("txtSide"));
+			txtSide_loaded = true;
+		}
+		if ((!txtHead_loaded)&&($(this).attr('href')=='#d-head')) {
+			editAreaLoader.init(getEditAreaJSON("txtHead"));
+			txtHead_loaded = true;
+		}
+	});
+	</script>
+	
+<?php } else if ($_SESSION['EDITORTYPE'] == 3) { ?>
+
+	<script src="codemirror/lib/codemirror.js"></script>
+	<script src="codemirror/mode/javascript/javascript.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="codemirror/addon/edit/matchbrackets.js"></script>
+	<script src="codemirror/mode/xml/xml.js"></script>
+	<script src="codemirror/addon/fold/foldcode.js"></script>
+	<script src="codemirror/addon/fold/foldgutter.js"></script>
+	<script src="codemirror/addon/fold/brace-fold.js"></script>
+	<script src="codemirror/addon/fold/xml-fold.js"></script>
+	<script src="codemirror/addon/fold/markdown-fold.js"></script>
+	<script src="codemirror/addon/fold/comment-fold.js"></script>
+	<script src="codemirror/mode/css/css.js"></script>
+	<script src="codemirror/mode/clike/clike.js"></script>
+	<script src="codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script language="javascript" type="text/javascript">
+	var txtMain_loaded = false;
+	var txtHeader_loaded = false;
+	var txtFooter_loaded = false;
+	var txtSide_loaded = false;
+	var txtSider_loaded = false;
+	var codeMirrorJSON = {
+		lineNumbers: true,
+		matchBrackets: true,
+		mode: "htmlmixed",
+		indentUnit: 4,
+		indentWithTabs: true,
+		theme: 'liquibyte',
+		lineWrapping: true,
+		extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+		foldGutter: true,
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+		viewportMargin: Infinity
+	}
+	$('#myTab a').click(function (e) {
+		e.preventDefault();
+		if ((!txtMain_loaded)&&($(this).attr('href')=='#d-content')) {
+			CodeMirror.fromTextArea(document.getElementById("txtMain"), codeMirrorJSON);
+			txtMain_loaded = true;
+		}
+		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
+			CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
+			txtHeader_loaded = true;
+		}
+		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
+			CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
+			txtFooter_loaded = true;
+		}
+		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
+			CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
+			txtSider_loaded = true;
+		}
+		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
+			CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
+			txtSide_loaded = true;
+		}
+		if ((!txtHead_loaded)&&($(this).attr('href')=='#d-head')) {
+			CodeMirror.fromTextArea(document.getElementById("txtHead"), codeMirrorJSON);
+			txtHead_loaded = true;
+		}
+	});
+	</script>
+
+
 <?php } ?>
 <script language="javascript" type="text/javascript">
 	if(window.location.hash) $('a[href="'+window.location.hash.replace('#','#d-')+'"]').click(); 

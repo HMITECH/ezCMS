@@ -8,10 +8,11 @@
  *
  * Include: Displays the navigation bar
  * 
- */
+ */ 
 	if ($_SESSION['EDITORTYPE']==0) $cke = 'class="badge-warning"'; else $cke = '';
 	if ($_SESSION['EDITORTYPE']==1) $eda = 'class="badge-warning"'; else $eda = '';
 	if ($_SESSION['EDITORTYPE']==2) $txt = 'class="badge-warning"'; else $txt = ''; 
+	if ($_SESSION['EDITORTYPE']==3) $cme = 'class="badge-warning"'; else $cme = ''; 
 ?>
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
@@ -65,6 +66,9 @@
 					<li><a href="profile.php"><i class="icon-comment"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<li class="nav-header">Select Editor</li>
+					<li <?php echo $cme; ?>>
+						<a href="scripts/chg-editor.php?etype=3">
+							<i class="icon-calendar"></i> Code Mirror</a></li>
 					<li <?php echo $cke; ?>>
 						<a href="scripts/chg-editor.php?etype=0">
 							<i class="icon-calendar"></i> CKEditor</a></li>

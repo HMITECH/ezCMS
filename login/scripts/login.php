@@ -61,11 +61,7 @@ if ($row = mysql_fetch_assoc($result)) {
 	$_SESSION['editjs'] = $row['editjs'];
 	
 	// check editor and use it
-	$_SESSION['EDITORTYPE']=0;
-	if (isset($_POST['sleditorstyle'])) {
-		if ($_POST['sleditorstyle'] == '1')$_SESSION['EDITORTYPE']=1;
-		if ($_POST['sleditorstyle'] == '2')$_SESSION['EDITORTYPE']=2; 
-	}
+	$_SESSION['EDITORTYPE']=3;
 	
 	// update the last login date time stamp.
 	

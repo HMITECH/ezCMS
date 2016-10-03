@@ -14,5 +14,7 @@ if (!isset($_GET['etype'])) die('xx');
 if ($_GET['etype']=='0') $_SESSION['EDITORTYPE']=0;
 elseif ($_GET['etype']=='1') $_SESSION['EDITORTYPE']=1;
 elseif ($_GET['etype']=='2') $_SESSION['EDITORTYPE']=2;
+elseif ($_GET['etype']=='3') $_SESSION['EDITORTYPE']=3;
+//die('ma '.$_SESSION['EDITORTYPE']);
 header('Location: '.$_SERVER["HTTP_REFERER"]);
 exit;?>
