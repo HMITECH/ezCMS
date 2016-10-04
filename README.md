@@ -1,27 +1,27 @@
-# README #
+# ezSite Builder README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+ezSite Builder is website content management system for coders, providing access to the code directly.
 
 ### What is this repository for? ###
 
 * Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Version 4.161005
+* Create and Manage as manay pages as you like
+* Create and manage as many page layouts as you like.
+* Use the code editors to create clean webpages.
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Copy all the files to your public_html or www folder
+* Create a database and import the sql file locates in the login/_sql folder
+* Edit the config.php to include the database creds created above.
+* Open your site in the browser and visit /login folder 
+* Update the site using the ezSite Builder.
 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* Mohd Ahmed
+* Mosh Ahmed
 
 ### Who do I talk to? ###
 
