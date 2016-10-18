@@ -12,7 +12,34 @@ if (!isset($_POST["Submit"])) die('xx');
 if (!$_SESSION['editsettings']) {header("Location: ../setting.php?flg=noperms");exit;}	// permission denied
 if($_POST['ckapptitle' ]!='') $apptitle  =1; else $apptitle = 0;
 if($_POST['ckappkey'   ]!='') $appkey    =1; else $appkey   = 0;
-if($_POST['ckappdesc'  ]!='') $appdesc   =1; else $appdesc  = 0;		
+if($_POST['ckappdesc'  ]!='') $appdesc   =1; else $appdesc  = 0;
+
+// Create a Revision 
+mysql_query("INSERT INTO `site` ( 
+			`title`,
+			`keywords`,
+			`description`,
+			`headercontent`,
+			`footercontent`,
+			`sidecontent`,
+			`sidercontent`,
+			`appendtitle`,
+			`appendkey`,
+			`appenddesc`,
+			`createdby` ) SELECT 
+			`title`,
+			`keywords`,
+			`description`,
+			`headercontent`,
+			`footercontent`,
+			`sidecontent`,
+			`sidercontent`,
+			`appendtitle`,
+			`appendkey`,
+			`appenddesc`,
+			'".$_SESSION['USERID']."' as `createdby` 
+			FROM `site` WHERE `id` = 1");
+
 $qry = "UPDATE `site` SET ";
 $qry .= "`title`='"        .mysql_real_escape_string($_POST["txtTitle"    ])."' , ";
 $qry .= "`keywords`='"     .mysql_real_escape_string($_POST["txtKeywords" ])."' , ";

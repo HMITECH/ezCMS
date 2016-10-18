@@ -15,12 +15,9 @@ $usefooter      = '';
 $useheader      = '';
 $useside        = '';
 $usesider       = '';
-$isredirected   = '';
-$showinsmenu    = '';
 $published      = '';
 $parentid       = '';
 $slLayout		= '';
-$showinmenu     = '';
 $name           = '';
 $title          = '';
 $keywords       = '';
@@ -32,7 +29,6 @@ $siderbar 		= '';
 $header			= '';
 $footer 		= '';
 $head 			= '';
-$cont 			= '';
 $url        	= '';
 
 // check if form is posted 
@@ -50,16 +46,11 @@ if (isset($_REQUEST['Submit'])) {
 	$header 		= mysql_real_escape_string($_REQUEST['txtHeader']);
 	$footer 		= mysql_real_escape_string($_REQUEST['txtFooter']);
 	$head 			= mysql_real_escape_string($_REQUEST['txtHead']);
-	$cont 			= '';
 	
-	$redirect 	    =  ''; 
 	if (isset($_REQUEST['slGroup'])) $parentid = ($_REQUEST['slGroup']); else $parentid = '0';
 	$slLayout		= ($_REQUEST['slLayout']);
 
-	$isredirected = '0';
 	if(isset($_REQUEST['ckPublished'])) $published     =1; else $published    = '0';
-	$showinsmenu  = '0';
-	$showinmenu   = '0';
 	if(isset($_REQUEST['ckside'     ])) $useside       =1; else $useside      = '0';
 	if(isset($_REQUEST['cksider'    ])) $usesider      =1; else $usesider     = '0';
 	if(isset($_REQUEST['ckHeader'   ])) $useheader     =1; else $useheader    = '0';
@@ -77,14 +68,11 @@ if (isset($_REQUEST['Submit'])) {
 	} else {
 		if ($id == 'new') { 
 			// add new page here !
-			$qry  = '';
-			$qry .= "INSERT INTO `pages` ( ";
-			$qry .= "`id` , `pagename` , `title`, ";
-			$qry .= "`keywords` , `description` , `maincontent` , ";
-			$qry .= "`useheader` , `headercontent` , `head`, `cont` , `layout` , ";
-			$qry .= "`usefooter` , `footercontent` ,`useside` , `sidecontent` , `usesider` , `sidercontent` ,";
-			$qry .= "`published` , `showinmenu` , `showinsubmenu` , `parentid` , `isredirected` , `redirect`) ";
-			$qry .= "VALUES ( NULL , ";
+			$qry = "INSERT INTO `pages` ( 
+				`pagename` , `title`, `keywords` , `description` , `maincontent` , 
+				`useheader` , `headercontent` , `head` , `layout` , 
+				`usefooter` , `footercontent` ,`useside` , `sidecontent` , `usesider` , `sidercontent` ,
+				`published` , `parentid`) VALUES ( ";
 			$qry .= "'" . $name          . "', ";
 			$qry .= "'" . $title         . "', ";
 			$qry .= "'" . $keywords      . "', ";
@@ -93,7 +81,6 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "'" . $useheader     . "', ";
 			$qry .= "'" . $header 		 . "', ";
 			$qry .= "'" . $head			 . "', ";
-			$qry .= "'" . $cont			 . "', ";
 			$qry .= "'" . $slLayout		 . "', ";
 			$qry .= "'" . $usefooter     . "', ";
 			$qry .= "'" . $footer 		 . "', ";
@@ -102,11 +89,7 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "'" . $usesider      . "', ";
 			$qry .= "'" . $siderbar  	 . "', ";
 			$qry .= "'" . $published     . "', ";
-			$qry .= "'" . $showinmenu    . "', ";
-			$qry .= "'" . $showinsmenu    . "', ";
-			$qry .= "'" . $parentid      . "', ";
-			$qry .= "'" . $isredirected  . "', ";
-			$qry .= "'" . $redirect      . "');";
+			$qry .= "'" . $parentid      . "');";
 			if (mysql_query($qry)) {
 				$id = mysql_insert_id();
 				resolveplace();
@@ -123,10 +106,54 @@ if (isset($_REQUEST['Submit'])) {
 			// update page here !
 			
 			// create a copy here ....
+			mysql_query("INSERT INTO `git_pages` ( 
+						  `page_id`, 
+						  `pagename`,
+						  `title`,
+						  `keywords`,
+						  `description`,
+						  `maincontent`,
+						  `useheader` ,
+						  `headercontent` ,
+						  `usefooter` ,
+						  `footercontent` ,
+						  `useside` ,
+						  `sidecontent` ,
+						  `published` ,
+						  `parentid` ,
+						  `place` ,
+						  `url` ,
+						  `sidercontent` ,
+						  `usesider` ,
+						  `head` ,
+						  `layout` ,
+						  `nositemap` , 
+						  `createdby` ) SELECT 
+						  `id` AS page_id, 
+						  `pagename`,
+						  `title`,
+						  `keywords`,
+						  `description`,
+						  `maincontent`,
+						  `useheader` ,
+						  `headercontent` ,
+						  `usefooter` ,
+						  `footercontent` ,
+						  `useside` ,
+						  `sidecontent` ,
+						  `published` ,
+						  `parentid` ,
+						  `place` ,
+						  `url` ,
+						  `sidercontent` ,
+						  `usesider` ,
+						  `head` ,
+						  `layout` ,
+						  `nositemap` , 
+						  '".$_SESSION['USERID']."' as `createdby` 
+						  FROM `pages` WHERE `id` = $id");
 			
-			
-			$qry  = '';
-			$qry .= "UPDATE `pages` SET ";
+			$qry = "UPDATE `pages` SET ";
 			$qry .= "`pagename`      = '" . $name          . "', ";
 			$qry .= "`title`         = '" . $title         . "', ";
 			$qry .= "`keywords`      = '" . $keywords      . "', ";
@@ -135,7 +162,6 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "`useheader`     = '" . $useheader     . "', ";
 			$qry .= "`headercontent` = '" . $header 	   . "', ";
 			$qry .= "`head`          = '" . $head          . "', ";
-			$qry .= "`cont`          = '" . $cont          . "', ";
 			$qry .= "`usefooter`     = '" . $usefooter     . "', ";
 			$qry .= "`footercontent` = '" . $footer 	   . "', ";
 			$qry .= "`useside`       = '" . $useside       . "', ";
@@ -143,13 +169,9 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "`usesider`      = '" . $usesider      . "', ";
 			$qry .= "`sidercontent`  = '" . $siderbar  	   . "', ";
 			$qry .= "`published`     = '" . $published     . "', ";
-			$qry .= "`showinmenu`    = '" . $showinmenu    . "', ";
-			$qry .= "`showinsubmenu` = '" . $showinsmenu   . "', ";
 			$qry .= "`parentid`      = '" . $parentid      . "', ";
-			$qry .= "`layout`        = '" . $slLayout      . "', ";
-			$qry .= "`isredirected`  = '" . $isredirected  . "', ";
-			$qry .= "`redirect`      = '" . $redirect      . "'  ";
-			$qry .= "WHERE `id` =" . $id . " LIMIT 1 ;";
+			$qry .= "`layout`      = '" . $slLayout      . "'  ";
+			$qry .= "WHERE `id` =" . $id . " LIMIT 1";
 			if (mysql_query($qry)) {
 				reIndexPages();
 				mysql_query('OPTIMIZE TABLE `pages`;');
@@ -181,8 +203,6 @@ if (isset($_REQUEST['Submit'])) {
 	$siderbar    	= htmlspecialchars($arr["sidercontent"  ]);
 	$footer			= htmlspecialchars($arr["footercontent" ]);
 	$head			= htmlspecialchars($arr["head" ]);
-	$cont			= '';
-	$redirect 		= $arr["redirect"];
 	$parentid 		= $arr["parentid"];
 	$slLayout		= $arr["layout"];
 	$usefooter      = '';
@@ -191,9 +211,6 @@ if (isset($_REQUEST['Submit'])) {
 	$usesider       = '';
 	$published    =  '';
 	if ($arr["published"   ] == 1) $published    = "checked";
-	if ($arr["showinmenu"  ] == 1) $showinmenu   = "checked";
-	if ($arr["showinsubmenu"] == 1) $showinsmenu = "checked";
-	if ($arr["isredirected"] == 1) $isredirected = "checked";
 	if ($arr["useheader"   ] == 1) $useheader    = "checked";
 	if ($arr["usefooter"   ] == 1) $usefooter    = "checked";
 	if ($arr["useside"     ] == 1) $useside      = "checked";
@@ -268,6 +285,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 								<a href="scripts/copy-page.php?copyid=<?php echo $id; ?>" class="btn btn-warning">Copy</a>
 								<?php if ($id != 1 && $id != 2) echo '<a href="scripts/del-page.php?delid='.$id.
 										'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+								<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
 								<div class="btn-group">
 									<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>
 									<ul class="dropdown-menu">

@@ -28,6 +28,10 @@ if (!file_exists("../$filename")) {
 }
 
 if (is_writable("../$filename")) {
+	// create the backup here
+	$original = mysql_real_escape_string(@fread(fopen("../$filename", "r"), filesize("../$filename")));
+	mysql_query("INSERT INTO `git_files` ( `content`, `fullpath`, `createdby`) VALUES 
+				('$original', '$filename', '".$_SESSION['USERID']."')");
 	if (fwrite(fopen("../$filename", "w+"),$contents)) 
 		header("Location: ../styles.php?flg=green$retfile");
 	else header("Location: ../styles.php?flg=red$retfile");

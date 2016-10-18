@@ -43,6 +43,7 @@ if ($flg=="noperms")
 					<div class="navbar">
 						<div class="navbar-inner">
 							<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary ">
+							<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
 						</div>
 					</div>
 					<?php echo $msg; ?>

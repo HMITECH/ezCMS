@@ -165,9 +165,11 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							<div class="navbar-inner">
 								<input type="submit" name="Submit" class="btn btn-primary" style="padding:5px 12px;"
 									value="<?php if ($id == 'new') echo 'Add New'; else echo 'Save Changes';?>"> 
+								
 								<?php 
 									if ($id != 'new') echo 
-										'<a href="?id=new" class="btn btn-info">New User</a> ';
+										'<a href="?id=new" class="btn btn-info">New User</a> 
+										<a id="showlog" href="#" class="btn btn-secondary">Action Log</a>';
 									if (($id != 'new') && ($id != 1)) echo '<a href="scripts/del-user.php?delid=' . $id . 
 										'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; 
 								?>

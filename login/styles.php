@@ -93,6 +93,7 @@ if ($flg=="noperms")
 							<?php if ($filename!='../style.css') 
 								echo '<a href="scripts/del-styles.php?delfile='.
 									$filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+							<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
 						</div>
 					</div>
 					<?php echo $msg; ?>

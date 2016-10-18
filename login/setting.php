@@ -20,7 +20,20 @@ $siderbar    = htmlspecialchars($arr["sidercontent"  ]);
 $footer      = htmlspecialchars($arr["footercontent" ]);
 if ($arr["appendtitle"] == 1) $aptitle = "checked";	else $aptitle = '';
 if ($arr["appendkey"  ] == 1) $apkey   = "checked";	else $apkey   = '';	
-if ($arr["appenddesc" ] == 1) $apdesc  = "checked";	else $apdesc  = '';			
+if ($arr["appenddesc" ] == 1) $apdesc  = "checked";	else $apdesc  = '';
+$keepversions  = '';
+/*
+if (!isset($arr["keepversions" ])) {
+	// execute sql to update the database
+	mysql_query("ALTER TABLE `site` ADD `keepversions` TINYINT(1) NOT NULL DEFAULT '0' COMMENT 'Enables Version Control' AFTER `appenddesc`;")
+	
+
+
+	
+} else {
+	if ($arr["keepversions" ] == 1) $keepversions  = "checked";	else $keepversions  = '';
+} 
+*/
 mysql_free_result($rs);
 if (isset($_GET["flg"])) $flg = $_GET["flg"]; else $flg = "";
 $msg = "";
@@ -49,6 +62,7 @@ if ($flg=="noperms")
 				<div class="navbar">
 					<div class="navbar-inner">
 						<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
+						<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
 					</div>
 				</div>
 				<?php echo $msg; ?>
@@ -64,7 +78,6 @@ if ($flg=="noperms")
 				 
 				<div class="tab-content">
 					<div class="tab-pane active" id="d-main">
-
 						  <div class="control-group">
 							<label class="control-label" for="inputEmail">Site Title</label>
 							<div class="controls">

@@ -91,6 +91,7 @@ if ($flg=="noperms")
 								<?php if ($filename!='layout.php') 
 									echo '<a href="scripts/del-layouts.php?delfile='.
 										$filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+								<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
 							</div>
 						</div>
 						<?php echo $msg; ?>

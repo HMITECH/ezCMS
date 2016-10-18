@@ -13,6 +13,10 @@ if (!$_SESSION['editcontroller']) {header("Location: ../controllers.php?flg=nope
 if (isset($_POST["txtContents"])) $contents = $_POST["txtContents"]; else die('xxx');
 $filename = '../../index.php';
 if (is_writable($filename)) {
+	// create the backup here
+	$original = mysql_real_escape_string(@fread(fopen($filename, "r"), filesize($filename)));
+	mysql_query("INSERT INTO `git_files` ( `content`, `fullpath`, `createdby`) VALUES 
+				('$original', 'index.php', '".$_SESSION['USERID']."')");
 	if (fwrite(fopen($filename, "w+"),$contents)) 
 		header("Location: ../controllers.php?flg=green");
 	else header("Location: ../controllers.php?flg=red");

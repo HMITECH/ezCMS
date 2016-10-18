@@ -10,10 +10,10 @@
 require_once("init.php");
 if (!$_SESSION['editjs']) {header("Location: ../scripts.php?flg=noperms");exit;}	// permission denied
 if (!isset($_POST["Submit"])) die('xx'); 
-if (isset($_POST["txtContents"])) $contents = ($_POST["txtContents"]); else die('xxx');
-if (isset($_POST["txtName"])) $filename = $_POST["txtName"]; else die('xxxx');
+if (isset($_POST["txtContents"])) $contents = ($_POST["txtContents"]); else die('xxxa');
+if (isset($_POST["txtName"])) $filename = $_POST["txtName"]; else die('xxxxaa');
 
-if ( (!preg_match('/^\.\.\/site-assets\/js\/[a-z0-9_-]+\.js$/i',$filename)) &&
+if ( (!preg_match('/^\.\.\/site-assets\/js\/[a-z0-9_.-]+\.js$/i',$filename)) &&
 	($filename!='../main.js') ) die('xxxx.');
 
 $retfile = '&show='.str_replace('../site-assets/js/','',$filename);
@@ -28,6 +28,10 @@ if (!file_exists("../$filename")) {
 }
 
 if (is_writable("../$filename")) {
+	// create the backup here
+	$original = mysql_real_escape_string(@fread(fopen("../$filename", "r"), filesize("../$filename")));
+	mysql_query("INSERT INTO `git_files` ( `content`, `fullpath`, `createdby`) VALUES 
+				('$original', '$filename', '".$_SESSION['USERID']."')");
 	if (fwrite(fopen("../$filename", "w+"),$contents)) 
 		header("Location: ../scripts.php?flg=green$retfile");
 	else header("Location: ../scripts.php?flg=red$retfile");
