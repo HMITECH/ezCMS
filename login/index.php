@@ -45,7 +45,7 @@ switch ($flg) {
 			max-width: 300px;
 			padding: 19px 29px 29px;
 			margin: 60px auto 10px;
-			background-color: #fff;
+			background-color: rgba(255, 255, 255, 0.85);
 			border: 1px solid #000;
 			box-shadow: 0 1px 2px rgba(0,0,0,.05);}
 		.form-signin .form-signin-heading,
