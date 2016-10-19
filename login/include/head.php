@@ -50,7 +50,32 @@
 	#txtContents {
 		height: 420px; 
 		width:100%;
-	}		
+	}
+	#revBlock {
+		display:none;
+		position: relative;
+		margin: 15px 0;
+		padding: 39px 19px 14px;
+		background-color: #fff;
+		border: 1px solid #ddd;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+	}
+	#revBlock:after {
+		content: "Revision Log";
+		position: absolute;
+		top: -1px;
+		left: -1px;
+		padding: 3px 7px;
+		font-weight: bold;
+		background-color: #f5f5f5;
+		border: 1px solid #ddd;
+		color: #9da0a4;
+		-webkit-border-radius: 4px 0 4px 0;
+		-moz-border-radius: 4px 0 4px 0;
+		border-radius: 4px 0 4px 0;
+	}
 	#push,#footer {height: 30px;}
 	#footer {background-color: rgba(245, 245, 245, 0.75);}
 	.tooltip-inner {font-size:18px;}

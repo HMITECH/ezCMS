@@ -45,5 +45,10 @@ mysql_free_result($rs);
 	});
 	$('#slCmTheme').val('<?php echo $_SESSION["CMTHEME"]; ?>').change(function (e) {
 		location.href = "scripts/chg-editor-theme.php?theme="+$(this).val();
-	});/**/
+	});
+	$('#showrevs').click(function () {
+		$('#revBlock').slideToggle();
+		return false;
+	});	
+	
 </script>

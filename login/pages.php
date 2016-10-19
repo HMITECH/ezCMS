@@ -216,6 +216,22 @@ if (isset($_REQUEST['Submit'])) {
 	if ($arr["useside"     ] == 1) $useside      = "checked";
 	if ($arr["usesider"    ] == 1) $usesider     = "checked";
 	
+	// Create the Revision Log here
+	$revsql = "SELECT git_pages.id,git_pages.page_id,users.username,git_pages.createdon
+				FROM git_pages LEFT JOIN users ON git_pages.createdby = users.id
+				WHERE git_pages.page_id = $id 
+				ORDER BY git_pages.id DESC";		
+    $rs = mysql_query($revsql) or die("Unable to Execute  Select query");
+	$revLog = '';
+	$revCount = 1;
+	while ($row = mysql_fetch_assoc($rs)) {	
+		$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
+		  <td data-rev-id="'.$row['id'].'"><a href="#">Revert</a> | <a href="#">Purge</a></td></tr>';
+		$revCount++;
+	}
+	$revCount--;
+	if ($revLog == '') $revLog = '<tr><td colspan="3">There are no revisions of this page.</td></tr>';
+	
 	// find url in traffic_pages
 	if ($url=='/') $turl = '/index.php'; else $turl = $url;
 	$rs = mysql_query("SELECT `id` FROM `traffic__pages` WHERE `name` = '$turl' LIMIT 1");
@@ -285,7 +301,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 								<a href="scripts/copy-page.php?copyid=<?php echo $id; ?>" class="btn btn-warning">Copy</a>
 								<?php if ($id != 1 && $id != 2) echo '<a href="scripts/del-page.php?delid='.$id.
 										'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
-								<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
+								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
 								<div class="btn-group">
 									<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>
 									<ul class="dropdown-menu">
@@ -319,6 +335,12 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 					</div>					
 					
 					<?php echo $msg; ?>
+					
+					<div id="revBlock">
+					  <table class="table table-striped"><thead>
+						<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+					  </thead><tbody><?php echo $revLog; ?></tbody></table>
+					</div>
 					
 				    <div class="tabbable tabs-left">
 					<ul class="nav nav-tabs" id="myTab">
