@@ -173,7 +173,7 @@ if ($flg=="noperms")
 		var myCode = CodeMirror.fromTextArea(document.getElementById("txtContents"), {
 	        lineNumbers: true,
 	        matchBrackets: true,
-	        mode: "htmlmixed",
+		mode: "application/x-httpd-php",
 	        indentUnit: 4,
 	        indentWithTabs: true,
 			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
