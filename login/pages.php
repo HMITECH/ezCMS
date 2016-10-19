@@ -16,6 +16,7 @@ $useheader      = '';
 $useside        = '';
 $usesider       = '';
 $published      = '';
+$nositemap      = '';
 $parentid       = '';
 $slLayout		= '';
 $name           = '';
@@ -51,6 +52,7 @@ if (isset($_REQUEST['Submit'])) {
 	$slLayout		= ($_REQUEST['slLayout']);
 
 	if(isset($_REQUEST['ckPublished'])) $published     =1; else $published    = '0';
+	if(isset($_REQUEST['cknositemap'])) $nositemap     =1; else $nositemap    = '0';
 	if(isset($_REQUEST['ckside'     ])) $useside       =1; else $useside      = '0';
 	if(isset($_REQUEST['cksider'    ])) $usesider      =1; else $usesider     = '0';
 	if(isset($_REQUEST['ckHeader'   ])) $useheader     =1; else $useheader    = '0';
@@ -72,7 +74,7 @@ if (isset($_REQUEST['Submit'])) {
 				`pagename` , `title`, `keywords` , `description` , `maincontent` , 
 				`useheader` , `headercontent` , `head` , `layout` , 
 				`usefooter` , `footercontent` ,`useside` , `sidecontent` , `usesider` , `sidercontent` ,
-				`published` , `parentid`) VALUES ( ";
+				`published` , `nositemap` ,  `parentid`) VALUES ( ";
 			$qry .= "'" . $name          . "', ";
 			$qry .= "'" . $title         . "', ";
 			$qry .= "'" . $keywords      . "', ";
@@ -89,6 +91,7 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "'" . $usesider      . "', ";
 			$qry .= "'" . $siderbar  	 . "', ";
 			$qry .= "'" . $published     . "', ";
+			$qry .= "'" . $nositemap     . "', ";
 			$qry .= "'" . $parentid      . "');";
 			if (mysql_query($qry)) {
 				$id = mysql_insert_id();
@@ -169,6 +172,7 @@ if (isset($_REQUEST['Submit'])) {
 			$qry .= "`usesider`      = '" . $usesider      . "', ";
 			$qry .= "`sidercontent`  = '" . $siderbar  	   . "', ";
 			$qry .= "`published`     = '" . $published     . "', ";
+			$qry .= "`nositemap`     = '" . $nositemap     . "', ";
 			$qry .= "`parentid`      = '" . $parentid      . "', ";
 			$qry .= "`layout`      = '" . $slLayout      . "'  ";
 			$qry .= "WHERE `id` =" . $id . " LIMIT 1";
@@ -209,8 +213,10 @@ if (isset($_REQUEST['Submit'])) {
 	$useheader      = '';
 	$useside        = '';
 	$usesider       = '';
-	$published    =  '';
+	$published      =  '';
+	$nositemap      =  '';
 	if ($arr["published"   ] == 1) $published    = "checked";
+	if ($arr["nositemap"   ] == 1) $nositemap    = "checked";
 	if ($arr["useheader"   ] == 1) $useheader    = "checked";
 	if ($arr["usefooter"   ] == 1) $usefooter    = "checked";
 	if ($arr["useside"     ] == 1) $useside      = "checked";
@@ -272,6 +278,11 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	<title>Pages &middot; ezCMS Admin</title>
 	<style>
 		.countDisplay {float: right;}
+		.checkRight {
+			position: absolute;
+			bottom: -5px;
+			right: 0;
+		}
 	</style>
 	<?php include('include/head.php'); ?>
 	
@@ -360,7 +371,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputTitle">Title Tag</label>
-								<div class="controls">
+								<div class="controls" style="position:relative">
 									<input type="text" id="txtTitle" name="txtTitle"
 										placeholder="Enter the title of the page"
 										title="Enter the full title of the page here."
@@ -370,7 +381,11 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 										class="input-block-level tooltipme2 countme2"><br>
 										<label class="checkbox" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
 										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $published; ?>>
-										  Published on site										
+										  Published on site
+										</label>
+										<label class="checkbox checkRight" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
+										  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $nositemap; ?>>
+										  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
 										</label>
 								</div>
 							  </div>
@@ -595,7 +610,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
   </div>
   <div class="modal-body">
     <iframe id="shrFrm" src="loading.php"
-		width='100%' height='360px' frameborder='0' marginheight='0' marginwidth='0' scrolling="auto"></iframe>
+		width='100%' height='480px' frameborder='0' marginheight='0' marginwidth='0' scrolling="auto"></iframe>
   </div>
 </div>
 <script type="text/javascript">

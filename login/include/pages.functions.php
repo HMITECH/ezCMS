@@ -80,7 +80,7 @@ function reIndexPages() {
 	$sitemapXML  .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 	$sitemapXML  .= '<url><loc>http://' . $_SERVER['SERVER_NAME'] .  '/index.html</loc></url>';
 
-	$sql = 'SELECT `id` , `pagename` , `parentid`, `published` FROM `pages` WHERE `id` > 2';
+	$sql = 'SELECT `id` , `pagename` , `parentid`, `published` FROM `pages` WHERE `id` > 2 AND `nositemap` < 1';
 	$rs = mysql_query($sql) or die("Unable to Execute  Select query");
 
 	while ($row = mysql_fetch_assoc($rs)) {
