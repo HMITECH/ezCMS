@@ -24,6 +24,23 @@ if ($handle = opendir('../site-assets/js')) {
 if ($filename != "../main.js") $filename = "../site-assets/js/$filename";
 $content = @fread(fopen($filename, "r"), filesize($filename));
 $content =  htmlspecialchars($content);
+
+// Create the Revision Log here
+$revsql = "SELECT git_files.id, users.username, git_files.createdon
+	FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+	WHERE git_files.fullpath = '$filename'
+	ORDER BY git_files.id DESC";		
+$rs = mysql_query($revsql) or die("Unable to Execute  Select query");
+$revLog = '';
+$revCount = 1;
+while ($row = mysql_fetch_assoc($rs)) {	
+	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
+	  <td data-rev-id="'.$row['id'].'"><a href="#">Revert</a> | <a href="#">Purge</a></td></tr>';
+	$revCount++;
+}
+$revCount--;
+if ($revLog == '') $revLog = '<tr><td colspan="3">There are no revisions of this layout.</td></tr>';
+	
 if (isset($_GET["flg"])) $flg = $_GET["flg"]; else $flg = "";
 $msg = "";
 if ($flg=="red") 
@@ -93,10 +110,15 @@ if ($flg=="noperms")
 							<?php if ($filename!='../main.js') 
 								echo '<a href="scripts/del-scripts.php?delfile='.
 									$filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
-							<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
+							<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
 						</div>
 					</div>
 					<?php echo $msg; ?>
+					<div id="revBlock">
+					  <table class="table table-striped"><thead>
+						<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+					  </thead><tbody><?php echo $revLog; ?></tbody></table>
+					</div>
 					<input border="0" class="input-block-level" name="txtlnk" onFocus="this.select();" 
 						style="cursor: pointer;" onClick="this.select();"  type="text" title="include this link in layouts or page head"
 						value="&lt;script src=&quot;<?php echo substr($filename, 2); ?>&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;" readonly/>

@@ -11,6 +11,23 @@ require_once("include/init.php");
 if (isset($_GET['show'])) $filename = $_GET['show']; else $filename = "layout.php";
 $content = @fread(fopen('../'.$filename, "r"), filesize('../'.$filename));
 $content =  htmlspecialchars($content);
+
+// Create the Revision Log here
+$revsql = "SELECT git_files.id, users.username, git_files.createdon
+	FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+	WHERE git_files.fullpath = '$filename'
+	ORDER BY git_files.id DESC";		
+$rs = mysql_query($revsql) or die("Unable to Execute  Select query");
+$revLog = '';
+$revCount = 1;
+while ($row = mysql_fetch_assoc($rs)) {	
+	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
+	  <td data-rev-id="'.$row['id'].'"><a href="#">Revert</a> | <a href="#">Purge</a></td></tr>';
+	$revCount++;
+}
+$revCount--;
+if ($revLog == '') $revLog = '<tr><td colspan="3">There are no revisions of this layout.</td></tr>';
+	
 if (isset($_GET["flg"])) $flg = $_GET["flg"]; else $flg = "";
 $msg = "";
 if ($flg=="red") 
@@ -91,10 +108,15 @@ if ($flg=="noperms")
 								<?php if ($filename!='layout.php') 
 									echo '<a href="scripts/del-layouts.php?delfile='.
 										$filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
-								<a id="showrevs" href="#" class="btn btn-secondary">Revisions</a>
+								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
 							</div>
 						</div>
 						<?php echo $msg; ?>
+						<div id="revBlock">
+						  <table class="table table-striped"><thead>
+							<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+						  </thead><tbody><?php echo $revLog; ?></tbody></table>
+						</div>
 						<input type="hidden" name="txtName" id="txtName" value="<?php echo $filename; ?>">
 						<textarea name="txtContents" id="txtContents" class="input-block-level"
 							style="height: 460px; width:100%"><?php echo $content; ?></textarea>
