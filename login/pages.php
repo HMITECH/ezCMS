@@ -371,7 +371,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputTitle">Title Tag</label>
-								<div class="controls" style="position:relative">
+								<div class="controls">
 									<input type="text" id="txtTitle" name="txtTitle"
 										placeholder="Enter the title of the page"
 										title="Enter the full title of the page here."
@@ -383,17 +383,13 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $published; ?>>
 										  Published on site
 										</label>
-										<label class="checkbox checkRight" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
-										  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $nositemap; ?>>
-										  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
-										</label>
 								</div>
 							  </div>
 							</div>
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Name (URL)</label>
-								<div class="controls">
+								<div class="controls" style="position:relative">
 									<input type="text" id="txtName" name="txtName"
 										placeholder="Enter the name of the page"
 										title="Enter the full name of the page here."
@@ -405,7 +401,10 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 												echo '<span class="label label-important">Unpublished page only visible when logged in.</span>';
 											else 
 												echo '<span class="label label-info">Page is published and visible to all.</span>'; ?>
-									
+									<label class="checkbox checkRight" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
+									  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $nositemap; ?>>
+									  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
+									</label>
 								</div>
 							  </div>								
 							</div>
