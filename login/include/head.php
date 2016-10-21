@@ -25,80 +25,8 @@
 	<?php } ?>
 	<link rel="stylesheet" href="codemirror/addon/hint/show-hint.css">
 <?php } ?>
+<link href="css/custom.css" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 	<script src="js/html5shiv.js"></script>
 <![endif]-->
-<style type="text/css"> 
-	html,body {height: 100%;}
-	body {
-		/*background: linear-gradient(to bottom, #000000 0%, #F5F5F5 100%);*/
-		background: url('img/bg.png');
-		background-attachment: fixed;
-	}
-	.nav-tabs > .active > a, .nav-tabs > .active > a:hover,
-	a,button { outline:none; }
-	.btn, .btn-group {
-		border-radius: 0 !important;
-		margin-right:10px;
-	}
-	#wrap {
-		min-height: 100%;
-		height: auto !important;
-		height: 100%;
-		margin: 0 auto -30px;}
-	#txtContents {
-		height: 420px; 
-		width:100%;
-	}
-	#revBlock {
-		display:none;
-		position: relative;
-		margin: 15px 0;
-		padding: 39px 19px 14px;
-		background-color: #fff;
-		border: 1px solid #ddd;
-		-webkit-border-radius: 4px;
-		-moz-border-radius: 4px;
-		border-radius: 4px;
-	}
-	#revBlock:after {
-		content: "Revision Log";
-		position: absolute;
-		top: -1px;
-		left: -1px;
-		padding: 3px 7px;
-		font-weight: bold;
-		background-color: #f5f5f5;
-		border: 1px solid #ddd;
-		color: #9da0a4;
-		-webkit-border-radius: 4px 0 4px 0;
-		-moz-border-radius: 4px 0 4px 0;
-		border-radius: 4px 0 4px 0;
-	}
-	#push,#footer {height: 30px;}
-	#footer {background-color: rgba(245, 245, 245, 0.75);}
-	.tooltip-inner {font-size:18px;}
-	.label, .badge {white-space:normal;}
-	.CodeMirror {height: auto;}
-	.CodeMirror-scroll { min-height:420px; }
-	div.white-boxed {
-		background: rgba(255, 255, 255, 0.95);
-		border: 1px solid #000;
-		padding: 10px;
-		margin-bottom:10px;
-		box-shadow: 0 7px 4px -4px #333;
-	}
-	@media (max-width: 767px) {
-		#footer {
-			margin-left: -20px;
-			margin-right: -20px;
-			padding-left: 20px;
-			padding-right: 20px;
-			height: auto;}
-		.navbar-text.pull-right {
-			float: none;
-			padding-left: 5px;
-			padding-right: 5px;}        
-	}
-</style>
