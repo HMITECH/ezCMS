@@ -33,7 +33,7 @@ a,button { outline:none; }
 	height: 100%;
 	margin: 0 auto -30px;}
 #txtContents {
-	height: 420px; 
+	height: 500px; 
 	width:100%;
 }
 #revBlock {
@@ -65,8 +65,7 @@ a,button { outline:none; }
 #footer {background-color: rgba(245, 245, 245, 0.75);}
 .tooltip-inner {font-size:18px;}
 .label, .badge {white-space:normal;}
-.CodeMirror {height: auto;}
-.CodeMirror-scroll { min-height:420px; }
+.CodeMirror {height:500px; }
 div.white-boxed {
 	background: rgba(255, 255, 255, 0.95);
 	border: 1px solid #000;

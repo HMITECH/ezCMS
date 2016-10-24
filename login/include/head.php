@@ -20,6 +20,7 @@
 <?php if ((isset($_SESSION['EDITORTYPE'])) &&  ($_SESSION['EDITORTYPE'] == 3)) { ?>
 	<link href="codemirror/lib/codemirror.css" rel="stylesheet">
 	<link rel="stylesheet" href="codemirror/addon/fold/foldgutter.css" />
+	<link rel="stylesheet" href="codemirror/addon/merge/merge.css" />
 	<?php if ($_SESSION["CMTHEME"]!='default') { ?>
 		<link rel="stylesheet" href="codemirror/theme/<?php echo $_SESSION["CMTHEME"]; ?>.css">
 	<?php } ?>
