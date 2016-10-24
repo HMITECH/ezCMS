@@ -14,7 +14,8 @@ if (isset($_POST["txtContents"])) $contents = $_POST["txtContents"]; else die('x
 $filename = '../../index.php';
 if (is_writable($filename)) {
 	// create the backup here
-	$original = mysql_real_escape_string(@fread(fopen($filename, "r"), filesize($filename)));
+	//$original = mysql_real_escape_string(@fread(fopen($filename, "r"), filesize($filename)));
+	$original = mysql_real_escape_string(file_get_contents($filename));
 	mysql_query("INSERT INTO `git_files` ( `content`, `fullpath`, `createdby`) VALUES 
 				('$original', 'index.php', '".$_SESSION['USERID']."')");
 	if (fwrite(fopen($filename, "w+"),$contents)) 

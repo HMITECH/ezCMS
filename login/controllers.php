@@ -175,6 +175,14 @@ if ($flg=="noperms")
 			return false;
 		});
 		
+		$('#revBlock a').click( function () {
+			if ($(this).text() == 'Fetch') {
+				var loadID = $(this).parent().data('rev-id');
+				myCode.setValue(revJson[loadID]);
+				return false;
+			}
+		});
+		
 		$('#diffviewerControld select').change( function () {
 		
 			var revID2Load = $(this).val();
