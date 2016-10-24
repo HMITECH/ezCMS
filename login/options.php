@@ -49,11 +49,10 @@ else $phpTrafficA = "";
 			box-shadow: 0px 2px 4px rgba(71, 71, 71, 0.5);
 		}
 		blockquote.includecode {
-			background:url("img/bg.png") repeat scroll 0 0 transparent; 
+			background:#fff; 
 			border-color:#666666;
 			box-shadow: 4px 4px 4px rgba(50, 50, 50, 0.5);
 		}
-
 	</style>	
 	
 </head><body>
@@ -102,7 +101,6 @@ else $phpTrafficA = "";
 				  
 				</div>
 				<div class="span9 white-boxed">
-
 
 					<blockquote>
 					  <p>Visitor Tracking</p>
@@ -158,11 +156,7 @@ else $phpTrafficA = "";
 						document.writeln(&quot;&lt;img src=&quot;<?php echo str_replace('/options.php','',$_SERVER["PHP_SELF"]); ?>/traffic/count.php?sid=39547&amp;p=&quot;+thispage+&quot;&amp;r=&quot;+referer+&quot;&amp;t=&quot;+time+&quot;&amp;res=&quot;+resolution+&quot;&quot; alt=&quot;&quot; border=&quot;0&quot; /&gt;n&quot;);<br>
 					  &lt;/script&gt;
 					</blockquote>
-					
 
-				
-					
-					
 					<hr style="border-width:2px; border-color:#666">
 
 					<h4 class="includehead">To show a text with summary statistics </h4>
