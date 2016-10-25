@@ -56,6 +56,9 @@ if ($flg=="redrev")
 if ($flg=="greenrev")
 	$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
 				<strong>Purged!</strong> You have successfully purged the controller revision.</div>';
+if ($flg=="nochange") 
+	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
+				<strong>No Change!</strong> There are no changes to save.</div>'
 
 ?><!DOCTYPE html><html lang="en"><head>
 
