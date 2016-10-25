@@ -4,7 +4,7 @@
  * * Version 2.010413 Dated 20/March/2013 
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  *
- *View: Displays the php controller of the site
+ * View: Displays the php controller of the site
  * /index.php
  */
 require_once("include/init.php");
@@ -60,6 +60,7 @@ if ($flg=="noperms")
 	#diffviewerControld td {text-align:center;width:50%}
 	#diffviewerControld td:first-child {display:none;}
 	#diffviewerControld select {min-width:260px;}
+	#txtTemps  {display:none;}
 	</style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
@@ -100,7 +101,8 @@ if ($flg=="noperms")
 					  </td></tr>
 					</table>
 					<div id="diffviewer"></div>
-				</div>			  
+				</div>
+				<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
 
 		</div> 
 	</div>
@@ -144,10 +146,14 @@ if ($flg=="noperms")
 			foldGutter: true,
 			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 		});
+		
+		// DIFF Viewer Options
 		var codeMain = myCode.getValue(),
 			codeRight = $("#txtContents").val(), 
 			codeLeft = codeRight,
 			panes = 2, collapse = false, dv;
+			
+		// function to build DIFF UI
 		var buildDiffUI = function () {
 			var target = document.getElementById("diffviewer");
 			target.innerHTML = "";
@@ -166,6 +172,8 @@ if ($flg=="noperms")
 				collapseIdentical: collapse
 			});
 		}
+		
+		// Change to DIff UI
 		$('#showdiff').click( function () {
 			$('#editBlock').slideUp('slow');
 			$('#diffBlock').slideDown('slow', function () {
@@ -175,6 +183,7 @@ if ($flg=="noperms")
 			return false;
 		});
 		
+		// Click on Fetch or DIFF in revision log
 		$('#revBlock a').click( function () {
 			if ($(this).text() == 'Fetch') {
 				var loadID = $(this).parent().data('rev-id');
@@ -183,40 +192,30 @@ if ($flg=="noperms")
 			}
 		});
 		
+		// Change Rev in Diff Viewer select dropdown
 		$('#diffviewerControld select').change( function () {
-		
 			var revID2Load = $(this).val();
-			
 			if (revID2Load == '0') {
-				var revContentLoad = $("#txtContents").val();
+				var revContentLoad = $("#txtContents").val(); // shoe last saved 
 			} else {
-				var revContentLoad = revJson[revID2Load];
+				$("#txtTemps").val(revJson[revID2Load]);
+				var revContentLoad = $("#txtTemps").val();
 			}
-		
-			if ($(this).parent().index() == 0) {
-				// right panel
-				codeLeft = revContentLoad;
-							
-				
-			} else {
-				// left panel
-				codeRight = revContentLoad;
-			}
-			
-			
+			if ($(this).parent().index() == 0) codeLeft = revContentLoad;
+			else codeRight = revContentLoad;
 			codeMain = dv.editor().getValue();
 			buildDiffUI();
-					
-			//alert($(this).val() + ' --- '+ $(this).parent().index() );
-		});		
+		});	
 		
-		// Button Clicks in Diff Viewer
+		// Back to Main editor from DIFF UI
 		$('#backEditBTN').click( function () {
 			$('#editBlock').slideDown('slow');
 			$('#diffBlock').slideUp('slow');
 			myCode.setValue(dv.editor().getValue());
 			return false;
 		});
+		
+		// Toggle 2 or 3 wya Diff
 		$("#waysDiffBTN").click( function () {
 			if (panes == 2) {
 				panes = 3;
@@ -233,6 +232,8 @@ if ($flg=="noperms")
 			buildDiffUI();
 			return false;
 		}); 
+		
+		// Toggle Collapse Unchanged sections
 		$("#collaspeBTN").click( function () {
 			if (collapse) {
 				collapse = false;
