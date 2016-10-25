@@ -26,7 +26,7 @@ while ($row = mysql_fetch_assoc($rs)) {
 	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
 	  <td data-rev-id="'.$row['id'].'">
 	  	<a href="#">Fetch</a> &nbsp;|&nbsp; <a href="#">Diff</a> &nbsp;|&nbsp;
-		<a href="scripts/purge-version.php?id='.$row['id'].'">Purge</a>
+		<a href="scripts/purge-version.php?controller='.$row['id'].'">Purge</a>
 		</td></tr>';
 	$revOption .= 	'<option value="'.$row['id'].'">#'.$revCount.' '.$row['createdon'].' ('.$row['username'].')</option>';		
 	$revJson[$row['id']] =  ($row['content']);
@@ -50,6 +50,12 @@ if ($flg=="pink")
 if ($flg=="noperms") 
 	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
 				<strong>Permission Denied!</strong> You do not have permissions for this action.</div>';
+if ($flg=="redrev") 
+	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
+				<strong>Failed!</strong> An error occurred and the controller revision was not purged.</div>';
+if ($flg=="greenrev")
+	$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
+				<strong>Purged!</strong> You have successfully purged the controller revision.</div>';
 
 ?><!DOCTYPE html><html lang="en"><head>
 
