@@ -26,7 +26,7 @@ while ($row = mysql_fetch_assoc($rs)) {
 	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
 	  <td data-rev-id="'.$row['id'].'">
 	  	<a href="#">Fetch</a> &nbsp;|&nbsp; <a href="#">Diff</a> &nbsp;|&nbsp;
-		<a href="#">Revert</a> &nbsp;|&nbsp; <a href="#">Purge</a>
+		<a href="scripts/purge-version.php?id='.$row['id'].'">Purge</a>
 		</td></tr>';
 	$revOption .= 	'<option value="'.$row['id'].'">#'.$revCount.' '.$row['createdon'].' ('.$row['username'].')</option>';		
 	$revJson[$row['id']] =  ($row['content']);
@@ -56,11 +56,11 @@ if ($flg=="noperms")
 	<title>Controller &middot; ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	<style>
-	#diffBlock { display:none; min-height: 480px;}
-	#diffviewerControld td {text-align:center;width:50%}
-	#diffviewerControld td:first-child {display:none;}
-	#diffviewerControld select {min-width:260px;}
-	#txtTemps  {display:none;}
+		#diffBlock { display:none; min-height: 480px;}
+		#diffviewerControld td {text-align:center;width:50%}
+		#diffviewerControld td:first-child {display:none;}
+		#diffviewerControld select {min-width:260px;}
+		#txtTemps  {display:none;}
 	</style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
@@ -133,7 +133,9 @@ if ($flg=="noperms")
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script src="codemirror/mode/php/php.js"></script>
 	<script language="javascript" type="text/javascript">
+	
 		var revJson = <?php echo json_encode($revJson); ?>;
+		
 		var myCode = CodeMirror.fromTextArea(document.getElementById("txtContents"), {
 	        lineNumbers: true,
 	        matchBrackets: true,
@@ -188,6 +190,13 @@ if ($flg=="noperms")
 			if ($(this).text() == 'Fetch') {
 				var loadID = $(this).parent().data('rev-id');
 				myCode.setValue(revJson[loadID]);
+				return false;
+			} else if ($(this).text() == 'Diff') {
+				var loadID = $(this).parent().data('rev-id');
+				$("#txtTemps").val(revJson[loadID]);
+				codeRight= $("#txtTemps").val();
+				$('#diffviewerControld td:last-child select').val(loadID);
+				$('#showdiff').click();
 				return false;
 			}
 		});
