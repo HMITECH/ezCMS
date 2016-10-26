@@ -73,6 +73,13 @@ div.white-boxed {
 	margin-bottom:10px;
 	box-shadow: 0 7px 4px -4px #333;
 }
+/* Diff Styles*/
+#diffBlock { display:none; min-height: 480px;}
+#diffviewerControld td {text-align:center;width:50%}
+#diffviewerControld td:first-child {display:none;}
+#diffviewerControld select {min-width:260px;}
+#txtTemps  {display:none;}
+		
 @media (max-width: 767px) {
 	#footer {
 		margin-left: -20px;

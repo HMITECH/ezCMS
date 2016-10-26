@@ -10,7 +10,7 @@
 var myCode = CodeMirror.fromTextArea(document.getElementById("txtContents"), {
 	lineNumbers: true,
 	matchBrackets: true,
-	mode: "application/x-httpd-php",
+	mode: cmMode,
 	indentUnit: 4,
 	indentWithTabs: true,
 	theme: cmTheme,
@@ -36,7 +36,7 @@ var buildDiffUI = function () {
 		origLeft: panes == 3 ? codeLeft : null,
 		orig: codeRight,
 		lineNumbers: true,
-		mode: "application/x-httpd-php",
+		mode: cmMode,
 		theme: cmTheme,
 		extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
 		foldGutter: true,

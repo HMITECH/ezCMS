@@ -64,13 +64,6 @@ if ($flg=="nochange")
 
 	<title>Controller &middot; ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
-	<style>
-		#diffBlock { display:none; min-height: 480px;}
-		#diffviewerControld td {text-align:center;width:50%}
-		#diffviewerControld td:first-child {display:none;}
-		#diffviewerControld select {min-width:260px;}
-		#txtTemps  {display:none;}
-	</style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
   
@@ -147,7 +140,8 @@ if ($flg=="nochange")
 	<script src="codemirror/mode/php/php.js"></script>
 	<script language="javascript" type="text/javascript">
 		var revJson = <?php echo json_encode($revJson); ?>,
-			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>';
+			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
+			cmMode = 'application/x-httpd-php';
 	</script>
 	<script src="js/gitFileCode.js"></script>
 

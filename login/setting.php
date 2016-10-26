@@ -64,8 +64,13 @@ if ($flg=="noperms")
 			  <form id="frmHome" action="scripts/set-defaults.php" method="post" enctype="multipart/form-data" class="form-horizontal">
 				<div class="navbar">
 					<div class="navbar-inner">
+						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+						<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
+						<?php } ?>
 						<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
+						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
+						<?php } ?>
 					</div>
 				</div>
 				<?php echo $msg; ?>

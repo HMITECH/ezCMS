@@ -302,6 +302,9 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 					<form id="frmPage" action="" method="post" enctype="multipart/form-data">
 					<div class="navbar">
 						<div class="navbar-inner">
+							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+							<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
+							<?php } ?>
 							<input type="submit" name="Submit" class="btn btn-primary"
 								value="<?php if ($id == 'new') echo 'Add Page'; else echo 'Save Changes';?>">
 							  <?php if ($id != 'new') { ?>
@@ -312,7 +315,9 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 								<a href="scripts/copy-page.php?copyid=<?php echo $id; ?>" class="btn btn-warning">Copy</a>
 								<?php if ($id != 1 && $id != 2) echo '<a href="scripts/del-page.php?delid='.$id.
 										'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
+								<?php } ?>
 								<div class="btn-group">
 									<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>
 									<ul class="dropdown-menu">

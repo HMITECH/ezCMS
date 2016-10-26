@@ -26,7 +26,7 @@ while ($row = mysql_fetch_assoc($rs)) {
 	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
 	  <td data-rev-id="'.$row['id'].'">
 	  	<a href="#">Fetch</a> &nbsp;|&nbsp; <a href="#">Diff</a> &nbsp;|&nbsp;
-		<a href="scripts/purge-version.php?layouts='.$row['id'].'">Purge</a>
+		<a href="scripts/purge-version.php?layout='.$row['id'].'">Purge</a>
 		</td></tr>';
 	$revOption .= 	'<option value="'.$row['id'].'">#'.$revCount.' '.$row['createdon'].' ('.$row['username'].')</option>';		
 	$revJson[$row['id']] =  ($row['content']);
@@ -70,14 +70,7 @@ if ($flg=="nochange")
 
 	<title>Layouts &middot; ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
-	<style>
-		#diffBlock { display:none; min-height: 480px;}
-		#diffviewerControld td {text-align:center;width:50%}
-		#diffviewerControld td:first-child {display:none;}
-		#diffviewerControld select {min-width:260px;}
-		#txtTemps  {display:none;}
-	</style>
-		
+
 </head><body>
   
 	<div id="wrap">
@@ -135,7 +128,9 @@ if ($flg=="nochange")
 								<?php if ($filename!='layout.php') 
 									echo '<a href="scripts/del-layouts.php?delfile='.
 										$filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
+								<?php } ?>
 							</div>
 						</div>
 						<?php echo $msg; ?>
@@ -218,7 +213,8 @@ if ($flg=="nochange")
 	<script src="codemirror/mode/php/php.js"></script>
 	<script language="javascript" type="text/javascript">
 		var revJson = <?php echo json_encode($revJson); ?>,
-			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>';
+			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
+			cmMode = 'application/x-httpd-php';
 	</script>
 	<script src="js/gitFileCode.js"></script>
 
