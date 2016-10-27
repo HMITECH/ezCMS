@@ -83,8 +83,8 @@ if ($flg=="noperms")
 				<ul class="nav nav-tabs" id="myTab">
 				  <li class="active"><a href="#d-main">Main</a></li>
 				  <li><a href="#d-header">Header</a></li>
-				  <li><a href="#d-sidebar">Sidebar A</a></li>
-				  <li><a href="#d-siderbar">Sidebar B</a></li>
+				  <li><a href="#d-sidebar">Aside A</a></li>
+				  <li><a href="#d-siderbar">Aside B</a></li>
 				  <li><a href="#d-footer">Footer</a></li>
 				</ul>
 				 
