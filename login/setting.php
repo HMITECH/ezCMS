@@ -29,6 +29,7 @@ $revsql = "SELECT site.id,users.username,site.createdon
 			WHERE site.id > 1 ORDER BY site.id DESC";		
 $rs = mysql_query($revsql) or die("Unable to Execute  Select query");
 $revLog = '';
+$revOption = '';
 $revCount = 1;
 while ($row = mysql_fetch_assoc($rs)) {	
 	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
@@ -59,8 +60,28 @@ if ($flg=="noperms")
   
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
-		<div class="container" style="margin-bottom:40px ">
-			<div class="white-boxed" style="margin:60px auto 10px; width:95%;">
+		<div class="container">
+		
+				<div id="diffBlock" class="white-boxed" style="margin:60px auto 10px; width:95%;">
+					<div class="navbar"><div class="navbar-inner">
+						<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
+						<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
+						<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
+					</div></div>
+					<table id="diffviewerControld" width="100%" border="0">
+					  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+						</td><td><select disabled><option selected>Your Current Edit</option></select>
+						</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+					  </td></tr>
+					</table>
+					<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
+					<div id="difBlockSide1"><div id="diffviewerSide1"></div></div>
+					<div id="difBlockSide2"><div id="diffviewerSide2"></div></div>
+					<div id="difBlockFooter"><div id="diffviewerFooter"></div></div>
+				</div>
+
+		
+			<div id="editBlock" class="white-boxed" style="margin:60px auto 50px; width:95%;">
 			  <form id="frmHome" action="scripts/set-defaults.php" method="post" enctype="multipart/form-data" class="form-horizontal">
 				<div class="navbar">
 					<div class="navbar-inner">
@@ -168,6 +189,14 @@ if ($flg=="noperms")
 				</div>
 			  </form>
 			</div>
+			
+			
+
+				<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
+			
+			
+			
+			
 		</div>
 	</div>
 <?php include('include/footer.php'); ?>
@@ -241,13 +270,22 @@ if ($flg=="noperms")
 	<script src="codemirror/addon/fold/xml-fold.js"></script>
 	<script src="codemirror/addon/fold/markdown-fold.js"></script>
 	<script src="codemirror/addon/fold/comment-fold.js"></script>
+	<script src="codemirror/addon/merge/diff_match_patch.js"></script>
+	<script src="codemirror/addon/merge/merge.js"></script>
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
-	var txtHeader_loaded = false;
-	var txtFooter_loaded = false;
-	var txtSide_loaded = false;
-	var txtSider_loaded = false;
+	var myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter;
+
+	// DIFF Viewer Options
+	var panes = 2, collapse = false, 
+		codeMainHeader, codeRightHeader, codeLeftHeader,
+		codeMainSide1, codeRightSide1, codeLeftSide1,
+		codeMainSide2, codeRightSide2, codeLeftSide2,
+		codeMainFooter, codeRightFooter, codeLeftFooter,	
+		dvHeader, dvSide1, dvSide2, dvFooter;
+	var txtHeader_loaded = false, txtFooter_loaded = false, 
+		txtSide_loaded = false, txtSider_loaded = false;
 	var codeMirrorJSON = {
 		lineNumbers: true,
 		matchBrackets: true,
@@ -258,25 +296,129 @@ if ($flg=="noperms")
 		lineWrapping: true,
 		extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
 		foldGutter: true,
-		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-		viewportMargin: Infinity
-	}	
+		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+	}
+	// function to build DIFF UI
+	var buildDiffUI = function () {
+		var target;
+		
+		target = document.getElementById("diffviewerHeader");
+		target.innerHTML = "";
+		dvHeader = CodeMirror.MergeView(target, {
+			value: codeMainHeader,
+			origLeft: panes == 3 ? codeLeftHeader : null,
+			orig: codeRightHeader,
+			lineNumbers: true,
+			mode: "htmlmixed",
+			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
+			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+			foldGutter: true,
+			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+			highlightDifferences: true,
+			connect: null,
+			collapseIdentical: collapse
+		});
+		
+		target = document.getElementById("diffviewerSide1");
+		target.innerHTML = "";
+		dvHeader = CodeMirror.MergeView(target, {
+			value: codeMainSide1,
+			origLeft: panes == 3 ? codeLeftSide1 : null,
+			orig: codeRightSide1,
+			lineNumbers: true,
+			mode: "htmlmixed",
+			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
+			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+			foldGutter: true,
+			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+			highlightDifferences: true,
+			connect: null,
+			collapseIdentical: collapse
+		});
+
+		target = document.getElementById("diffviewerSide2");
+		target.innerHTML = "";
+		dvHeader = CodeMirror.MergeView(target, {
+			value: codeMainSide2,
+			origLeft: panes == 3 ? codeLeftSide2 : null,
+			orig: codeRightSide2,
+			lineNumbers: true,
+			mode: "htmlmixed",
+			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
+			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+			foldGutter: true,
+			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+			highlightDifferences: true,
+			connect: null,
+			collapseIdentical: collapse
+		});
+		
+		target = document.getElementById("diffviewerFooter");
+		target.innerHTML = "";
+		dvHeader = CodeMirror.MergeView(target, {
+			value: codeMainFooter,
+			origLeft: panes == 3 ? codeLeftFooter : null,
+			orig: codeRightFooter,
+			lineNumbers: true,
+			mode: "htmlmixed",
+			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
+			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+			foldGutter: true,
+			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+			highlightDifferences: true,
+			connect: null,
+			collapseIdentical: collapse
+		});
+		
+	}
+
+	
+	// Change to DIff UI
+$('#showdiff').click( function () {
+	$('#editBlock').slideUp('slow');
+	$('#diffBlock').slideDown('slow', function () {
+		
+		if (txtHeader_loaded) codeMainHeader = myCodeHeader.getValue();
+		else codeMainHeader = $('#txtHeader').val();
+		codeLeftHeader = $('#txtHeader').val();
+ 		codeRightHeader = $('#txtHeader').val();
+
+		if (txtSide_loaded) codeMainSide1 = myCodeSide1.getValue();
+		else codeMainSide1 = $('#txtrSide').val();
+		codeLeftSide1 = $('#txtrSide').val();
+ 		codeRightSide1 = $('#txtrSide').val();
+		
+		if (txtSider_loaded) codeMainSide2 = myCodeSide2.getValue();
+		else codeMainSide2 = $('#txtrSide').val();
+		codeLeftSide2 = $('#txtrSide').val();
+ 		codeRightSide2 = $('#txtrSide').val();		
+		
+		if (txtFooter_loaded) codeMainFooter = myCodeFooter.getValue();
+		else codeMainFooter = $('#txtFooter').val();
+		codeLeftFooter = $('#txtFooter').val();
+ 		codeRightFooter = $('#txtFooter').val();		
+		
+		buildDiffUI();
+	});
+	return false;
+});
+	
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
 		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
-			CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
+			myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
 			txtHeader_loaded = true;
 		}
 		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
-			CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
+			myCodeFooter = CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
 			txtFooter_loaded = true;
 		}
 		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
-			CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
+			myCodeSide2 = CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
 			txtSider_loaded = true;
 		}
 		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
-			CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
+			myCodeSide1 = CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
 			txtSide_loaded = true;
 		}
 	});	

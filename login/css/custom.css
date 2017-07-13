@@ -36,8 +36,13 @@ a,button { outline:none; }
 	height: 500px; 
 	width:100%;
 }
-#revBlock {
-	display:none;
+#revBlock {display:none;}
+#revBlock,
+#difBlockHeader,
+#difBlockContent,
+#difBlockSide1,
+#difBlockSide2,
+#difBlockFooter {
 	position: relative;
 	margin: 15px 0;
 	padding: 39px 19px 14px;
@@ -47,8 +52,12 @@ a,button { outline:none; }
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
-#revBlock:after {
-	content: "Revision Log";
+#revBlock:after,
+#difBlockHeader:after,
+#difBlockContent:after,
+#difBlockSide1:after,
+#difBlockSide2:after,
+#difBlockFooter:after {
 	position: absolute;
 	top: -1px;
 	left: -1px;
@@ -61,6 +70,12 @@ a,button { outline:none; }
 	-moz-border-radius: 4px 0 4px 0;
 	border-radius: 4px 0 4px 0;
 }
+#revBlock:after        {content: "Revision Log" ;}
+#difBlockHeader:after  {content: "Header Block" ;}
+#difBlockContent:after {content: "Content Block";}
+#difBlockSide1:after   {content: "Aside 1 Block";}
+#difBlockSide2:after   {content: "Aside 2 Block";}
+#difBlockFooter:after  {content: "Footer Block" ;}
 #push,#footer {height: 30px;}
 #footer {background-color: rgba(245, 245, 245, 0.75);}
 .tooltip-inner {font-size:18px;}

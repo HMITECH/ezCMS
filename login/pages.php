@@ -763,6 +763,8 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	<script src="codemirror/addon/fold/xml-fold.js"></script>
 	<script src="codemirror/addon/fold/markdown-fold.js"></script>
 	<script src="codemirror/addon/fold/comment-fold.js"></script>
+	<script src="codemirror/addon/merge/diff_match_patch.js"></script>
+	<script src="codemirror/addon/merge/merge.js"></script>
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
