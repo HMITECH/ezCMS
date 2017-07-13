@@ -13,7 +13,7 @@ if (!isset($_SESSION['LOGGEDIN'])) $_SESSION['LOGGEDIN'] = false;
 include      ('../../config.php');
 
 // reset session variables...
-$_SESSION['USERID'] = "";
+$_SESSION['EZUSERID'] = "";
 $_SESSION['LOGGEDIN'] = false;
 $_SESSION['EMAIL'] = "";
 
@@ -44,7 +44,7 @@ if ($row = mysql_fetch_assoc($result)) {
 	if (!$row['active']) { header("Location: ../?flg=inactive&userid=".$userid); exit; }
 		
 	// set user details and user rights ka session variables...
-	$_SESSION['USERID'] = $row['id'];
+	$_SESSION['EZUSERID'] = $row['id'];
 	$_SESSION['EMAIL'] = $row['email'];
 	$_SESSION['LOGINNAME'] = $row['username'];
 	$_SESSION['viewstats'] = $row['viewstats'];	

@@ -153,7 +153,7 @@ if (isset($_REQUEST['Submit'])) {
 						  `head` ,
 						  `layout` ,
 						  `nositemap` , 
-						  '".$_SESSION['USERID']."' as `createdby` 
+						  '".$_SESSION['EZUSERID']."' as `createdby` 
 						  FROM `pages` WHERE `id` = $id");
 			
 			$qry = "UPDATE `pages` SET ";

@@ -13,7 +13,7 @@ if (!isset($_SESSION['LOGGEDIN'])) $_SESSION['LOGGEDIN'] = false;
 if ($_SESSION['LOGGEDIN'] == true) { header("Location: pages.php"); exit; }
 $userid = "";
 if (isset($_GET["userid"])) $userid = $_GET["userid"]; 
-if ($userid == '') { if (isset($_SESSION['userid'])) $userid = $_SESSION['userid']; }
+if ($userid == '') { if (isset($_SESSION['EZUSERID'])) $userid = $_SESSION['EZUSERID']; }
 $flg = "";
 if (isset($_GET["flg"])) $flg = $_GET["flg"];
 switch ($flg) {

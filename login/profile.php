@@ -26,7 +26,7 @@ if (isset($_REQUEST['Submit'])) {
 				<strong>Failed!</strong> The new password must be more than 6 characters in lenght.</div>';
 	} else {
 		// check current password
-		$id = $_SESSION['USERID'];
+		$id = $_SESSION['EZUSERID'];
 		$sql = "SELECT `username` FROM `users` WHERE `id` = $id AND `passwd` = '$curpass' LIMIT 1";
 		$rs = mysql_query($sql);
 		if (!mysql_num_rows($rs)) {

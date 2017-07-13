@@ -37,7 +37,7 @@ mysql_query("INSERT INTO `site` (
 			`appendtitle`,
 			`appendkey`,
 			`appenddesc`,
-			'".$_SESSION['USERID']."' as `createdby` 
+			'".$_SESSION['EZUSERID']."' as `createdby` 
 			FROM `site` WHERE `id` = 1");
 
 $qry = "UPDATE `site` SET ";

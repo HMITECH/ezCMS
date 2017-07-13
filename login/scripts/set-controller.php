@@ -25,7 +25,7 @@ if (is_writable($filename)) {
 	$original = mysql_real_escape_string($original);
 	
 	mysql_query("INSERT INTO `git_files` ( `content`, `fullpath`, `createdby`) VALUES 
-				('$original', 'index.php', '".$_SESSION['USERID']."')");
+				('$original', 'index.php', '".$_SESSION['EZUSERID']."')");
 	if (fwrite(fopen($filename, "w+"),$contents)) 
 		header("Location: ../controllers.php?flg=green");
 	else header("Location: ../controllers.php?flg=red");
