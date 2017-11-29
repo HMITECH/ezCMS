@@ -36,7 +36,10 @@ switch ($flg) {
 	default:
 		$msg = '';
 } 
-?><!DOCTYPE html><html lang="en"><head>
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
 	<title>Login &middot; ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
@@ -64,7 +67,8 @@ switch ($flg) {
 			
 	</style>
 	
-</head><body>
+</head>
+<body>
   
 	<div id="wrap">
 		
@@ -114,4 +118,8 @@ switch ($flg) {
 	</div>
 	
 <?php include('include/footer.php'); ?>
-</body></html>
+
+<script src="js/pass-strength.js" ></script>
+
+</body>
+</html>
