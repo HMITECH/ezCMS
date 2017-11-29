@@ -1,10 +1,10 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
- * * Version 2.010413 Dated 20/March/2013 
- * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
+ * Version 2.010413 Dated 20/March/2013 
+ * Rev: 04-Oct-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  *
- *View: Displays the users in the site
+ * View: Displays the users in the site
  * 
  */
 require_once("include/init.php");
@@ -146,12 +146,16 @@ if ($id <> 'new') {
 }
 if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 
-?><!DOCTYPE html><html lang="en"><head>
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
 	<title>Users &middot; ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
-</head><body>
+</head>
+<body>
   
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
@@ -201,7 +205,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							</div>
 							<div class="span4">
 								<label for="txtpsswd">Password</label>
-								<input type="text" id="txtpsswd" name="txtpsswd"
+								<input type="password" id="txtpsswd" name="txtpsswd"
 									placeholder="<?php if ($id=='new') echo 'Enter the password'; else echo 'Leave blank to keep unchanged';?>"
 									title="<?php if ($id=='new') echo 'Enter the password here'; else echo 'Enter a new password or leave blank to keep unchanged';?>"
 									data-toggle="tooltip" 
@@ -318,8 +322,13 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	</div>
 	
 <?php include('include/footer.php'); ?>
+
 <script type="text/javascript">
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(10)").addClass('active');
 </script>
-</body></html>
+
+<script src="js/pass-strength.js" ></script>
+
+</body>
+</html>
