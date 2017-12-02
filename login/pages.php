@@ -358,7 +358,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 					  </thead><tbody><?php echo $revLog; ?></tbody></table>
 					</div>
 					
-				    <div class="tabbable tabs-left">
+				    <div class="tabbable tabs-top">
 					<ul class="nav nav-tabs" id="myTab">
 					  <li class="active"><a href="#d-main">Main</a></li>
 					  <li><a href="#d-content">Content</a></li>
