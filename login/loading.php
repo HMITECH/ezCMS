@@ -1,10 +1,10 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
- * * Version 2.010413 Dated 20/March/2013 
+ * Version 2.010413 Dated 20/March/2013 
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
- *
- *View: Displays a loading page for iframe (used in pages.php)
+ * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/loading.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
+ * View: Displays a loading page for iframe (used in pages.php)
  * 
  */
 ?><!DOCTYPE html><html lang="en"><head><title>Loading ... please wait</title></head><body><div id="wrap">

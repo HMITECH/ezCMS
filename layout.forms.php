@@ -1,4 +1,5 @@
 <?php
+// $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/layout.forms.php,v 1.1 2017-12-02 09:28:41 a Exp $ 
 
 function sendemail($to, $sub, $msg) {
 	$headers  = "MIME-Version: 1.0\n";

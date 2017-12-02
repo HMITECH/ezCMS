@@ -1,5 +1,6 @@
 <?php
 // Update the information below 
+// $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/config.php,v 1.1 2017-12-02 09:28:41 a Exp $ 
 
 	// Database Connection Setting
 	$databaseServer = 'localhost';

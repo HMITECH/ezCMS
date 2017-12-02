@@ -3,10 +3,10 @@
  * Code written by mo.ahmed@hmi-tech.net
  * Version 2.010413 Dated 20/March/2013 
  * Rev: 04-Oct-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
- *
+ * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/users.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the users in the site
- * 
  */
+
 require_once("include/init.php");
 require_once("include/users.functions.php");
 

@@ -1,7 +1,7 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
- *
+ * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/layout.php,v 1.1 2017-12-02 09:28:41 a Exp $ 
  * Version 2.0.0 Dated 23-Dec-2012
  * HMI Technologies Mumbai (2012-13)
  *

@@ -1,3 +1,7 @@
+/*
+  main.js
+  $Header: c:/cvs/repo/mosh/mvim/vimrc,v 1.510 2017-11-30 01:43:41 a Exp $
+*/
 
 $(document).ready(function(){
   $(window).resize(function() {
