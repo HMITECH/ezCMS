@@ -26,13 +26,15 @@ mysql_free_result($rs);
 		<span class="label label-warning">Drafts: <?php echo $unpubCNT; ?> page(s)</span> &middot; 
 		<span class="label label-inverse">Total: <?php echo $totCNT; ?> pages</span> 
 	  </div>
-      <div class="span3"> ezCMS Ver:<strong>4.161005</strong> </div>
+      <div class="span3"> ezCMS Ver:<strong>5.171201</strong> </div>
     </div>
   </div>
 </div>
 <script src="js/jquery-1.9.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.treeview/jquery.treeview.js"></script>
+<script src="js/pass-strength.js" ></script>
+<script src="js/jscolor.min.js" ></script>
 <script type="text/javascript">
 	$('.tooltipme2').tooltip();
 	$("#left-tree").treeview({
@@ -40,15 +42,31 @@ mysql_free_result($rs);
 		animated: "medium",
 		unique: true
 	});	
-	$('#divCmTheme').click(function (e) {
+	$('#divCmTheme, #divbgcolor').click(function (e) {
 		e.stopPropagation();
 	});
-	$('#slCmTheme').val('<?php echo $_SESSION["CMTHEME"]; ?>').change(function (e) {
+	$('#slCmTheme').val('<?php if (isset($_SESSION["CMTHEME"])) echo $_SESSION["CMTHEME"]; ?>').change(function (e) {
 		location.href = "scripts/chg-editor-theme.php?theme="+$(this).val();
 	});
 	$('#showrevs').click(function () {
 		$('#revBlock').slideToggle();
 		return false;
-	});	
-	
+	});
+
+
+	$('#txtbgcolor').change(function () {
+		$('body').css('background-color','#'+$(this).val());
+		localStorage.setItem("cmsBgColor", $(this).val());
+	});
+	$('body').css('background-color','#'+localStorage.getItem("cmsBgColor"));
+	//if ($('#txtbgcolor').lenght) new jscolor($('#txtbgcolor')[0]);
+
+
+	function updateBgColor(jscolor) {
+	    // 'jscolor' instance can be used as a string
+	    $('body').css('background-color','#' + jscolor );
+	   // document.getElementById('rect').style.backgroundColor = '#' + jscolor
+	}
+
+
 </script>

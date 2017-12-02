@@ -100,7 +100,7 @@ if ($flg=="noperms")
 					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
 				  </thead><tbody><?php echo $revLog; ?></tbody></table>
 				</div>
-				<div class="tabbable tabs-left">
+				<div class="tabbable tabs-top">
 				<ul class="nav nav-tabs" id="myTab">
 				  <li class="active"><a href="#d-main">Main</a></li>
 				  <li><a href="#d-header">Header</a></li>

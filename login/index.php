@@ -119,7 +119,5 @@ switch ($flg) {
 	
 <?php include('include/footer.php'); ?>
 
-<script src="js/pass-strength.js" ></script>
-
 </body>
 </html>

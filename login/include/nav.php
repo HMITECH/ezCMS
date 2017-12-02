@@ -54,9 +54,18 @@
 				
 			  </ul>
 		  </li>
-		  <?php if ($_SESSION['EDITORTYPE'] == 3) { ?><li class="dropdown">
-			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-edit"></i> Editor Style <b class="caret"></b></a>
-			  <div id="divCmTheme" class="dropdown-menu" style="padding:10px;">
+		  <li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-edit"></i> CMS Style <b class="caret"></b></a>
+			  <div id="divbgcolor" class="dropdown-menu" style="padding:10px;">
+				<blockquote>
+				  <p><i class="icon-tint"></i> Background Color</p>
+				  <small>Change background color</small>
+				</blockquote>
+				<div>
+					<input class="jscolor {onFineChange:'updateBgColor(this)'}" id="txtbgcolor" type="text"></input>
+				</div>
+				<hr>
+				<?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
 				<blockquote>
 				  <p><i class="icon-edit"></i> Code Mirror Theme</p>
 				  <small>Change Code Mirror Theme</small>
@@ -111,8 +120,13 @@
 					<option>zenburn</option>
 				  </select>
 				</div>
+			  <?php } ?>
 			  </div>
-		  </li><?php } ?>		
+			  
+
+		  </li>
+
+
 		</ul>
 		
 		<ul class="nav pull-right">
