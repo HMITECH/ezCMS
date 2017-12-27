@@ -236,37 +236,7 @@ if (isset($_REQUEST['Submit'])) {
 	}
 	$revCount--;
 	if ($revLog == '') $revLog = '<tr><td colspan="3">There are no revisions of this page.</td></tr>';
-	
-	// find url in traffic_pages
-	if ($url=='/') $turl = '/index.php'; else $turl = $url;
-	$rs = mysql_query("SELECT `id` FROM `traffic__pages` WHERE `name` = '$turl' LIMIT 1");
-	if (mysql_num_rows($rs)) {
-		$arr = mysql_fetch_array($rs);
-		$tid = $arr['id'];
-		$PageTrackingLinks = 
-			'<li class="nav-header">Page Visitor Tracking</li><li class="dropdown-submenu">
-				<a tabindex="-1" href="#">Visitor Tracking</a><ul class="dropdown-menu">
-				  <li><a class="lframe" target="_blank" title="Page Visitor Tracking Summary"
-					href="traffic/index.php?mode=stats&sid=39547&show=page&pageid='.$tid.'&lang=en">
-					<i class="icon-chevron-right"></i> Summary</a></li>
-				  <li><a class="lframe" target="_blank" title="Page Keyword Tracking" 
-					href="traffic/index.php?mode=stats&sid=39547&show=key&pageid='.$tid.'&lang=en">
-					<i class="icon-chevron-right"></i> Keywords</a>
-				  <li><a class="lframe" target="_blank" title="Page Referrer Tracking" 
-					href="traffic/index.php?mode=stats&sid=39547&show=ref&start=1&sort=hits&pageid='.$tid.'&lang=en">
-					<i class="icon-chevron-right"></i> Referrers</a></li>
-				  <li><a class="lframe" target="_blank" title="Page Visitor Path Analysis" 
-					href="traffic/index.php?mode=stats&sid=39547&show=pathdesign&pathid='.$tid.'&lang=en">
-					<i class="icon-chevron-right"></i> Visitor Path</a>
-				  <li><a class="lframe" target="_blank" title="Page Visitor Flow Analysis" 
-					href="traffic/index.php?mode=stats&sid=39547&show=studypath&pathid='.$tid.'&lang=en">
-					<i class="icon-chevron-right"></i> Visitor Flow</a></li></ul></li>';
-	} else {
-		$PageTrackingLinks = 
-			'<li class="nav-header">no visitor tracking data yet,<br>'.
-			'check after visiting the page.<br>also make sure tracking is enabled.</li>';
-	}
-	mysql_free_result($rs);
+
 } else {
 	if (!$_SESSION['editpage']) {header("Location: pages.php?flg=noperms");exit;}	// permission denied
 }
@@ -337,8 +307,6 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 									  	"http://www.webconfs.com/keyword-density-checker.php?url=http%3A%2F%2F<?php 
 										echo $_SERVER['HTTP_HOST'] . $url; ?>">
 										<i class="icon-chevron-right"></i> Keyword Density</a></li>
-									  <li class="divider"></li>
-									  <?php echo $PageTrackingLinks; ?>
 									</ul>
 								</div>							
 							  <?php } ?>
