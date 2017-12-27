@@ -225,15 +225,10 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 								<?php if ($active == "checked") echo 
 										'<span class="label label-info">User is Active.</span>';
 									else echo 
-										'<span class="label label-important">Inactive user cannot login.</span>';?>									
-								<br><br>
-								<label class="checkbox">
-									<input name="ckviewstats" type="checkbox" id="ckviewstats" value="checkbox" <?php echo $viewstats; ?>>
+										'<span class="label label-important">Inactive user cannot login.</span>';?>
+								<label class="checkbox hide">
+									<input name="ckviewstats" type="checkbox" id="ckviewstats" value="checkbox">
 									Visitor Tracking</label>
-								<?php if ($viewstats == "checked") echo 
-										'<span class="label label-info">Visitor tracking available.</span>';
-									else echo 
-										'<span class="label label-important">Visitor tracking blocked.</span>';?>
 								<hr>
 								<label class="checkbox">
 									<input name="ckeditpage" type="checkbox" id="ckeditpage" value="checkbox" <?php echo $editpage; ?>>
