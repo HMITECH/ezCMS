@@ -62,7 +62,7 @@
 				  <small>Change background color</small>
 				</blockquote>
 				<div>
-					<input class="jscolor {onFineChange:'updateBgColor(this)'}" id="txtbgcolor" type="text"></input>
+					<input class="jscolor {onFineChange:'updateBgColor(this)'}" id="txtbgcolor" type="text" />
 				</div>
 				<hr>
 				<?php if ($_SESSION['EDITORTYPE'] == 3) { ?>

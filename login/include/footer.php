@@ -54,7 +54,7 @@ mysql_free_result($rs);
 	});
 
 
-	$('#txtbgcolor').change(function () {
+	$('#txtbgcolor').val(localStorage.getItem("cmsBgColor")).change(function () {
 		$('body').css('background-color','#'+$(this).val());
 		localStorage.setItem("cmsBgColor", $(this).val());
 	});

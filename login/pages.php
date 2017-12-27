@@ -278,11 +278,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	<title>Pages &middot; ezCMS Admin</title>
 	<style>
 		.countDisplay {float: right;}
-		.checkRight {
-			position: absolute;
-			bottom: -5px;
-			right: 0;
-		}
+		.checkRight { float: right; }
 	</style>
 	<?php include('include/head.php'); ?>
 	
@@ -394,7 +390,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Name (URL)</label>
-								<div class="controls" style="position:relative">
+								<div class="controls">
 									<input type="text" id="txtName" name="txtName"
 										placeholder="Enter the name of the page"
 										title="Enter the full name of the page here."
