@@ -34,13 +34,14 @@ if ($_SESSION['LOGGEDIN'] != true) {
 	<h3 style="font-family: Tahoma;"><a href="../../../">Login Now</a></h3>
 	<h3 style="font-family: Tahoma;">Please emails <a href="mailto:support@hmi-tech.net">support@hmi-tech.net</a> for support.</h3></div>';
 	exit; }
+/*
 if (!$_SESSION['editpage']) { 
 	echo '<div align="center"><h1 style="color: #3A87AD;font-family: Tahoma;text-align: center;text-shadow: 1px 1px #999999;">
     Permission denied.<br>You do not have<br> permission to access this page</h1>
 	<p><img src="../../../img/noaccess.png" width="128" height="128"></p>
 	<h3 style="font-family: Tahoma;">Please emails <a href="mailto:support@hmi-tech.net">support@hmi-tech.net</a> for support.</h3></div>';
 	exit; }		
-	
+*/
     include_once dirname(__FILE__) . '/php/init.php';
     $PGRUploaderExtension = "";
     if (PGRFileManagerConfig::$allowedExtensions == "") $PGRUploaderExtension = "*.*";

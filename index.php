@@ -1,118 +1,96 @@
 <?php
 /*
- * Code written by mo.ahmed@hmi-tech.net
- * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/index.php,v 1.1 2017-12-02 09:28:41 a Exp $ 
+ * ezCMS Code written by mo.ahmed@hmi-tech.net and mosh.ahmed@gmail.com
  *
- * Version 2.0.0 Dated 23-Dec-2012
- * HMI Technologies Mumbai (2012-13)
+ * HMI Technologies Mumbai
  *
- * Module: Front-end Controller - index.php (controller.php)
- * Renders all the pages in the site builder.
+ * Controller: Front-end Controller - index.php
+ * Renders all the pages in the CMS.
  */
 
-// **************** REDIRECT TO WWW ****************
-// Redirect visitors to www url.
-	// TODO: Uncomment the lines below if you want to always redirect to www
-	//if (!preg_match('/www\..*?/', $_SERVER['HTTP_HOST'])) {
-	//    @header("location: http://www." . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-	//}
-
+// **************** Page Protocol ****************
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://" : "http://";
+ 
 // **************** DATABASE ****************
-// Connect to the database
-require_once ("config.php");
-
-// **************** REQUESTED URL ****************
-// Get the URL of the requested page
-if(isset($_REQUEST["show"])) {
-	// URL is requested, serve requested page
-    $show = '/'.$_REQUEST["show"].'.html';
-} else {
-	// NO URL requested, serve home page
-    $show = '/';
-}
+require_once ("cms.class.php"); // PDO Class for database access
+$dbh = new db; // database handle available in layouts
 
 // **************** SITE DETAILS ****************
-// Get the site details from the database
-$rs = mysql_query('SELECT * FROM site WHERE id = 1 LIMIT 1')
-    or die("Failed to read the site details from the database !");
-$arr = mysql_fetch_array($rs);
-$title       = $arr["title"        ];
-$keywords    = $arr["keywords"     ];
-$description = $arr["description"  ];
-$sidebar     = $arr["sidecontent"  ];
-$siderbar    = $arr["sidercontent" ];  
-$header      = $arr["headercontent"];  
-$footer      = $arr["footercontent"];  
-$apptitle = false;
-$appkey   = false;
-$appdesc  = false;
-if ($arr["appendtitle"]) $apptitle = true;
-if ($arr["appendkey"  ]) $appkey   = true;
-if ($arr["appenddesc" ]) $appdesc  = true;
+$site = $dbh->query('SELECT * FROM `site` ORDER BY `id` DESC LIMIT 1')
+		->fetch(PDO::FETCH_ASSOC); // get the site details
+
+// **************** REQUESTED URI ****************
+$uri = strtok($_SERVER["REQUEST_URI"],'?'); // get the requested URI
 
 // **************** PAGE DETAILS ****************
-// Get page details from the database
-$sql = "SELECT * FROM `pages` WHERE `url`='$show' LIMIT 1";
-$rs = mysql_query($sql) or die("Unable to read Details for Page");
+$stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `url` = ? ORDER BY `id` DESC LIMIT 1');
+$stmt->execute( array($uri) );
 
-// If page is not found in the database, serve 404 page with id 2
-if (mysql_num_rows($rs)<1) $rs = mysql_query("SELECT * FROM pages WHERE id = 2 LIMIT 1");
-$arr = mysql_fetch_array($rs);
+// Check if page is found in database.
+if ($stmt->rowCount()) { 
 
-// Check if page is published or not.
-if (!$arr["published"]) {
-	session_start();	
-	if (!isset($_SESSION['LOGGEDIN'])) $_SESSION['LOGGEDIN'] = false;
-	
-	// Check if Admin is logged in
-	if (!$_SESSION['LOGGEDIN']) { 
-	
-		// If Admin is not logged in then serve 404 page.
-		$rs = mysql_query("SELECT * FROM pages WHERE id = 2 LIMIT 1");
-		$arr = mysql_fetch_array($rs);
-		
+	// Page is found in Database
+	$page = $stmt->fetch(PDO::FETCH_ASSOC);
+
+	// Check if page is published or not.
+	if (!$page["published"]) { 
+
+		// Start session if not started to check ADMIN login status
+		if (session_status() !== PHP_SESSION_ACTIVE) {
+			session_start(); 
+		}
+
+		// Set SESSION ADMIN Login Flag to false if not set
+		if (!isset($_SESSION['LOGGEDIN'])) {
+			$_SESSION['LOGGEDIN'] = false;
+		}
+
+		 // Check if Admin is logged in - 
+		 // unpublished pages are visible to ADMIN.
+		if (!$_SESSION['LOGGEDIN']) {
+			// If ADMIN is NOT logged in then serve 404 page as it is unpublished
+			$stmt->execute( array('/Page-Not-Found.html') );
+			$page = $stmt->fetch(PDO::FETCH_ASSOC);
+		}
+
 	}
+} else { 
+	// Page is NOT found, server 404 page
+	$stmt->execute( array('/Page-Not-Found.html') );
+	$page = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Set the id of the page
-$id = $arr["id"];
+// Verify the layout files to be used, 
+// fall back to default if not found
+if (!file_exists($page['layout'])) {
+	$page['layout'] = 'layout.php';
+}
 
-// Server 404 headers if page is not found
-if ($id==2) Header("HTTP/1.0 404 Not Found");
-if ($apptitle) $title = $arr["title"].' : '. $title; else $title = $arr["title"];
-if ($appkey) $keywords .= "," . $arr["keywords"]; else $keywords = $arr["keywords"];
-if ($appdesc) $description .= ". " . $arr["description"]; else $description = $arr["description"];
-$maincontent = $arr["maincontent"];
-$head = $arr["head"];
-if ($arr["useheader"] == 1) $header = $arr["headercontent"];
-if ($arr["useside"] == 1) $sidebar = $arr["sidecontent"]; 
-if ($arr["usesider"] == 1) $siderbar = $arr["sidercontent"]; 
-if ($arr["usefooter"] == 1) $footer = $arr["footercontent"];
-mysql_free_result($rs);
+// build canonical URL
+$page['canonical'] = $protocol.$_SERVER['HTTP_HOST'].$page["url"];
 
-// **************** PAGE LAYOUT ****************
-// Determine the layout to be used for this page
-$layoutFilename = 'layout.php';
-if (strlen($arr['layout'])>4) 
+// Setup CMS Template variable to be used in the layouts
+$head        = $page["head"];
+$title       = $page["title"];
+$canonical   = $page["canonical"];
+$keywords    = $page["keywords"];
+$description = $page["description"];
+$maincontent = $page["maincontent"];
+$header      = ($page["useheader"] == 1) ? $page["headercontent"] : $site["headercontent"];
+$sidebar     = ($page["useside"]   == 1) ? $page["sidecontent"]   : $site["sidecontent"];
+$siderbar    = ($page["usesider"]  == 1) ? $page["sidercontent"]  : $site["sidercontent"];
+$footer      = ($page["usefooter"] == 1) ? $page["footercontent"] : $site["footercontent"];
+// you can add your own variable here, eg: $mymodscrp = '';
+// This variable are available in layout files for use.
 
-	// Check if layout file exisits.
-	if (file_exists($arr['layout'])) 
-		$layoutFilename = $arr['layout'];
 
-// **************** CANOMICAL LINK ****************
-// Get the canomical link for this page
-	// TODO: Remember to replace $_SERVER['HTTP_HOST']
-	//       with actual site url like 'www.hmi-tech.net'
-	//	     $canonical = 'www.example.com' . $arr["url"];
-$canonical = $_SERVER['HTTP_HOST'] . $arr["url"];
+// Set 404 header when severing page not found
+if ($page['url']=='/Page-Not-Found.html') {
+	Header("HTTP/1.0 404 Not Found");
+}
 
 // Serve the selected layout file
-include($layoutFilename);
+include($page['layout']);
+die(); 
 
-// **************** VISITOR TRACKING ****************
-// Include the visitor Tracking Code
-	// TODO: Uncomment the tracking code below to enable tracking
-	//       Replace login with ezCMS folder name 
-	//       $sid="39547";
-	//       @include($_SERVER["DOCUMENT_ROOT"] . "/login/traffic/write_logs.php"); 
 ?>

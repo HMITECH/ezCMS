@@ -7,7 +7,10 @@
  * View: Displays the files on the server in the site
  * 
  */
-require_once("include/init.php");
+// **************** ezCMS CLASS ****************
+require_once ("class/ezcms.class.php"); // CMS Class for database access
+$cms = new ezCMS(); // create new instance of CMS Class with loginRequired = true
+
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>File Manager &middot; ezCMS Admin</title>
@@ -17,8 +20,8 @@ require_once("include/init.php");
   
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
-		<div class="container" style="margin-bottom:40px ">
-			<div class="white-boxed" style="margin:60px auto 10px; width:95%;">
+		<div class="container">
+			<div class="white-boxed">
 				<iframe id="shrFrm" src="ckeditor/plugins/pgrfilemanager/PGRFileManager.php"
             		width='100%' height='500px' frameborder='0' marginheight='0' marginwidth='0' scrolling="no"></iframe>
 			</div>

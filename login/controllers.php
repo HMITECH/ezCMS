@@ -6,7 +6,7 @@
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/controllers.php,v 1.1 2017-12-02 09:31:43 a Exp $ 
  * View: Displays the php controller of the site
  * /index.php
- */
+
 require_once("include/init.php");
 $filename = "../index.php";
 $content = @fread(fopen($filename, "r"), filesize($filename));
@@ -59,20 +59,27 @@ if ($flg=="greenrev")
 if ($flg=="nochange") 
 	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
 				<strong>No Change!</strong> There are no changes to save.</div>';
+ */
+ 
+// **************** ezCMS CONTROLLER CLASS ****************
+require_once ("class/controller.class.php"); 
 
+// **************** ezCMS CONTROLLER HANDLE ****************
+$cms = new ezController();  
+ 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Controller &middot; ezCMS Admin</title>
+	<title>Controller : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body>
+</head><body>
   
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
 		<div class="container">
 				
-				<div id="editBlock" class="white-boxed" style="margin:60px auto 50px; width:95%;">
-				  <form id="frmHome" action="scripts/set-controller.php" method="post" enctype="multipart/form-data">
+				<div id="editBlock" class="white-boxed">
+				  <form id="frmHome" action="controllers.php" method="post" enctype="multipart/form-data">
 					<div class="navbar">
 						<div class="navbar-inner">
 							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
@@ -80,17 +87,17 @@ if ($flg=="nochange")
 							<?php } ?>
 							<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary ">
 							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-							<a id="showrevs" href="#" class="btn btn-secondary">Revision Log <sup><?php echo $revCount; ?></sup></a>
+							<a id="showrevs" href="#" class="btn btn-secondary">Revision Log <sup><?php echo '2'; //$revCount; ?></sup></a>
 							<?php } ?>
 						</div>
 					</div>
-					<?php echo $msg; ?>
+					<?php echo $cms->msg; ?>
 					<div id="revBlock">
 					  <table class="table table-striped"><thead>
 						<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-					  </thead><tbody><?php echo $revLog; ?></tbody></table>
+					  </thead><tbody><?php //echo $revLog; ?></tbody></table>
 					</div>
-					<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $content; ?></textarea>
+					<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $cms->content; ?></textarea>
 				  </form>
 				</div>
 			  
@@ -101,9 +108,9 @@ if ($flg=="nochange")
 						<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
 					</div></div>
 					<table id="diffviewerControld" width="100%" border="0">
-					  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+					  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php //echo $revOption; ?></select>
 						</td><td><select disabled><option selected>Your Current Edit</option></select>
-						</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+						</td><td><select><option value="0">Current Page (Last Saved)</option><?php //echo $revOption; ?></select>
 					  </td></tr>
 					</table>
 					<div id="diffviewer"></div>
@@ -139,7 +146,7 @@ if ($flg=="nochange")
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script src="codemirror/mode/php/php.js"></script>
 	<script language="javascript" type="text/javascript">
-		var revJson = <?php echo json_encode($revJson); ?>,
+		var revJson = [],
 			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
 			cmMode = 'application/x-httpd-php';
 	</script>

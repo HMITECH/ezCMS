@@ -5,7 +5,7 @@
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/pages.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the web pages in the site
- */ 
+
 require_once("include/init.php");
 require_once("include/pages.functions.php");
 
@@ -241,7 +241,14 @@ if (isset($_REQUEST['Submit'])) {
 	if (!$_SESSION['editpage']) {header("Location: pages.php?flg=noperms");exit;}	// permission denied
 }
 if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
+ */ 
 
+// **************** ezCMS PAGES CLASS ****************
+require_once ("class/pages.class.php"); 
+
+// **************** ezCMS PAGES HANDLE ****************
+$cms = new ezPages();  
+ 
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>Pages &middot; ezCMS Admin</title>
@@ -256,65 +263,58 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
 		<div class="container">
-			<div class="container-fluid" style="margin:60px auto 30px;">
-			  <div class="row-fluid">
+			<div class="row-fluid">
 				<div class="span3 white-boxed">
 					<p><input type="text" id="txtsearch" class="input-block-level" placeholder="Search here ..."></p>
-					<?php $dropdownOptionsHTML = getTreeHTML(0, $id, $parentid , str_replace('.html', '' ,$url)); ?>
+					<?php echo $cms->treehtml; ?>
 				</div>
 				<div class="span9 white-boxed">
 				
 					<form id="frmPage" action="" method="post" enctype="multipart/form-data">
 					<div class="navbar">
 						<div class="navbar-inner">
-							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-							<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
-							<?php } ?>
-							<input type="submit" name="Submit" class="btn btn-primary"
-								value="<?php if ($id == 'new') echo 'Add Page'; else echo 'Save Changes';?>">
-							  <?php if ($id != 'new') { ?>
-								<a href="<?php echo $url; ?>" target="_blank" 
-									<?php if ($published!='checked') echo 'onclick="return confirm(\'The page is Not published, its only visible to you.\');"'; ?>
-									class="btn btn-success">View</a>
-								<a href="pages.php?id=new" class="btn btn-info">New</a>
-								<a href="scripts/copy-page.php?copyid=<?php echo $id; ?>" class="btn btn-warning">Copy</a>
-								<?php if ($id != 1 && $id != 2) echo '<a href="scripts/del-page.php?delid='.$id.
+							<input type="submit" name="Submit" class="btn btn-inverse"
+								value="<?php if ($cms->id == 'new') echo 'Add Page'; else echo 'Save Changes';?>">
+							  <?php if ($cms->id != 'new') { ?>
+								<a href="<?php echo $cms->page['url']; ?>" target="_blank"
+									<?php if ($cms->page['published']!='checked') echo 'onclick="return confirm(\'The page is Not published, its only visible to you.\');"'; ?>
+									class="btn btn-inverse">View</a>
+								<a href="pages.php?id=new" class="btn btn-inverse">New</a>
+								<a href="scripts/copy-page.php?copyid=<?php echo $cms->id; ?>" class="btn btn-inverse">Copy</a>
+								<?php if ($cms->id != 1 && $cms->id != 2) echo '<a href="scripts/del-page.php?delid='.$cms->id.
 										'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
-								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
-								<?php } ?>
 								<div class="btn-group">
 									<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>
 									<ul class="dropdown-menu">
 									  <li class="nav-header">Validate</li>
 									  <li><a class="lframe" target="_blank" title="Validate the Page HTML" href=
-									  	"http://validator.w3.org/check?uri=http%3A%2F%2F<?php 
-										echo $_SERVER['HTTP_HOST'] . $url; 
+									  	"http://validator.w3.org/check?uri=http%3A%2F%2F<?php
+										echo $_SERVER['HTTP_HOST'] . $cms->page['url'];
 										?>&charset=%28detect+automatically%29&fbc=1&doctype=Inline&fbd=1&group=0&verbose=1">
 										<i class="icon-chevron-right"></i> HTML W3C</a></li>
 									  <li><a class="lframe" target="_blank" title="Validate the Page CSS" href=
-									  	"http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2F<?php 
-										echo $_SERVER['HTTP_HOST'] . $url; 
+									  	"http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2F<?php
+										echo $_SERVER['HTTP_HOST'] . $cms->page['url'];
 										?>&profile=css21&usermedium=all&warning=1&vextwarning=&lang=en">
 										<i class="icon-chevron-right"></i> CSS W3C</a></li>
 									  <li class="divider"></li>
 									  <li class="nav-header">Check</li>
 									  <li><a class="lframe" target="_blank" title="Check the Page for broken links" href=
-									  	"http://validator.w3.org/checklink?uri=http%3A%2F%2F<?php 
-										echo $_SERVER['HTTP_HOST'] . $url; ?>&hide_type=all&depth=1&check=Check">
+									  	"http://validator.w3.org/checklink?uri=http%3A%2F%2F<?php
+										echo $_SERVER['HTTP_HOST'] . $cms->page['url']; ?>&hide_type=all&depth=1&check=Check">
 										<i class="icon-chevron-right"></i> Broken Links</a></li>
  									  <li><a class="lframe" target="_blank" title="Check the Page keyword density" href=
-									  	"http://www.webconfs.com/keyword-density-checker.php?url=http%3A%2F%2F<?php 
-										echo $_SERVER['HTTP_HOST'] . $url; ?>">
+									  	"http://www.webconfs.com/keyword-density-checker.php?url=http%3A%2F%2F<?php
+										echo $_SERVER['HTTP_HOST'] . $cms->page['url']; ?>">
 										<i class="icon-chevron-right"></i> Keyword Density</a></li>
 									</ul>
-								</div>							
+								</div>
 							  <?php } ?>
 						</div>
-					</div>					
-					
-					<?php echo $msg; ?>
-					
+					</div>
+
+					<?php echo $cms->msg; ?>
+										
 					<div id="revBlock">
 					  <table class="table table-striped"><thead>
 						<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
@@ -334,8 +334,8 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 					 
 					<div class="tab-content">
 					  <div class="tab-pane active" id="d-main">
-					  
-						<div class="row" style="margin-left:0">
+
+						<div class="row">
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputTitle">Title Tag</label>
@@ -343,12 +343,12 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 									<input type="text" id="txtTitle" name="txtTitle"
 										placeholder="Enter the title of the page"
 										title="Enter the full title of the page here."
-										data-toggle="tooltip" 
-										value="<?php echo $title; ?>"
+										data-toggle="tooltip"
+										value="<?php echo $cms->page['title']; ?>"
 										data-placement="top"
 										class="input-block-level tooltipme2 countme2"><br>
-										<label class="checkbox" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
-										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $published; ?>>
+										<label class="checkbox" <?php if ($cms->id == 1 || $cms->id == 2) echo 'style="display:none"';?>>
+										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
 										  Published on site
 										</label>
 								</div>
@@ -361,20 +361,14 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 									<input type="text" id="txtName" name="txtName"
 										placeholder="Enter the name of the page"
 										title="Enter the full name of the page here."
-										data-toggle="tooltip" 
-										value="<?php echo $name; ?>"
+										data-toggle="tooltip"
+										value="<?php echo $cms->page['pagename']; ?>"
 										data-placement="top"
 										class="input-block-level tooltipme2 countme2"><br>
-									<?php if ($published!='checked') 
-												echo '<span class="label label-important">Unpublished page only visible when logged in.</span>';
-											else 
-												echo '<span class="label label-info">Page is published and visible to all.</span>'; ?>
-									<label class="checkbox checkRight" <?php if ($id == 1 || $id == 2) echo 'style="display:none"';?>>
-									  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $nositemap; ?>>
-									  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
-									</label>
+									<?php echo $cms->page['publishedMsg']; ?>
+
 								</div>
-							  </div>								
+							  </div>
 							</div>
 						</div>
 
@@ -384,28 +378,27 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Parent Page</label>
 								<div class="controls">
-								  <?php if ($id == 1 || $id == 2) echo 
-								  			'<div class="alert alert-info" style="margin: 0 0 3px;padding: 5px 10px;"><strong>'.
-												'Site Root</strong></div>';
-										else echo 
-											'<select name="slGroup" id="slGroup" class="input-block-level">' . 
+								  <?php if ($cms->id == 1 || $cms->id == 2) echo
+								  			'<div class="alert alert-info"><strong>Site Root</strong></div>';
+										else echo
+											'<select name="slGroup" id="slGroup" class="input-block-level">' .
 													$dropdownOptionsHTML . '</select>'; ?>
 								</div>
 							  </div>
-								
+
 							</div>
 							<div class="span6">
-							
+
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Layout</label>
 								<div class="controls">
 									<select name="slLayout" id="slLayout" class="input-block-level">
-										<?php 
+										<?php
 											if (($slLayout=='') || ($slLayout=='layout.php'))
 												echo '<option value="layout.php" selected>Default - layout.php</option>';
 											else
 												echo '<option value="layout.php">Default - layout.php</option>';
-												
+
 											if ($handle = opendir('..')) {
 												while (false !== ($entry = readdir($handle))) {
 													if (preg_match('/^layout\.[a-z0-9_-]+\.php$/i',$entry)) {
@@ -415,56 +408,50 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 												}
 												closedir($handle);
 											}
-										?>	
+										?>
 									</select>
 								</div>
 							  </div>
-							
+
 							</div>
-						</div>					  			  
+						</div>
 
 						<div class="row" style="margin-left:0">
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputDescription">Meta Description</label>
 								<div class="controls">
-									<textarea name="txtDesc" rows="5" id="txtDesc" 
+									<textarea name="txtDesc" rows="5" id="txtDesc"
 										placeholder="Enter the description of the page"
 										title="Enter the description of the page here, this is VERY IMPORTANT for SEO. Do not duplicate on all pages"
 										data-toggle="tooltip"
 										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><?php echo $description; ?></textarea>
+										class="input-block-level tooltipme2 countme2"><?php echo $cms->page['description']; ?></textarea>
 								</div>
-							  </div>								
+							  </div>
 							</div>
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputKeywords">Meta Keywords</label>
 								<div class="controls">
-									<textarea name="txtKeywords" rows="5" id="txtKeywords" 
+									<textarea name="txtKeywords" rows="5" id="txtKeywords"
 										placeholder="Enter the Keywords of the page"
 										title="Enter list keywords of the page here, not so important now but use it anyways. Do not stuff keywords"
 										data-toggle="tooltip"
 										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><?php echo $keywords; ?></textarea>
+										class="input-block-level tooltipme2 countme2"><?php echo $cms->page['keywords']; ?></textarea>
 								</div>
-							  </div>							
+							  </div>
 							</div>
-						</div>							
-					  </div>
-					  
-					  <div class="tab-pane" id="d-content">
-					    <input border="0" class="input-block-level" name="txtURL" onFocus="this.select();" 
-							style="cursor: pointer;" onClick="this.select();"  type="text" value="<?php echo $url; ?>" readonly/> 
-						<textarea name="txtMain" rows="30" id="txtMain" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $maincontent; ?></textarea>
+						</div>
 					  </div>
 					    
 					  <div class="tab-pane" id="d-header">
 						<div class="row" style="margin-left:0">
 							<div class="span4">
 								<label class="checkbox">
-								  <input name="ckHeader" type="checkbox" id="ckHeader" value="checkbox" <?php echo $useheader; ?>>
+								  <input name="ckHeader" type="checkbox" id="ckHeader" value="checkbox" 
+								  	<?php echo $cms->page{'useheader'}; ?>>
 								  Enable custom header
 								</label>
 							</div>
@@ -556,7 +543,7 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 						</blockquote>
 
 						<textarea name="txtHead" rows="30" id="txtHead" style="height: 320px; width:100%"
-							class="input-block-level"><?php echo $head; ?></textarea>
+							class="input-block-level"><?php echo $cms->page['head']; ?></textarea>
 					  </div>
 					
 					  </div>
@@ -564,7 +551,6 @@ if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
 				  	</form>
 				</div>
 				<div class="clearfix"></div>
-			  </div>
 			</div>
 		</div> 
 	</div>

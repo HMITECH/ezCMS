@@ -5,7 +5,7 @@
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/setting.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the default setting of the site
- */
+
 require_once("include/init.php");
 $qry = "SELECT * FROM `site` WHERE `id` = 1;";
 $rs = mysql_query($qry) or die("Unable to Execute  MYSQL query");
@@ -49,7 +49,14 @@ if ($flg=="green")
 if ($flg=="noperms") 
 	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
 				<strong>Permission Denied!</strong> You do not have permissions for this action.</div>';
-				
+ */
+ 
+// **************** ezCMS SETTINGS CLASS ****************
+require_once ("class/settings.class.php"); 
+
+// **************** ezCMS SETTINGS HANDLE ****************
+$cms = new ezSettings();
+	
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>Settings &middot; ezCMS Admin</title>
@@ -61,26 +68,25 @@ if ($flg=="noperms")
 		<?php include('include/nav.php'); ?>  
 		<div class="container">
 		
-				<div id="diffBlock" class="white-boxed" style="margin:60px auto 10px; width:95%;">
-					<div class="navbar"><div class="navbar-inner">
-						<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
-						<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
-						<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
-					</div></div>
-					<table id="diffviewerControld" width="100%" border="0">
-					  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
-						</td><td><select disabled><option selected>Your Current Edit</option></select>
-						</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
-					  </td></tr>
-					</table>
-					<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
-					<div id="difBlockSide1"><div id="diffviewerSide1"></div></div>
-					<div id="difBlockSide2"><div id="diffviewerSide2"></div></div>
-					<div id="difBlockFooter"><div id="diffviewerFooter"></div></div>
-				</div>
+			<div id="diffBlock" class="white-boxed">
+				<div class="navbar"><div class="navbar-inner">
+					<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
+					<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
+					<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
+				</div></div>
+				<table id="diffviewerControld" width="100%" border="0">
+				  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php //echo $revOption; ?></select>
+					</td><td><select disabled><option selected>Your Current Edit</option></select>
+					</td><td><select><option value="0">Current Page (Last Saved)</option><?php //echo $revOption; ?></select>
+				  </td></tr>
+				</table>
+				<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
+				<div id="difBlockSide1"><div id="diffviewerSide1"></div></div>
+				<div id="difBlockSide2"><div id="diffviewerSide2"></div></div>
+				<div id="difBlockFooter"><div id="diffviewerFooter"></div></div>
+			</div>
 
-		
-			<div id="editBlock" class="white-boxed" style="margin:60px auto 50px; width:95%;">
+			<div id="editBlock" class="white-boxed" >
 			  <form id="frmHome" action="scripts/set-defaults.php" method="post" enctype="multipart/form-data" class="form-horizontal">
 				<div class="navbar">
 					<div class="navbar-inner">
@@ -89,112 +95,42 @@ if ($flg=="noperms")
 						<?php } ?>
 						<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
+						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php //echo $revCount; ?></sup></a>
 						<?php } ?>
 					</div>
 				</div>
-				<?php echo $msg; ?>
+				<?php echo $cms->msg; ?>
 				<div id="revBlock">
 				  <table class="table table-striped"><thead>
 					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-				  </thead><tbody><?php echo $revLog; ?></tbody></table>
+				  </thead><tbody><?php //echo $revLog; ?></tbody></table>
 				</div>
 				<div class="tabbable tabs-top">
 				<ul class="nav nav-tabs" id="myTab">
-				  <li class="active"><a href="#d-main">Main</a></li>
-				  <li><a href="#d-header">Header</a></li>
+				  <li class="active"><a href="#d-header">Header</a></li>
 				  <li><a href="#d-sidebar">Aside A</a></li>
 				  <li><a href="#d-siderbar">Aside B</a></li>
 				  <li><a href="#d-footer">Footer</a></li>
 				</ul>
 				 
 				<div class="tab-content">
-					<div class="tab-pane active" id="d-main">
-						  <div class="control-group">
-							<label class="control-label" for="inputEmail">Site Title</label>
-							<div class="controls">
-								<input type="text" id="txtTitle" name="txtTitle"
-									placeholder="Enter the title of the site"
-									title="Enter the full title of the site here."
-									data-toggle="tooltip" 
-									value="<?php echo $title; ?>"
-									data-placement="top"
-									class="input-block-level tooltipme2"><br>							
-								<input name="ckapptitle" type="checkbox" id="ckapptitle" value="checkbox" <?php echo $aptitle; ?>>
-								Append to Page Title 
-								<?php if ($aptitle == "checked") echo 
-										'<span class="label label-important">The page title will be appended. 
-										Not Recommended, its better to have a unique title for each page.</span>';
-									else echo 
-										'<span class="label label-info">The page title will be not appended.
-										Recommended, its better to have a unique title for each page.</span>';?>
-							</div>
-						  </div>
-						  
-						  <div class="control-group">
-							<label class="control-label" for="inputEmail">Description</label>
-							<div class="controls">
-								<textarea name="txtDesc" rows="5" id="txtDesc" 
-									placeholder="Enter the description of the site"
-									title="Enter the description of the site here, this is VERY IMPORTANT for SEO. Do not duplicate on all pages"
-									data-toggle="tooltip"
-									data-placement="top"
-									class="input-block-level tooltipme2"><?php echo $description; ?></textarea><br>
-								<input name="ckappdesc" type="checkbox" id="ckappdesc" value="checkbox" <?php echo $apdesc; ?>>
-								Append to Page Description 
-								<?php if ($apdesc == "checked") echo 
-										'<span class="label label-important">The page description will be appended. 
-										Not Recommended, its better to have a unique description for each page.</span>';
-									else echo 
-										'<span class="label label-info">The page description will be not appended.
-										Recommended, its better to have a unique description for each page.</span>';?>
-							</div>
-						  </div>							  
-						  
-						  <div class="control-group">
-							<label class="control-label" for="inputEmail">Keywords</label>
-							<div class="controls">
-							 	<textarea name="txtKeywords" rows="5" id="txtKeywords" 
-									placeholder="Enter the Keywords of the site"
-									title="Enter list keywords of the site here, not so important now but use it anyways. Do not stuff keywords"
-									data-toggle="tooltip"
-									data-placement="top"
-									class="input-block-level tooltipme2"><?php echo $keywords; ?></textarea><br>
-								<input name="ckappkey" type="checkbox" id="ckappkey" value="checkbox" <?php echo $apkey; ?>>
-								Append to Page Keywords 
-									<?php if ($apkey == "checked") echo 
-											'<span class="label label-important">The page keywords will be appended. 
-											Not Recommended, its better to have a unique title for each page.</span>';
-										else echo 
-											'<span class="label label-info">The page keywords will be not appended.
-											Recommended, its better to have unique keywords for each page.</span>';?>			
-							</div>
-						  </div>
-					
-					</div>
-					<div class="tab-pane" id="d-header">
-						<textarea name="txtHeader" rows="30" id="txtHeader" style="width:98%;"><?php echo $header; ?></textarea>
+					<div class="tab-pane active" id="d-header">
+						<textarea name="txtHeader" id="txtHeader"><?php echo $cms->site['headercontent']; ?></textarea>
 					</div>
 					<div class="tab-pane" id="d-sidebar">
-						<textarea name="txtSide" rows="30" id="txtSide" style="width:98%;"><?php echo $sidebar; ?></textarea>
+						<textarea name="txtSide" id="txtSide"><?php echo $cms->site['sidecontent']; ?></textarea>
 					</div>
 					<div class="tab-pane" id="d-siderbar">
-						<textarea name="txtrSide" rows="30" id="txtrSide" style="width:98%;"><?php echo $siderbar; ?></textarea>
+						<textarea name="txtrSide" id="txtrSide"><?php echo $cms->site['sidercontent']; ?></textarea>
 					</div>
 					<div class="tab-pane" id="d-footer">
-						<textarea name="txtFooter" id="txtFooter" rows="30" style="width:98%;"><?php echo $footer; ?></textarea>
-					</div>				  
+						<textarea name="txtFooter" id="txtFooter"><?php echo $cms->site['footercontent']; ?></textarea>
+					</div>
 				</div>
 				</div>
 			  </form>
 			</div>
-			
-			
-
-				<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
-			
-			
-			
+			<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>			
 			
 		</div>
 	</div>
@@ -402,12 +338,9 @@ $('#showdiff').click( function () {
 	return false;
 });
 	
+
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
-		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
-			myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
-			txtHeader_loaded = true;
-		}
 		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
 			myCodeFooter = CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
 			txtFooter_loaded = true;
@@ -421,6 +354,11 @@ $('#showdiff').click( function () {
 			txtSide_loaded = true;
 		}
 	});	
+	$(window).load( function () {
+		myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
+		txtHeader_loaded = true;
+	});
+	
 	</script>
 
 <?php } ?>

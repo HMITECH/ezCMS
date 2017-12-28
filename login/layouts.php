@@ -6,7 +6,7 @@
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/layouts.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the layouts in the site
  * 
- */
+
 require_once("include/init.php");
 if (isset($_GET['show'])) $filename = $_GET['show']; else $filename = "layout.php";
 $content = @fread(fopen('../'.$filename, "r"), filesize('../'.$filename));
@@ -65,6 +65,13 @@ if ($flg=="greenrev")
 if ($flg=="nochange") 
 	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
 				<strong>No Change!</strong> There are no changes to save.</div>';
+ */
+
+// **************** ezCMS LAYOUTS CLASS ****************
+require_once ("class/layouts.class.php"); 
+
+// **************** ezCMS LAYOUTS HANDLE ****************
+$cms = new ezLayouts(); 
 
 ?><!DOCTYPE html><html lang="en"><head>
 
@@ -76,28 +83,14 @@ if ($flg=="nochange")
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
 		<div class="container">
-			<div class="container-fluid" style="margin:60px auto 30px;">
 			  <div id="editBlock" class="row-fluid">
 				<div class="span3 white-boxed">
-				
 					<ul id="left-tree">
-					  <li class="open" ><i class="icon-list-alt"></i> 
-					  	<a class="<?php if ($filename=="layout.php") echo 'label label-info'; ?>" href="layouts.php">layout.php</a>
-					  	<ul>
-							<?php if ($handle = opendir('..')) {
-									while (false !== ($entry = readdir($handle))) {
-										if (preg_match('/^layout\.[a-z0-9_-]+\.php$/i',$entry)) {
-											if ($filename==$entry) $myclass = 'label label-info'; else $myclass = '';
-											echo '<li><i class="icon-list-alt"></i> <a href="layouts.php?show='.
-												$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
-										}
-									}
-									closedir($handle);
-								}?>
-						</ul>
+					  <li class="open" ><i class="icon-list-alt icon-white"></i> 
+					  	<a class="<?php echo $cms->homeclass; ?>" href="layouts.php">layout.php</a>
+						<?php echo $cms->treehtml; ?>
 					  </li>					
 					</ul>
-					
 				</div>
 				<div class="span9 white-boxed">
 					<form id="frmlayout" action="scripts/set-layouts.php" method="post" enctype="multipart/form-data">
@@ -125,23 +118,23 @@ if ($flg=="nochange")
 								  </div>
 								  
 								</div>
-								<?php if ($filename!='layout.php') 
+								<?php if ($cms->filename!='layout.php') 
 									echo '<a href="scripts/del-layouts.php?delfile='.
-										$filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+										$cms->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
 								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
+								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revCount; ?></sup></a>
 								<?php } ?>
 							</div>
 						</div>
-						<?php echo $msg; ?>
+						<?php echo $cms->msg; ?>
 						<div id="revBlock">
 						  <table class="table table-striped"><thead>
 							<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-						  </thead><tbody><?php echo $revLog; ?></tbody></table>
+						  </thead><tbody><?php echo $cms->revLog; ?></tbody></table>
 						</div>
-						<input type="hidden" name="txtName" id="txtName" value="<?php echo $filename; ?>">
+						<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
 						<textarea name="txtContents" id="txtContents" class="input-block-level"
-							style="height: 460px; width:100%"><?php echo $content; ?></textarea>
+							style="height: 460px; width:100%"><?php echo $cms->content; ?></textarea>
 					</form>
 				</div>
 				
@@ -164,7 +157,7 @@ if ($flg=="nochange")
 			  <textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
 
 
-			</div>
+
 		</div> 
 	</div>
 
@@ -212,13 +205,16 @@ if ($flg=="nochange")
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script src="codemirror/mode/php/php.js"></script>
 	<script language="javascript" type="text/javascript">
-		var revJson = <?php echo json_encode($revJson); ?>,
+		var revJson = [],
 			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
 			cmMode = 'application/x-httpd-php';
 	</script>
 	<script src="js/gitFileCode.js"></script>
 
-<?php } else { ?>
+<?php 
+// var revJson = <php echo json_encode($revJson); >,
+
+} else { ?>
 
 	<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 	<script type="text/javascript">

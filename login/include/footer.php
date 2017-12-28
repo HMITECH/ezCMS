@@ -7,13 +7,8 @@
  *Include: Displays the footer
  * 
  */
-$sql = 'SELECT (SELECT Count(*) from pages where `published`=1) as pubCNT, (SELECT Count(*) from pages where `published`=0) as unCNT';
-$rs = mysql_query($sql) or die("Unable to Details for Web Page");
-$row      = mysql_fetch_array($rs);
-$pubCNT   = $row['pubCNT'];
-$unpubCNT = $row['unCNT'];
-$totCNT   = $pubCNT+$unpubCNT;
-mysql_free_result($rs);
+// Fetch the site stats
+$stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages` where `published`=1')->fetch(PDO::FETCH_ASSOC);
 ?>
 <div class="clearfix"></div>
 <div id="footer">
@@ -22,9 +17,7 @@ mysql_free_result($rs);
       <div class="span3"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> 
 	  </div>
       <div class="span6"> 
-	  	<span class="label label-info">Published: <?php echo $pubCNT; ?> page(s)</span> &middot; 
-		<span class="label label-warning">Drafts: <?php echo $unpubCNT; ?> page(s)</span> &middot; 
-		<span class="label label-inverse">Total: <?php echo $totCNT; ?> pages</span> 
+  	    <a href="../sitemap.xml"><strong><?php echo $stats['ispublished']; ?></strong> published page(s)</a>		  
 	  </div>
       <div class="span3"> ezCMS Ver:<strong>5.171201</strong> </div>
     </div>
@@ -53,20 +46,13 @@ mysql_free_result($rs);
 		return false;
 	});
 
-
 	$('#txtbgcolor').val(localStorage.getItem("cmsBgColor")).change(function () {
 		$('body').css('background-color','#'+$(this).val());
 		localStorage.setItem("cmsBgColor", $(this).val());
 	});
 	$('body').css('background-color','#'+localStorage.getItem("cmsBgColor"));
-	//if ($('#txtbgcolor').lenght) new jscolor($('#txtbgcolor')[0]);
-
 
 	function updateBgColor(jscolor) {
-	    // 'jscolor' instance can be used as a string
 	    $('body').css('background-color','#' + jscolor );
-	   // document.getElementById('rect').style.backgroundColor = '#' + jscolor
 	}
-
-
 </script>

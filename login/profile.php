@@ -5,7 +5,7 @@
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/profile.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the users in the site
- */
+
 require_once("include/init.php");
 $msg = "";
 if (isset($_REQUEST['Submit'])) {
@@ -46,9 +46,16 @@ if (isset($_REQUEST['Submit'])) {
 		}
 	}
 }
+ */
+ // **************** ezCMS USERS CLASS ****************
+require_once ("class/profile.class.php"); 
+
+// **************** ezCMS USERS HANDLE ****************
+$cms = new ezProfile();
+
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Profile &middot; ezCMS Admin</title>
+	<title>Profile : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>
@@ -56,7 +63,7 @@ if (isset($_REQUEST['Submit'])) {
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
 		<div class="container">
-			<div class="container-fluid" style="margin:60px auto 30px;">
+			<div class="container-fluid">
 			  <div class="row-fluid">
 			  
 			    <div class="span3"></div>
@@ -68,7 +75,7 @@ if (isset($_REQUEST['Submit'])) {
 					  <small>Remember to change your password often.</small>
 					</blockquote>
 					
-					<?php echo $msg; ?>
+					<?php echo $cms->msg; ?>
 					
 					<form id="frmPass" action="" method="post" enctype="multipart/form-data">
 					

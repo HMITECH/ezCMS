@@ -2,26 +2,31 @@
 #
 #* Code written by mo.ahmed@hmi-tech.net
 #
-#* Version 0.0.0 Dated 1/JUNE/2012
-# 
-#* The complete source code is the property of
-#* ** HMI Technologies Mumbai (2012-13)   
-#* HMI Technologies (DO NOT COPY OR USE WITHOUT WRITTEN CONSENT)
+#* HMI Technologies 
 #
-#* Module: Apache rewrites (.htacess) ezSite Builder
+#* Module: Apache rewrites (.htacess) ezCMS
 #
+# -------------------------------------------------------------------
+
 # ------------------------------------------------------------------- 
-RewriteEngine on
+#* Rewrite URLs to Controller (index.php)
+#* Notes: If target is not a file or folder rewrite it to index
 
-# Page Not found 404 redirect
-ErrorDocument 404 /Page-Not_Found.html
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.php [L]
+</IfModule>
 
-# CMS Top Level Pages
-RewriteRule ^index.html$ index.php
-RewriteRule ^([a-zA-Z0-9-_/]*).html$ index.php?show=$1 [L,NC,QSA]
-#IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+#* END: Rewrite URLs to Controller
+# ------------------------------------------------------------------- 
 
-#### Expires By Type
+# ------------------------------------------------------------------- 
+#* Expires By Type 
+#* Notes: Uncomment or Comment the Block below to disable to enable expiry by type
+
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 60 seconds"
@@ -38,7 +43,13 @@ RewriteRule ^([a-zA-Z0-9-_/]*).html$ index.php?show=$1 [L,NC,QSA]
     ExpiresByType application/xhtml+xml "access plus 600 seconds"
 </IfModule>
 
-#### Cache-Control
+#* END: Expires By Type 
+# ------------------------------------------------------------------- 
+
+# ------------------------------------------------------------------- 
+#* Browser Cache Control
+#* Notes: Uncomment or comment the block below to enable to diable browser cache
+
 <IfModule mod_headers.c>
     <FilesMatch "\\.(ico|jpe?g|png|gif|swf)$">
         Header set Cache-Control "max-age=29030400, public"
@@ -54,7 +65,14 @@ RewriteRule ^([a-zA-Z0-9-_/]*).html$ index.php?show=$1 [L,NC,QSA]
     </FilesMatch>
 </IfModule>
 
-# Set permissions
+#* END: Browser Cache Control
+# ------------------------------------------------------------------- 
+
+
+# ------------------------------------------------------------------- 
+#* Set permissions
+#* Notes: Set request permission as needed
+
 <Limit GET POST>
 order deny,allow
 deny from all
@@ -64,3 +82,6 @@ allow from all
 order deny,allow
 deny from all
 </Limit>
+
+#* END: Set permissions
+# ------------------------------------------------------------------- 
