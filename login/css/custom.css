@@ -32,9 +32,9 @@ a,button { outline:none; }
 	height: auto !important;
 	height: 100%;
 	margin: 0 auto -30px;}
-#txtContents {
-	height: 500px; 
-	width:100%;
+textarea {
+	height: 400px; 
+	width:99%;
 }
 #wrap .container {
 	padding-top:60px;

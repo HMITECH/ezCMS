@@ -71,13 +71,13 @@ $cms = new ezSettings();
 			<div id="diffBlock" class="white-boxed">
 				<div class="navbar"><div class="navbar-inner">
 					<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
-					<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
+					<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way DIFF</a>
 					<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
 				</div></div>
 				<table id="diffviewerControld" width="100%" border="0">
-				  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php //echo $revOption; ?></select>
+				  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 					</td><td><select disabled><option selected>Your Current Edit</option></select>
-					</td><td><select><option value="0">Current Page (Last Saved)</option><?php //echo $revOption; ?></select>
+					</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 				  </td></tr>
 				</table>
 				<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
@@ -87,7 +87,7 @@ $cms = new ezSettings();
 			</div>
 
 			<div id="editBlock" class="white-boxed" >
-			  <form id="frmHome" action="scripts/set-defaults.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+			  <form id="frmHome" action="setting.php" method="post" enctype="multipart/form-data" class="form-horizontal">
 				<div class="navbar">
 					<div class="navbar-inner">
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
@@ -95,7 +95,7 @@ $cms = new ezSettings();
 						<?php } ?>
 						<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php //echo $revCount; ?></sup></a>
+						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
 						<?php } ?>
 					</div>
 				</div>
@@ -103,28 +103,28 @@ $cms = new ezSettings();
 				<div id="revBlock">
 				  <table class="table table-striped"><thead>
 					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-				  </thead><tbody><?php //echo $revLog; ?></tbody></table>
+				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 				</div>
 				<div class="tabbable tabs-top">
 				<ul class="nav nav-tabs" id="myTab">
 				  <li class="active"><a href="#d-header">Header</a></li>
-				  <li><a href="#d-sidebar">Aside A</a></li>
-				  <li><a href="#d-siderbar">Aside B</a></li>
+				  <li><a href="#d-sidebar">Aside 1</a></li>
+				  <li><a href="#d-siderbar">Aside 2</a></li>
 				  <li><a href="#d-footer">Footer</a></li>
 				</ul>
 				 
 				<div class="tab-content">
 					<div class="tab-pane active" id="d-header">
-						<textarea name="txtHeader" id="txtHeader"><?php echo $cms->site['headercontent']; ?></textarea>
+						<textarea name="headercontent" id="txtHeader"><?php echo $cms->site['headercontent']; ?></textarea>
 					</div>
 					<div class="tab-pane" id="d-sidebar">
-						<textarea name="txtSide" id="txtSide"><?php echo $cms->site['sidecontent']; ?></textarea>
+						<textarea name="sidecontent" id="txtSide"><?php echo $cms->site['sidecontent']; ?></textarea>
 					</div>
 					<div class="tab-pane" id="d-siderbar">
-						<textarea name="txtrSide" id="txtrSide"><?php echo $cms->site['sidercontent']; ?></textarea>
+						<textarea name="sidercontent" id="txtrSide"><?php echo $cms->site['sidercontent']; ?></textarea>
 					</div>
 					<div class="tab-pane" id="d-footer">
-						<textarea name="txtFooter" id="txtFooter"><?php echo $cms->site['footercontent']; ?></textarea>
+						<textarea name="footercontent" id="txtFooter"><?php echo $cms->site['footercontent']; ?></textarea>
 					</div>
 				</div>
 				</div>
@@ -173,10 +173,6 @@ $cms = new ezSettings();
 	}	
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
-		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
-			editAreaLoader.init(getEditAreaJSON("txtHeader"));
-			txtHeader_loaded = true;
-		}
 		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
 			editAreaLoader.init(getEditAreaJSON("txtFooter"));
 			txtFooter_loaded = true;
@@ -190,6 +186,8 @@ $cms = new ezSettings();
 			txtSide_loaded = true;
 		}
 	});
+	editAreaLoader.init(getEditAreaJSON("txtHeader"));
+	txtHeader_loaded = true;
 	</script>
 
 <?php } else if ($_SESSION['EDITORTYPE'] == 3) { ?>
