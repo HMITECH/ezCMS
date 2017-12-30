@@ -54,10 +54,13 @@ class ezCMS extends db {
 		
 	}
 	
+	// Add to Database table and returns new ID, false if failed
 	public function add($table, $data) {
+	
+		/* Uncomment to debug 
 		die("INSERT INTO $table (`".
 			implode("`,`", array_keys($data))."`) VALUES (".
-			implode(',', array_fill(0, count($data), '?')).")");
+			implode(',', array_fill(0, count($data), '?')).")");*/
 		$stmt = $this->prepare("INSERT INTO $table (`".
 			implode("`,`", array_keys($data))."`) VALUES (".
 			implode(',', array_fill(0, count($data), '?')).")");
@@ -67,13 +70,16 @@ class ezCMS extends db {
 			return $newid;
 		} 
 		return false;
+		
 	}
-
+	
+	// EDit Database table
 	public function edit($table, $id, $data) {
 	
+		/* Uncomment to debug 
 		die("INSERT INTO $table (`".
 			implode("`,`", array_keys($data))."`) VALUES (".
-			implode(',', array_fill(0, count($data), '?')).")");	
+			implode(',', array_fill(0, count($data), '?')).")");*/	
 		$stmt = $this->prepare("UPDATE $table SET ".$this->arrayToPDOstr($data)." WHERE id = ? ");
 		$data[] = $id;
 		if ($stmt->execute(array_values($data))) {
@@ -81,6 +87,7 @@ class ezCMS extends db {
 			return true;
 		} 
 		return false;
+		
 	}
 
 	// this function will set the formatted html to display

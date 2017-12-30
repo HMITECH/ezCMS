@@ -31,7 +31,8 @@ a,button { outline:none; }
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -30px;}
+	margin: 0 auto -30px;
+}
 textarea {
 	height: 400px; 
 	width:99%;
@@ -88,7 +89,12 @@ div.white-boxed {
 #difBlockSide2:after   {content: "Aside 2 Block";}
 #difBlockFooter:after  {content: "Footer Block" ;}
 #push,#footer {height: 30px;}
-#footer {background-color: rgba(245, 245, 245, 0.75);}
+#footer { 
+	height: 30px; 
+	background: rgba(245, 245, 245, 0.75);
+	text-align:center; 
+	font-size:0.9em;
+}
 .tooltip-inner {font-size:18px;}
 .label, .badge {white-space:normal;}
 .CodeMirror {height:500px; }

@@ -13,7 +13,7 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 <div class="clearfix"></div>
 <div id="footer">
   <div class="container">
-    <div class="row-fluid" style="text-align:center; font-size:0.9em; ">
+    <div class="row-fluid" style=" ">
       <div class="span3"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> 
 	  </div>
       <div class="span6"> 
