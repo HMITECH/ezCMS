@@ -44,7 +44,7 @@ $cms = new ezSettings();
 			</div>
 
 			<div id="editBlock" class="white-boxed" >
-			  <form id="frmHome" action="setting.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+			  <form id="frmSettings" action="setting.php" method="post" enctype="multipart/form-data" class="form-horizontal">
 				<div class="navbar">
 					<div class="navbar-inner">
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
@@ -189,6 +189,7 @@ $cms = new ezSettings();
 		foldGutter: true,
 		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 	}
+	
 	// function to build DIFF UI
 	var buildDiffUI = function () {
 		var target;
@@ -260,10 +261,9 @@ $cms = new ezSettings();
 			connect: null,
 			collapseIdentical: collapse
 		});
-		
+
 	}
 
-	
 	// Change to DIff UI
 	$('#showdiff').click( function () {
 		$('#editBlock').slideUp('slow');

@@ -26,12 +26,14 @@ class ezSettings extends ezCMS {
 	
 		// call parent constuctor
 		parent::__construct();
+		
+		// fetch the data
+		$this->site = $this
+			->query('SELECT * FROM `site` ORDER BY `id` DESC LIMIT 1')
+			->fetch(PDO::FETCH_ASSOC);		
 				
 		// Update if POSTED here
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
-		
-		// fetch the data
-		$this->site = $this->query('SELECT * FROM `site` ORDER BY `id` DESC LIMIT 1')->fetch(PDO::FETCH_ASSOC);
 		
 		// Get the Revisions
 		$this->getRevisions();
@@ -90,6 +92,15 @@ class ezSettings extends ezCMS {
 			'footercontent'), $data);
 		$data['createdby'] = $_SESSION['EZUSERID'];
 		
+		// Test if nothing has changed 
+		if (($data['headercontent'] == $this->site['headercontent']) && 
+			($data['sidecontent'  ] == $this->site['sidecontent'  ]) && 
+			($data['sidercontent' ] == $this->site['sidercontent' ]) && 
+			($data['footercontent'] == $this->site['footercontent']) ){
+				header("Location: setting.php?flg=nochange");
+				exit;		
+		}
+		
 		// Save to database
 		if ( $this->add('site',$data) ) {
 			header("Location: setting.php?flg=saved");
@@ -110,6 +121,9 @@ class ezSettings extends ezCMS {
 				break;
 			case "saved":
 				$this->setMsgHTML('success','Controller Saved !','You have successfully saved the settings.');
+				break;
+			case "nochange":
+				$this->setMsgHTML('warn','No Change !','Nothing is changed to save.');
 				break;
 			case "noperms":
 				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
