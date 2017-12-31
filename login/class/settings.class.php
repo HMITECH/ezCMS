@@ -30,10 +30,13 @@ class ezSettings extends ezCMS {
 		// fetch the data
 		$this->site = $this
 			->query('SELECT * FROM `site` ORDER BY `id` DESC LIMIT 1')
-			->fetch(PDO::FETCH_ASSOC);		
+			->fetch(PDO::FETCH_ASSOC);
 				
 		// Update if POSTED here
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
+		
+		// Purge Revision
+		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
 		// Get the Revisions
 		$this->getRevisions();
@@ -42,21 +45,61 @@ class ezSettings extends ezCMS {
 		$this->getMessage();
 
 	}
+
+	// Function to Update the Defaults Settings
+	private function delRevision() {
+
+		// Check permissions
+		if (!$this->usr['editsettings']) {
+			header("Location: setting.php?flg=noperms");
+			exit;
+		}
+		
+		// Get the revision ID to delete
+		$revID = intval($_GET['purgeRev']);
+		
+		// Validations - cannot delete current record.
+		if ($this->site['id'] == $revID) {
+			header("Location: setting.php?flg=invalid");
+			exit;		
+		}
+		
+		// Delete the revision
+		if ( $this->delete('site',$revID) ) {
+			header("Location: setting.php?flg=saved");
+			exit;
+		}
+		
+		header("Location: setting.php?flg=failed");
+		exit;		
+	
+	}
 	
 	// Function to Update the Defaults Settings
 	private function getRevisions() {
+	
 		// Create the Revision Log here
 		$this->revs['log'] = '';
 		$this->revs['opt'] = '';
 		$this->revs['cnt'] = 1;
 		$this->revs['jsn'] = array();
+		
 		foreach ($this->query("SELECT site.*, users.username
 					FROM site LEFT JOIN users ON site.createdby = users.id
-					WHERE site.id > 1 ORDER BY site.id DESC") as $entry) {
+					WHERE site.id <> ".$this->site['id']." ORDER BY site.id DESC") as $entry) {
+					
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
-				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';	
-			$this->revs['log'] .= '<tr><td>'.$this->revs['cnt'].'</td><td>'.$entry['username'].'</td><td>'.$entry['createdon'].'</td>
-			  	<td data-rev-id="'.$entry['id'].'"><a href="#">Revert</a> | <a href="#">Purge</a></td></tr>';
+				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
+				
+			$this->revs['log'] .= '<tr>
+				<td>'.$entry['id'].'</td>
+				<td>'.$entry['username'].'</td>
+				<td>'.$entry['createdon'].'</td>
+			  	<td data-rev-id="'.$entry['id'].'">
+				<a href="#">Fetch</a> &nbsp;|&nbsp; 
+				<a href="#">Diff</a> &nbsp;|&nbsp;
+				<a href="setting.php?purgeRev='.$entry['id'].'">Purge</a>	
+				</td></tr>';
 				
 			$this->revs['jsn'][$entry['id']] = array( 
 				'header' =>  $entry['headercontent'] , 
@@ -106,6 +149,7 @@ class ezSettings extends ezCMS {
 			header("Location: setting.php?flg=saved");
 			exit;
 		}
+		
 		header("Location: setting.php?flg=failed");
 		exit;
 
@@ -117,13 +161,13 @@ class ezSettings extends ezCMS {
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
 			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the settings were NOT saved.');
+				$this->setMsgHTML('error','Save Failed !','An error occurred and the update failed.');
 				break;
 			case "saved":
-				$this->setMsgHTML('success','Controller Saved !','You have successfully saved the settings.');
+				$this->setMsgHTML('success','Default Settings Updated !','Successfully updated.');
 				break;
 			case "nochange":
-				$this->setMsgHTML('warn','No Change !','Nothing is changed to save.');
+				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
 				break;
 			case "noperms":
 				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');

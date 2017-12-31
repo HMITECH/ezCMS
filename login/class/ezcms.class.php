@@ -55,7 +55,7 @@ class ezCMS extends db {
 	}
 	
 	// Add to Database table and returns new ID, false if failed
-	public function add($table, $data) {
+	protected function add($table, $data) {
 	
 		/* Uncomment to debug 
 		die("INSERT INTO $table (`".
@@ -73,8 +73,8 @@ class ezCMS extends db {
 		
 	}
 	
-	// EDit Database table
-	public function edit($table, $id, $data) {
+	// Edit Database table row
+	protected function edit($table, $id, $data) {
 	
 		/* Uncomment to debug 
 		die("INSERT INTO $table (`".
@@ -89,9 +89,21 @@ class ezCMS extends db {
 		return false;
 		
 	}
+	
+	// Delete from Database table
+	protected function delete($t, $id) {
+	
+		$stmt = $this->prepare("DELETE FROM $t where id = ?");
+		if ($stmt->execute(array($id))) {
+			$this->query("OPTIMIZE TABLE $t");
+			return true;
+		}
+		return false;
+		
+	}	
 
 	// this function will set the formatted html to display
-	public function setMsgHTML ($class, $caption, $subcaption ) {
+	protected function setMsgHTML ($class, $caption, $subcaption ) {
 		$this->msg = '<div class="alert alert-'.$class.'">
 			<button type="button" class="close" data-dismiss="alert">x</button>
 			<strong>'.$caption.'</strong><br>'.$subcaption.'</div>';

@@ -26,9 +26,7 @@ class ezController extends ezCMS {
 		$this->content = htmlspecialchars(file_get_contents("../index.php"));
 		
 		// Update the Controller of Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->update();
-		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 		
 		// Get the Message to display if any
 		$this->getMessage();

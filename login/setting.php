@@ -15,7 +15,7 @@ $cms = new ezSettings();
 	
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Settings &middot; ezCMS Admin</title>
+	<title>Default Settings :: ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>
@@ -288,6 +288,39 @@ $cms = new ezSettings();
 			buildDiffUI();
 		});
 		return false;
+	});
+	
+	// Click on Fetch or DIFF in revision log
+	$('#revBlock a').click( function () {
+	
+		var loadID = $(this).parent().data('rev-id');
+		
+		if ($(this).text() == 'Fetch') {
+
+			myCodeHeader.setValue(revJson[loadID].header);
+			myCodeSide1 .setValue(revJson[loadID].side1);
+			myCodeSide2 .setValue(revJson[loadID].side2);
+			myCodeFooter.setValue(revJson[loadID].footer);
+			return false;
+
+		} else if ($(this).text() == 'Diff') {
+
+			$("#txtTemps").val(revJson[loadID]);
+			codeRight= $("#txtTemps").val();
+			$("#txtTemps").val(revJson[loadID].header);
+			codeRightHeader = $("#txtTemps").val();
+			$("#txtTemps").val(revJson[loadID].side1);
+			codeRightSide1 = $("#txtTemps").val();
+			$("#txtTemps").val(revJson[loadID].side2);
+			codeRightSide2 = $("#txtTemps").val();
+			$("#txtTemps").val(revJson[loadID].footer);
+			codeRightFooter = $("#txtTemps").val();
+			$('#diffviewerControld td:last-child select').val(loadID);
+			$('#showdiff').click();
+			return false;
+
+		}
+		
 	});
 
 	// Toggle Collapse Unchanged sections

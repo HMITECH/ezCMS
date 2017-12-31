@@ -16,19 +16,18 @@
 		<span class="icon-bar"></span> 
 		<span class="icon-bar"></span> 
 	  </button>
-	  <a class="brand" href="/"><small>ezCMS &middot; <?php echo $_SERVER['HTTP_HOST']; ?></small></a>
+	  <a class="brand" href="/"><small>ezCMS: <?php echo $_SERVER['HTTP_HOST']; ?></small></a>
 	  <div class="nav-collapse collapse">
 		<ul class="nav" id="top-bar">
 		  <li class="dropdown">
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-th-large"></i> Template <b class="caret"></b></a>
 			  <ul class="dropdown-menu">
-				<li><a href="setting.php"><i class="icon-th-list"></i> Settings</a></li>
-				<li><a href="controllers.php"><i class="icon-play"></i> Controller</a></li>
+				<li><a href="setting.php"><i class="icon-th-list"></i> Defaults Settings</a></li>
+				<li><a href="controllers.php"><i class="icon-play"></i> URL Router</a></li>
 				<li class="divider"></li>
-				<li><a href="layouts.php"><i class="icon-list-alt"></i> Layouts</a></li>
-				<li><a href="styles.php"><i class="icon-pencil"></i> Stylesheets</a></li>
-				<li><a href="scripts.php"><i class="icon-align-left"></i> Javascripts</a></li>
-				
+				<li><a href="layouts.php"><i class="icon-list-alt"></i> PHP Layouts</a></li>
+				<li><a href="styles.php"><i class="icon-pencil"></i> CSS Stylesheets</a></li>
+				<li><a href="scripts.php"><i class="icon-align-left"></i> JS Javascripts</a></li>
 				<li class="divider"></li>
 				<li><a href="files.php"><i class="icon-folder-open"></i> File Manager</a></li>
 			  </ul>
@@ -43,9 +42,7 @@
 				  <p><i class="icon-tint"></i> Background Color</p>
 				  <small>Change background color</small>
 				</blockquote>
-				<div>
-					<input class="jscolor {onFineChange:'updateBgColor(this)'}" id="txtbgcolor" type="text" />
-				</div>
+				<div><input class="jscolor {onFineChange:'updateBgColor(this)'}" id="txtbgcolor" type="text" /></div>
 				<hr>
 				<?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
 				<blockquote>
@@ -115,18 +112,10 @@
 					<li><a href="profile.php"><i class="icon-comment"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<li class="nav-header">Select Editor</li>
- 					<li <?php //echo $cme; ?>>
-						<a href="scripts/chg-editor.php?etype=3">
-							<i class="icon-edit"></i> Code Mirror</a></li> 
-					<li <?php //echo $cke; ?>>
-						<a href="scripts/chg-editor.php?etype=0">
-							<i class="icon-calendar"></i> CK Editor</a></li>
-					<li <?php //echo $eda; ?>>
-						<a href="scripts/chg-editor.php?etype=1">
-							<i class="icon-folder-close"></i> Edit Area</a></li>
-					<li <?php //echo $txt; ?>>
-						<a href="scripts/chg-editor.php?etype=2">
-							<i class="icon-hdd"></i> Text Area</a></li>
+ 					<li><a href="scripts/chg-editor.php?etype=3"><i class="icon-edit"></i> Code Mirror</a></li> 
+					<li><a href="scripts/chg-editor.php?etype=0"><i class="icon-calendar"></i> CK Editor</a></li>
+					<li><a href="scripts/chg-editor.php?etype=1"><i class="icon-folder-close"></i> Edit Area</a></li>
+					<li><a href="scripts/chg-editor.php?etype=2"><i class="icon-hdd"></i> Text Area</a></li>
 					<li class="divider"></li>
 					<li><a href="scripts/logout.php"><i class="icon-off"></i> Logout</a></li>
 				</ul>
