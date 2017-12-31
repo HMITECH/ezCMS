@@ -17,9 +17,6 @@ class ezController extends ezCMS {
 	//  Stores the content of the file (index.php)
 	public $content = '';
 	
-	// Stores Revision Details
-	public $revs;	
-	
 	// Consturct the class
 	public function __construct () {
 	
@@ -46,11 +43,6 @@ class ezController extends ezCMS {
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		$this->revs['log'] = '';
-		$this->revs['opt'] = '';
-		$this->revs['cnt'] = 1;
-		$this->revs['jsn'] = array();
-		
 		foreach ($this->query("SELECT git_files.*, users.username 
 				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
 				WHERE git_files.fullpath = 'index.php'

@@ -6,35 +6,6 @@
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/layouts.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the layouts in the site
  * 
-
-require_once("include/init.php");
-if (isset($_GET['show'])) $filename = $_GET['show']; else $filename = "layout.php";
-$content = @fread(fopen('../'.$filename, "r"), filesize('../'.$filename));
-$content =  htmlspecialchars($content);
-
-// Create the Revision Log here
-$revsql = "SELECT git_files.id, users.username, git_files.content, git_files.createdon
-	FROM users LEFT JOIN git_files ON users.id = git_files.createdby
-	WHERE git_files.fullpath = '$filename'
-	ORDER BY git_files.id DESC";		
-$rs = mysql_query($revsql) or die("Unable to Execute  Select query");
-$revLog = '';
-$revOption = '';
-$revJson = array();
-$revCount = 1;
-while ($row = mysql_fetch_assoc($rs)) {	
-	$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
-	  <td data-rev-id="'.$row['id'].'">
-	  	<a href="#">Fetch</a> &nbsp;|&nbsp; <a href="#">Diff</a> &nbsp;|&nbsp;
-		<a href="scripts/purge-version.php?layout='.$row['id'].'">Purge</a>
-		</td></tr>';
-	$revOption .= 	'<option value="'.$row['id'].'">#'.$revCount.' '.$row['createdon'].' ('.$row['username'].')</option>';		
-	$revJson[$row['id']] =  ($row['content']);
-	$revCount++;
-}
-$revCount--;
-if ($revLog == '') $revLog = '<tr><td colspan="3">There are no revisions of this layout.</td></tr>';
-	
 if (isset($_GET["flg"])) $flg = $_GET["flg"]; else $flg = "";
 $msg = "";
 if ($flg=="red") 
@@ -75,7 +46,7 @@ $cms = new ezLayouts();
 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Layouts &middot; ezCMS Admin</title>
+	<title>PHP Layouts : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 
 </head><body>
@@ -86,14 +57,14 @@ $cms = new ezLayouts();
 			  <div id="editBlock" class="row-fluid">
 				<div class="span3 white-boxed">
 					<ul id="left-tree">
-					  <li class="open" ><i class="icon-list-alt icon-white"></i> 
+					  <li class="open" ><i class="icon-list-alt"></i> 
 					  	<a class="<?php echo $cms->homeclass; ?>" href="layouts.php">layout.php</a>
 						<?php echo $cms->treehtml; ?>
 					  </li>					
 					</ul>
 				</div>
 				<div class="span9 white-boxed">
-					<form id="frmlayout" action="scripts/set-layouts.php" method="post" enctype="multipart/form-data">
+					<form id="frmlayout" action="layouts.php" method="post" enctype="multipart/form-data">
 						<div class="navbar">
 							<div class="navbar-inner">
 								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
@@ -103,7 +74,6 @@ $cms = new ezLayouts();
 								<div class="btn-group">
 								  <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
 									Save As <span class="caret"></span></a>
-									
 								  <div id="SaveAsDDM" class="dropdown-menu" style="padding:10px;">
 									<blockquote>
 									  <p>Save layout as</p>
@@ -122,7 +92,7 @@ $cms = new ezLayouts();
 									echo '<a href="scripts/del-layouts.php?delfile='.
 										$cms->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
 								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revCount; ?></sup></a>
+								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
 								<?php } ?>
 							</div>
 						</div>
@@ -130,14 +100,12 @@ $cms = new ezLayouts();
 						<div id="revBlock">
 						  <table class="table table-striped"><thead>
 							<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-						  </thead><tbody><?php echo $cms->revLog; ?></tbody></table>
+						  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 						</div>
 						<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
-						<textarea name="txtContents" id="txtContents" class="input-block-level"
-							style="height: 460px; width:100%"><?php echo $cms->content; ?></textarea>
+						<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $cms->content; ?></textarea>
 					</form>
 				</div>
-				
 			  </div>
 
 			  <div id="diffBlock" class="white-boxed">
@@ -147,16 +115,14 @@ $cms = new ezLayouts();
 					<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
 				</div></div>
 				<table id="diffviewerControld" width="100%" border="0">
-				  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+				  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 					</td><td><select disabled><option selected>Your Current Edit</option></select>
-					</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+					</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 				  </td></tr>
 				</table>
 				<div id="diffviewer"></div>
 			  </div>
 			  <textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
-
-
 
 		</div> 
 	</div>
@@ -205,16 +171,13 @@ $cms = new ezLayouts();
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script src="codemirror/mode/php/php.js"></script>
 	<script language="javascript" type="text/javascript">
-		var revJson = [],
-			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
+		var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
+		var	cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
 			cmMode = 'application/x-httpd-php';
 	</script>
 	<script src="js/gitFileCode.js"></script>
 
-<?php 
-// var revJson = <php echo json_encode($revJson); >,
-
-} else { ?>
+<?php } else { ?>
 
 	<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 	<script type="text/javascript">

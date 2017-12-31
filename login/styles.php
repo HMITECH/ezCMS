@@ -108,7 +108,7 @@ $cms = new ezStyles();
 				
 			</div>
 			<div class="span9 white-boxed">
-			  <form id="frm" action="scripts/set-styles.php" method="post" enctype="multipart/form-data">
+			  <form id="frm" action="styles.php" method="post" enctype="multipart/form-data">
 				<div class="navbar">
 					<div class="navbar-inner">
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
@@ -137,7 +137,7 @@ $cms = new ezStyles();
 							echo '<a href="scripts/del-styles.php?delfile='.
 								$cms->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $revCount; ?></sup></a>
+						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
 						<?php } ?>
 					</div>
 				</div>
@@ -145,7 +145,7 @@ $cms = new ezStyles();
 				<div id="revBlock">
 				  <table class="table table-striped"><thead>
 					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-				  </thead><tbody><?php echo $revLog; ?></tbody></table>
+				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 				</div>
 				<input border="0" class="input-block-level" name="txtlnk" onFocus="this.select();" 
 					style="cursor: pointer;" onClick="this.select();"  type="text" title="include this link in layouts or page head"
@@ -164,9 +164,9 @@ $cms = new ezStyles();
 				<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
 			</div></div>
 			<table id="diffviewerControld" width="100%" border="0">
-			  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+			  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 				</td><td><select disabled><option selected>Your Current Edit</option></select>
-				</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $revOption; ?></select>
+				</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 			  </td></tr>
 			</table>
 			<div id="diffviewer"></div>
@@ -222,8 +222,8 @@ $cms = new ezStyles();
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
-		var revJson = <?php echo json_encode($revJson); ?>,
-			cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
+		var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
+		var	cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
 			cmMode = 'css';
 	</script>
 	<script src="js/gitFileCode.js"></script>	

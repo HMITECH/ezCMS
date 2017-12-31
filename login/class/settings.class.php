@@ -18,9 +18,6 @@ class ezSettings extends ezCMS {
 	// Stores Default Setting data from database
 	public $site;
 	
-	// Stores Revision Details Default Setting data from database
-	public $revs;	
-	
 	// Consturct the class
 	public function __construct () {
 	
@@ -77,11 +74,6 @@ class ezSettings extends ezCMS {
 	
 	// Function to fetch the revisions
 	private function getRevisions() {
-	
-		$this->revs['log'] = '';
-		$this->revs['opt'] = '';
-		$this->revs['cnt'] = 1;
-		$this->revs['jsn'] = array();
 		
 		foreach ($this->query("SELECT site.*, users.username
 				FROM site LEFT JOIN users ON site.createdby = users.id

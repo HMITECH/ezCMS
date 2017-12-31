@@ -53,15 +53,10 @@ class ezScripts extends ezCMS {
 		parent::__construct();
 		
 		// Check if file to display is set
-		if (isset($_GET['show'])) {
-			$this->filename = $_GET['show'];
-		} 
+		if (isset($_GET['show'])) $this->filename = $_GET['show'];
 		
 		// Check if file is to be deleted
-		if (isset($_GET['delfile'])) {
-			$this->delete();
-		}
-
+		if (isset($_GET['delfile'])) $this->deleteFile();
 
 		// Get the path to the target file
 		if ($this->filename != "../main.js") {
@@ -94,6 +89,37 @@ class ezScripts extends ezCMS {
 		
 	}
 	
+	// Function to fetch the revisions
+	private function getRevisions() {
+	
+		foreach ($this->query("SELECT git_files.*, users.username 
+				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+				WHERE git_files.fullpath = 'index.php'
+				ORDER BY git_files.id DESC") as $entry) {
+	
+			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
+				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
+			
+			$this->revs['log'] .= '<tr>
+				<td>'.$entry['id'].'</td>
+				<td>'.$entry['username'].'</td>
+				<td>'.$entry['createdon'].'</td>
+			  	<td data-rev-id="'.$entry['id'].'">
+				<a href="#">Fetch</a> &nbsp;|&nbsp; 
+				<a href="#">Diff</a> &nbsp;|&nbsp;
+				<a href="controllers.php?purgeRev='.$entry['id'].'">Purge</a>	
+				</td></tr>';
+
+			$this->revs['jsn'][$entry['id']] = $entry['content'];
+
+			$this->revs['cnt']++;
+		}
+		$this->revs['cnt']--;
+		
+		if ($this->revs['log'] == '') 
+			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
+	}
+	
 	// Function to Build Treeview HTML
 	private function buildTree() {
 		$this->treehtml = '<ul>';
@@ -101,7 +127,7 @@ class ezScripts extends ezCMS {
 			$myclass = ($this->filename == $entry) ? 'label label-info' : '';
 			$entry = substr($entry, 18, strlen($entry)-18);
 			
-			$this->treehtml .= '<li><i class="icon-indent-left icon-white"></i> <a href="scripts.php?show='.
+			$this->treehtml .= '<li><i class="icon-indent-left"></i> <a href="scripts.php?show='.
 				$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
 
 		}
@@ -109,7 +135,7 @@ class ezScripts extends ezCMS {
 	}
 	
 	// Function to Delete the Javascript file
-	private function delete() {
+	private function deleteFile() {
 	
 		$filename = $_REQUEST['delfile'];
 		$show = substr($filename, 18 , strlen($filename)-18);

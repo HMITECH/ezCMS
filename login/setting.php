@@ -15,7 +15,7 @@ $cms = new ezSettings();
 	
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Default Settings :: ezCMS Admin</title>
+	<title>Default Settings : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>

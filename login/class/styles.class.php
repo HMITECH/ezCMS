@@ -77,10 +77,7 @@ class ezStyles extends ezCMS {
 		} 
 		
 		// Check if file is to be deleted
-		if (isset($_GET['delfile'])) {
-			$this->delete();
-		}
-
+		if (isset($_GET['delfile'])) $this->deleteFile();
 
 		// Get the path to the target file
 		if ($this->filename != "../style.css") {
@@ -102,9 +99,7 @@ class ezStyles extends ezCMS {
 		$this->content = htmlspecialchars(file_get_contents($this->filename));
 		
 		// Update the Controller of Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->update();
-		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 				
 		//Build the HTML Treeview
 		$this->buildTree();
@@ -114,13 +109,44 @@ class ezStyles extends ezCMS {
 
 	}
 	
+	// Function to fetch the revisions
+	private function getRevisions() {
+	
+		foreach ($this->query("SELECT git_files.*, users.username 
+				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+				WHERE git_files.fullpath = 'index.php'
+				ORDER BY git_files.id DESC") as $entry) {
+	
+			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
+				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
+			
+			$this->revs['log'] .= '<tr>
+				<td>'.$entry['id'].'</td>
+				<td>'.$entry['username'].'</td>
+				<td>'.$entry['createdon'].'</td>
+			  	<td data-rev-id="'.$entry['id'].'">
+				<a href="#">Fetch</a> &nbsp;|&nbsp; 
+				<a href="#">Diff</a> &nbsp;|&nbsp;
+				<a href="controllers.php?purgeRev='.$entry['id'].'">Purge</a>	
+				</td></tr>';
+
+			$this->revs['jsn'][$entry['id']] = $entry['content'];
+
+			$this->revs['cnt']++;
+		}
+		$this->revs['cnt']--;
+		
+		if ($this->revs['log'] == '') 
+			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
+	}
+	
 	// Function to Build Treeview HTML
 	private function buildTree() {
 		$this->treehtml = '<ul>';
 		foreach (glob("../site-assets/css/*.css") as $entry) {
 			$entry = substr($entry, 19, strlen($entry)-19);
 			$myclass = ($this->filename == $entry) ? 'label label-info' : '';
-			$this->treehtml .= '<li><i class="icon-tint icon-white"></i> <a href="styles.php?show='.
+			$this->treehtml .= '<li><i class="icon-tint"></i> <a href="styles.php?show='.
 				$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
 
 		}
@@ -128,7 +154,7 @@ class ezStyles extends ezCMS {
 	}
 	
 	// Function to Delete the JavasStylesheet file
-	private function delete() {
+	private function deleteFile() {
 	
 		$filename = $_REQUEST['delfile'];
 		$show = substr($filename, 19 , strlen($filename)-19);

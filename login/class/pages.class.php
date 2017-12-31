@@ -29,24 +29,17 @@ class ezPages extends ezCMS {
 		parent::__construct();
 		
 		// Update the Controller of Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->update();
-		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 		
 		// Check if file to display is set
-		if (isset($_GET['id'])) {
-			$this->id = $_GET['id'];
-		} 
+		if (isset($_GET['id'])) $this->id = $_GET['id'];
 		
 		if ($this->id <> 'new' ) {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
-
 			$this->setOptions('published', 
 				'Page is published and visible to all.', 
 				'Unpublished page only visible when logged in.');
-
-			
 		}
 		
 		//Build the HTML Treeview
@@ -55,6 +48,37 @@ class ezPages extends ezCMS {
 		// Get the Message to display if any
 		$this->getMessage();
 
+	}
+	
+	// Function to fetch the revisions
+	private function getRevisions() {
+	
+		foreach ($this->query("SELECT git_files.*, users.username 
+				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+				WHERE git_files.fullpath = 'index.php'
+				ORDER BY git_files.id DESC") as $entry) {
+	
+			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
+				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
+			
+			$this->revs['log'] .= '<tr>
+				<td>'.$entry['id'].'</td>
+				<td>'.$entry['username'].'</td>
+				<td>'.$entry['createdon'].'</td>
+			  	<td data-rev-id="'.$entry['id'].'">
+				<a href="#">Fetch</a> &nbsp;|&nbsp; 
+				<a href="#">Diff</a> &nbsp;|&nbsp;
+				<a href="controllers.php?purgeRev='.$entry['id'].'">Purge</a>	
+				</td></tr>';
+
+			$this->revs['jsn'][$entry['id']] = $entry['content'];
+
+			$this->revs['cnt']++;
+		}
+		$this->revs['cnt']--;
+		
+		if ($this->revs['log'] == '') 
+			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
 	}
 	
 	protected function setOptions($itm, $msgOn, $mgsOff) {
@@ -72,7 +96,7 @@ class ezPages extends ezCMS {
 		$this->treehtml = '<ul id="left-tree">';
 		foreach ($this->query('select `id` , `title` , `url`, `published`, `description` from  `pages` where `parentid` = 1 order by place;') as $entry) {
 			$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
-			$this->treehtml .= '<li><i class="icon-user icon-white"></i> <a href="pages.php?id='.
+			$this->treehtml .= '<li><i class="icon-user"></i> <a href="pages.php?id='.
 				$entry['id'].'" class="'.$myclass.'">'.$entry["title"].'</a></li>';
 			
 			

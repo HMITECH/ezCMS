@@ -35,7 +35,7 @@ class ezUsers extends ezCMS {
 		
 		// Check if delete ID is set
 		if (isset($_GET['delid'])) {
-			$this->delete ();
+			$this->deleteUser ();
 		} 		
 		// Check if user to display is set
 		if (isset($_GET['id'])) {
@@ -107,7 +107,7 @@ class ezUsers extends ezCMS {
 		$this->treehtml .= '</ul></li></ul>';		
 	}
 	
-	private function delete() {
+	private function deleteUser() {
 	
 		// Check permissions
 		if (!$this->usr['edituser']) {

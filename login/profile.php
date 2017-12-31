@@ -66,9 +66,9 @@ $cms = new ezProfile();
 			<div class="container-fluid">
 			  <div class="row-fluid">
 			  
-			    <div class="span3"></div>
+			    <div class="span4"></div>
 				
-				<div class="span6 white-boxed">
+				<div class="span4 white-boxed">
 				
 					<blockquote>
 					  <p>Change your password</p>
@@ -104,7 +104,7 @@ $cms = new ezProfile();
 					  
 					</form>
 				</div>
-				<div class="span3"></div>
+				<div class="span4"></div>
 			  </div>
 			</div>
 		</div> 

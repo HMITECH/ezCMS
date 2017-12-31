@@ -24,9 +24,6 @@ class ezLayouts extends ezCMS {
 	
 	public $treehtml = '';
 	
-	public $revCount = '2';
-	public $revLog = '';
-	
 	// Consturct the class
 	public function __construct () {
 	
@@ -39,9 +36,7 @@ class ezLayouts extends ezCMS {
 		} 
 		
 		// Check if file is to be deleted
-		if (isset($_GET['delfile'])) {
-			$this->delete();
-		} 		
+		if (isset($_GET['delfile'])) $this->deleteFile();
 		
 		// Check if layout file is present
 		if (!file_exists('../'.$this->filename)) {
@@ -67,6 +62,9 @@ class ezLayouts extends ezCMS {
 		
 		//Build the HTML Treeview
 		$this->buildTree();
+		
+		// Get the Revisions
+		$this->getRevisions();
 
 		// Get the Message to display if any
 		$this->getMessage();
@@ -79,21 +77,53 @@ class ezLayouts extends ezCMS {
 		foreach (glob("../layout.*.php") as $entry) {
 			$entry = substr($entry, 10, strlen($entry)-10);
 			$myclass = ($this->filename == 'layout.'.$entry) ? 'label label-info' : '';
-			$this->treehtml .= '<li><i class="icon-list-alt icon-white"></i> <a href="layouts.php?show='.
+			$this->treehtml .= '<li><i class="icon-list-alt"></i> <a href="layouts.php?show='.
 				$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
-
 		}
 		$this->treehtml .= '</ul>';
 	}
 	
+	// Function to fetch the revisions
+	private function getRevisions() {
+		
+		foreach ($this->query("SELECT git_files.*, users.username
+				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+				WHERE git_files.fullpath = '".$this->filename."'
+				ORDER BY git_files.id DESC") as $entry) {
+
+			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
+				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
+
+			$this->revs['log'] .= '<tr>
+				<td>'.$entry['id'].'</td>
+				<td>'.$entry['username'].'</td>
+				<td>'.$entry['createdon'].'</td>
+			  	<td data-rev-id="'.$entry['id'].'">
+				<a href="#">Fetch</a> &nbsp;|&nbsp; 
+				<a href="#">Diff</a> &nbsp;|&nbsp;
+				<a href="layouts.php?purgeRev='.$entry['id'].'">Purge</a>	
+				</td></tr>';
+
+			$this->revs['jsn'][$entry['id']] = $entry['content'];
+
+			$this->revs['cnt']++;
+		}
+		$this->revs['cnt']--;
+		
+		if ($this->revs['log'] == '') 
+			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
+	}
+
+	
 	// Function to Delete the Layout
-	private function delete() {
+	private function deleteFile() {
 	
 		$filename = $_REQUEST['delfile'];
 		$show = substr($filename, 7 , strlen($filename)-7);
 		
 		// Check permissions
 		if (!$this->usr['editlayout']) {
+			die('MA');
 			header("Location: layouts.php?flg=noperms&show=$show");
 			exit;
 		}
@@ -135,6 +165,7 @@ class ezLayouts extends ezCMS {
 
 		// Check permissions
 		if (!$this->usr['editlayout']) {
+			die('yo');
 			header("Location: layouts.php?flg=noperms&show=$show");
 			exit;
 		}

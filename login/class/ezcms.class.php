@@ -15,10 +15,12 @@ require_once ("../cms.class.php"); // PDO Class for database access
 // Class to handle post data
 class ezCMS extends db {
  
-	public $flg = ''; // Set the error message flag to none
-	public $msg = ''; // Message to disaply if any
-	public $usr; // Logged in user record
-
+	public $flg = ''; 	// Set the error message flag to none
+	public $msg = ''; 	// Message to disaply if any
+	public $usr; 		// Logged in user record
+	// Stores Revision Details
+	public $revs = array('log' => '', 'opt' => '', 'cnt' => 1, 'jsn' => array());
+	
 	// Consturct the class
 	public function __construct ( $loginRequired = true ) {
 	
@@ -46,6 +48,9 @@ class ezCMS extends db {
 			$this->usr = $this->query('SELECT * FROM `users` WHERE `id` = '.
 				$_SESSION['EZUSERID'].' LIMIT 1')->fetch(PDO::FETCH_ASSOC); // get the user details
 		}
+		
+		// init revision vars
+		$this->revs = array('log' => '', 'opt' => '', 'cnt' => 1, 'jsn' => array());
 		
 		// Check if Message Flag is set
 		if (isset($_GET["flg"])) { 

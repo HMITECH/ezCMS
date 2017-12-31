@@ -206,8 +206,7 @@ $cms = new ezUsers();
 								class="input-block-level tooltipme2">
 						</div>
 					</div>
-					<h4 style="margin:20px 0; padding:10px; background-color:#EFEFEF; border-radius: 5px;">
-						User Rights <small>(User must Logout and login again for changes to take effect)</small></h4>
+						<h4 style="margin:20px 0; padding:10px; text-align:center; background:#fff">User privileges </h4>
 
 					<div class="row" style="margin-left:0">
 						<div class="span4">
@@ -219,9 +218,6 @@ $cms = new ezUsers();
 									'<span class="label label-info">User is Active.</span>';
 								else echo 
 									'<span class="label label-important">Inactive user cannot login.</span>';?>
-							<label class="checkbox hide">
-								<input name="ckviewstats" type="checkbox" id="ckviewstats" value="checkbox">
-								Visitor Tracking</label>
 							<hr>
 							<label class="checkbox">
 								<input name="ckeditpage" type="checkbox" id="ckeditpage" value="checkbox" <?php echo $editpage; ?>>
