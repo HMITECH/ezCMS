@@ -89,7 +89,7 @@ class ezSettings extends ezCMS {
 					WHERE site.id <> ".$this->site['id']." ORDER BY site.id DESC") as $entry) {
 					
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
-				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
+				$entry['id'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
 				
 			$this->revs['log'] .= '<tr>
 				<td>'.$entry['id'].'</td>
