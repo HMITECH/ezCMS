@@ -4,7 +4,7 @@
  *
  * HMI Technologies Mumbai
  *
- * Controller: Front-end Controller - index.php
+ * Controller: Front-end Router - index.php
  * Renders all the pages in the CMS.
  */
 
