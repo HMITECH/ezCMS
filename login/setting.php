@@ -23,7 +23,6 @@ $cms = new ezSettings();
 	<div id="wrap">
 		<?php include('include/nav.php'); ?>  
 		<div class="container">
-		<div class="container-fluid">
 		
 			<div id="diffBlock" class="white-boxed">
 				<div class="navbar"><div class="navbar-inner">
@@ -32,9 +31,9 @@ $cms = new ezSettings();
 					<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
 				</div></div>
 				<table id="diffviewerControld" width="100%" border="0">
-				  <tr><td><select><option value="0">Current Page (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+				  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 					</td><td><select disabled><option selected>Your Current Edit</option></select>
-					</td><td><select><option value="0">Current Page (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+					</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
 				  </td></tr>
 				</table>
 				<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
@@ -89,7 +88,7 @@ $cms = new ezSettings();
 			</div>
 			<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>			
 			
-		</div></div>
+		</div>
 	</div>
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">
@@ -166,7 +165,7 @@ $cms = new ezSettings();
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
 	
-	var revJson = <?php echo json_encode($cms->revs['jsn']); ?>
+	var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
 	
 	var myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter;
 

@@ -75,18 +75,17 @@ class ezSettings extends ezCMS {
 	
 	}
 	
-	// Function to Update the Defaults Settings
+	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		// Create the Revision Log here
 		$this->revs['log'] = '';
 		$this->revs['opt'] = '';
 		$this->revs['cnt'] = 1;
 		$this->revs['jsn'] = array();
 		
 		foreach ($this->query("SELECT site.*, users.username
-					FROM site LEFT JOIN users ON site.createdby = users.id
-					WHERE site.id <> ".$this->site['id']." ORDER BY site.id DESC") as $entry) {
+				FROM site LEFT JOIN users ON site.createdby = users.id
+				WHERE site.id <> ".$this->site['id']." ORDER BY site.id DESC") as $entry) {
 					
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
 				$entry['id'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
