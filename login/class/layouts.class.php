@@ -104,6 +104,10 @@ class ezLayouts extends ezCMS {
 	
 	// Function to fetch the revisions
 	private function getRevisions() {
+	
+		$show = '';
+		if ($this->filename != "layout.php")
+			$show = '&show='.substr($this->filename, 7 , strlen($this->filename)-7);	
 		
 		foreach ($this->query("SELECT git_files.*, users.username
 				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
@@ -112,11 +116,7 @@ class ezLayouts extends ezCMS {
 
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
 				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
-			
-			$show = '';
-			if ($this->filename != "layout.php")
-				$show = '&show='.substr($this->filename, 7 , strlen($this->filename)-7);
-			
+
 			$this->revs['log'] .= '<tr>
 				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
@@ -124,7 +124,7 @@ class ezLayouts extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="layouts.php?purgeRev='.$entry['id'].$show.'">Purge</a>	
+				<a href="?purgeRev='.$entry['id'].$show.'">Purge</a>	
 				</td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];

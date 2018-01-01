@@ -64,8 +64,39 @@ class ezStyles extends ezCMS {
 
 	}
 	
+	// Function to Update the Defaults Settings
+	private function delRevision() {
+
+		$show = '';
+		if ($this->filename != "../style.css")
+			$show = '&show='.substr($this->filename, 19 , strlen($this->filename)-19);
+
+		// Check permissions
+		if (!$this->usr['editcss']) {
+			header("Location: ?flg=noperms$show");
+			exit;
+		}
+		
+		// Get the revision ID to delete
+		$revID = intval($_GET['purgeRev']);
+		
+		// Delete the revision
+		if ( $this->delete('git_files',$revID) ) {
+			header("Location: ?flg=saved$show");
+			exit;
+		}
+		
+		header("Location: ?flg=failed$show");
+		exit;		
+	
+	}
+	
 	// Function to fetch the revisions
 	private function getRevisions() {
+	
+		$show = '';
+		if ($this->filename != "../style.css")
+			$show = '&show='.substr($this->filename, 19 , strlen($this->filename)-19);
 	
 		foreach ($this->query("SELECT git_files.*, users.username
 				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
@@ -76,13 +107,13 @@ class ezStyles extends ezCMS {
 				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
 			
 			$this->revs['log'] .= '<tr>
-				<td>'.$entry['id'].'</td>
+				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="controllers.php?purgeRev='.$entry['id'].'">Purge</a>	
+				<a href="?purgeRev='.$entry['id'].$show.'">Purge</a>	
 				</td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];
