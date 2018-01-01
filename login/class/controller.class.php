@@ -154,15 +154,9 @@ class ezController extends ezCMS {
 				break;
 			case "saved":
 				$this->setMsgHTML('success','URL Router Saved !','You have successfully saved the URL Router.');
-				break;
-			case "nochange":
-				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
-				break;				
+				break;			
 			case "unwriteable":
 				$this->setMsgHTML('error','Not Writeable !','The URL Router file is NOT writeable.');
-				break;
-			case "noperms":
-				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
 				break;
 		}
 		

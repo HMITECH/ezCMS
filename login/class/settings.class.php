@@ -156,12 +156,6 @@ class ezSettings extends ezCMS {
 			case "saved":
 				$this->setMsgHTML('success','Default Settings Updated !','Successfully updated.');
 				break;
-			case "nochange":
-				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
-				break;
-			case "noperms":
-				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
-				break;
 		}
 
 	}

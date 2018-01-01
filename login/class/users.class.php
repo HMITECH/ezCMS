@@ -188,9 +188,6 @@ class ezUsers extends ezCMS {
 			case "unwriteable":
 				$this->setMsgHTML('error','Not Writeable !','The controller file is NOT writeable.');
 				break;
-			case "noperms":
-				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
-				break;
 		}
 
 	}

@@ -56,6 +56,9 @@ class ezCMS extends db {
 			$this->flg = $_GET["flg"];
 		}
 		
+		// Load message for standard flags
+		$this->getStdFlgMessage();
+		
 	}
 	
 	// this function will set the formatted html to display
@@ -136,7 +139,23 @@ class ezCMS extends db {
 			$t[] = "`$n` = ?"; 
 		}
 		return implode(', ', $t); 
-	}	
+	}
+
+	// Function to Set the Display Message
+	private function getStdFlgMessage() {
+
+		// Set the HTML to display for this flag
+		switch ($this->flg) {
+			case "nochange":
+				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
+				break;
+			case "noperms":
+				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
+				break;
+		}
+
+	}
+
 
 }
 ?>

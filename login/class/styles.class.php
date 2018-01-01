@@ -255,17 +255,11 @@ class ezStyles extends ezCMS {
 			case "delfailed":
 				$this->setMsgHTML('error','Deleted Failed !','An error occurred and the file was NOT deleted.');
 				break;
-			case "nochange":
-				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
-				break;
 			case "deleted":
 				$this->setMsgHTML('default','Deleted !','You have successfully deleted the file.');
 				break;
 			case "unwriteable":
 				$this->setMsgHTML('error','Not Writeable !','The controller file is NOT writeable.');
-				break;
-			case "noperms":
-				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
 				break;
 		}
 		
