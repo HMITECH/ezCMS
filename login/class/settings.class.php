@@ -62,11 +62,11 @@ class ezSettings extends ezCMS {
 		
 		// Delete the revision
 		if ( $this->delete('site',$revID) ) {
-			header("Location: ?flg=saved");
+			header("Location: ?flg=revdeleted");
 			exit;
 		}
 		
-		header("Location: ?flg=failed");
+		header("Location: ?flg=revdelfailed");
 		exit;		
 	
 	}
@@ -150,12 +150,7 @@ class ezSettings extends ezCMS {
 
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the update failed.');
-				break;
-			case "saved":
-				$this->setMsgHTML('success','Default Settings Updated !','Successfully updated.');
-				break;
+
 		}
 
 	}
