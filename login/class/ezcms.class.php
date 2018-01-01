@@ -59,6 +59,13 @@ class ezCMS extends db {
 		
 	}
 	
+	// this function will set the formatted html to display
+	public function setMsgHTML ($class, $caption, $subcaption ) {
+		$this->msg = '<div class="alert alert-'.$class.'">
+			<button type="button" class="close" data-dismiss="alert">x</button>
+			<strong>'.$caption.'</strong><br>'.$subcaption.'</div>';
+	}
+	
 	// Add to Database table and returns new ID, false if failed
 	protected function add($table, $data) {
 	
@@ -106,13 +113,6 @@ class ezCMS extends db {
 		return false;
 		
 	}	
-
-	// this function will set the formatted html to display
-	protected function setMsgHTML ($class, $caption, $subcaption ) {
-		$this->msg = '<div class="alert alert-'.$class.'">
-			<button type="button" class="close" data-dismiss="alert">x</button>
-			<strong>'.$caption.'</strong><br>'.$subcaption.'</div>';
-	}
 	
 	protected  function fetchPOSTData($f, &$d) { 
 		foreach($f as $k) {

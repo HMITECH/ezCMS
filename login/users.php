@@ -206,98 +206,66 @@ $cms = new ezUsers();
 								class="input-block-level tooltipme2">
 						</div>
 					</div>
-						<h4 style="margin:20px 0; padding:10px; text-align:center; background:#fff">User privileges </h4>
+					<h4 style="margin:20px 0; padding:10px; text-align:center; background:#fff">User privileges </h4>
 
 					<div class="row" style="margin-left:0">
 						<div class="span4">
 							<label class="checkbox">
 								<input name="ckactive" type="checkbox" id="ckactive"
-									value="checkbox" <?php echo $active; ?>>
-								Active</label>
-							<?php if ($active == "checked") echo 
-									'<span class="label label-info">User is Active.</span>';
-								else echo 
-									'<span class="label label-important">Inactive user cannot login.</span>';?>
+									value="checkbox" <?php echo $cms->thisUser['activeCheck']; ?>>
+								Active</label><?php echo $cms->thisUser['activeMsg']; ?>
 							<hr>
 							<label class="checkbox">
-								<input name="ckeditpage" type="checkbox" id="ckeditpage" value="checkbox" <?php echo $editpage; ?>>
-								Manage Pages</label>
-							<?php if ($editpage == "checked") echo 
-									'<span class="label label-info">Page management available.</span>';
-								else echo 
-									'<span class="label label-important">Page management blocked.</span>';?>			
+								<input name="ckeditpage" type="checkbox" id="ckeditpage" 
+									value="checkbox" <?php echo $cms->thisUser['editpageCheck']; ?>>
+								Manage Pages</label><?php echo $cms->thisUser['editpageMsg']; ?>
 							<br><br>
 							<label class="checkbox">
-								<input name="ckdelpage" type="checkbox" id="ckdelpage" value="checkbox" <?php echo $delpage; ?>>
-								Delete Pages</label>
-							<?php if ($delpage == "checked") echo 
-									'<span class="label label-info">Page delete available.</span>';
-								else echo 
-									'<span class="label label-important">Page delete blocked.</span>';?>
+								<input name="ckdelpage" type="checkbox" id="ckdelpage" value="checkbox" 
+									<?php echo $cms->thisUser['delpageCheck']; ?>>
+								Delete Pages</label><?php echo $cms->thisUser['delpageMsg']; ?>
 							<hr>
 						</div>
 						<div class="span4">
 							<label class="checkbox">
-								<input name="ckedituser" type="checkbox" id="ckedituser" value="checkbox" <?php echo $edituser; ?>>
-								Manage Users</label>
-							<?php if ($edituser == "checked") echo 
-									'<span class="label label-info">User can manage other users.</span>';
-								else echo 
-									'<span class="label label-important">User cannot manage other users.</span>';?>	
-							<br><br>
-							<label class="checkbox">
-								<input name="ckdeluser" type="checkbox" id="ckdeluser" value="checkbox" <?php echo $deluser; ?>>
-								Delete Users</label>
-							<?php if ($deluser == "checked") echo 
-									'<span class="label label-info">User can delete other users.</span>';
-								else echo 
-									'<span class="label label-important">User cannot delete other users.</span>';?>
-							<hr>							
-							<label class="checkbox">
-								<input name="ckeditsettings" type="checkbox" id="ckusemailer" value="checkbox" <?php echo $editsettings; ?>>
-								Manage Settings</label>
-							<?php if ($editsettings == "checked") echo 
-									'<span class="label label-info">Template Settings management available.</span>';
-								else echo 
-									'<span class="label label-important">Template Settings management blocked.</span>';?>
-							<br><br>
-							<label class="checkbox">
-								<input name="ckeditcontroller" type="checkbox" id="ckeditcontroller" value="checkbox" <?php echo $editcontroller; ?>>
-								Manage Controller</label>
-							<?php if ($editcontroller == "checked") echo 
-									'<span class="label label-info">Template Controller management available.</span>';
-								else echo 
-									'<span class="label label-important">Template Controller management blocked.</span>';?>
-							<hr>
+								<input name="ckedituser" type="checkbox" id="ckedituser" value="checkbox" <?php echo $cms->thisUser['edituserCheck']; ?>>
+								Manage Users</label><?php echo $cms->thisUser['edituserMsg']; ?>
 
+							<br><br>
+							<label class="checkbox">
+								<input name="ckdeluser" type="checkbox" id="ckdeluser" value="checkbox" <?php echo $cms->thisUser['deluserCheck']; ?>>
+								Delete Users</label><?php echo $cms->thisUser['deluserMsg']; ?>
+
+							<hr>
+							<label class="checkbox">
+								<input name="ckeditsettings" type="checkbox" id="ckusemailer" value="checkbox" <?php echo $cms->thisUser['editsettingsCheck']; ?>>
+								Manage Settings</label><?php echo $cms->thisUser['editsettingsMsg']; ?>
+
+							<br><br>
+							<label class="checkbox">
+								<input name="ckeditcontroller" type="checkbox" id="ckeditcontroller" value="checkbox" <?php echo $cms->thisUser['editcontCheck']; ?>>
+								Manage Router</label><?php echo $cms->thisUser['editcontMsg']; ?>
+								
+							<hr>
 						</div>
 						<div class="span4">
 							<label class="checkbox">
-								<input name="ckeditlayout" type="checkbox" id="ckeditlayout" value="checkbox" <?php echo $editlayout; ?>>
-								Manage Layouts</label>
-							<?php if ($editlayout == "checked") echo 
-									'<span class="label label-info">Template Layout management available.</span>';
-								else echo 
-									'<span class="label label-important">Template Layout management blocked.</span>';?>
+								<input name="ckeditlayout" type="checkbox" id="ckeditlayout" value="checkbox" <?php echo $cms->thisUser['editlayoutCheck']; ?>>
+								Manage Layouts</label><?php echo $cms->thisUser['editlayoutMsg']; ?>
+
 							<br><br>
 							<label class="checkbox">
-								<input name="ckeditcss" type="checkbox" id="ckeditcss" value="checkbox" <?php echo $editcss; ?>>
-								Manage Styles</label>
-							<?php if ($editcss == "checked") echo 
-									'<span class="label label-info">Template Stylesheet management available.</span>';
-								else echo 
-									'<span class="label label-important">Template Stylesheet management blocked.</span>';?>
+								<input name="ckeditcss" type="checkbox" id="ckeditcss" value="checkbox" <?php echo $cms->thisUser['editcssCheck']; ?>>
+								Manage Styles</label><?php echo $cms->thisUser['editcssMsg']; ?>
+
 							<br><br>
 							<label class="checkbox">
-								<input name="ckeditjs" type="checkbox" id="ckeditjs" value="checkbox" <?php echo $editjs; ?>>
-								Manage Javascripts</label>
-							<?php if ($editjs == "checked") echo 
-									'<span class="label label-info">Template Javascript management available.</span>';
-								else echo 
-									'<span class="label label-important">Template Javascript management blocked.</span>';?>							
+								<input name="ckeditjs" type="checkbox" id="ckeditjs" value="checkbox" <?php echo $cms->thisUser['editjsCheck']; ?>>
+								Manage Javascripts</label><?php echo $cms->thisUser['editjsMsg']; ?>
+
 							<hr>
 						</div>
-					</div>
+					</div><!-- / row -->
 			    </form>
 			</div>
 		  </div>

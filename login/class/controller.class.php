@@ -40,6 +40,29 @@ class ezController extends ezCMS {
 
 	}
 	
+	// Function to Update the Defaults Settings
+	private function delRevision() {
+
+		// Check permissions
+		if (!$this->usr['editcont']) {
+			header("Location: controllers.php?flg=noperms");
+			exit;
+		}
+		
+		// Get the revision ID to delete
+		$revID = intval($_GET['purgeRev']);
+		
+		// Delete the revision
+		if ( $this->delete('git_files',$revID) ) {
+			header("Location: controllers.php?flg=saved");
+			exit;
+		}
+		
+		header("Location: controllers.php?flg=failed");
+		exit;		
+	
+	}
+	
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
@@ -98,7 +121,7 @@ class ezController extends ezCMS {
 
 		// Check if nothing has changed		
 		$original = file_get_contents("../index.php");
-		if ($original == $this->content) {
+		if ($original == $contents) {
 			header("Location: controllers.php?flg=nochange");
 			exit;
 		}

@@ -98,8 +98,6 @@ class ezPages extends ezCMS {
 			$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
 			$this->treehtml .= '<li><i class="icon-user"></i> <a href="pages.php?id='.
 				$entry['id'].'" class="'.$myclass.'">'.$entry["title"].'</a></li>';
-			
-			
 		}
 		$this->treehtml .= '</ul>';		
 

@@ -89,7 +89,7 @@ $cms = new ezLayouts();
 								  
 								</div>
 								<?php if ($cms->filename!='layout.php') 
-									echo '<a href="scripts/del-layouts.php?delfile='.
+									echo '<a href="?delfile='.
 										$cms->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
 								<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 								<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>

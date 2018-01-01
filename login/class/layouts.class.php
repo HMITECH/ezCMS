@@ -31,12 +31,13 @@ class ezLayouts extends ezCMS {
 		parent::__construct();
 		
 		// Check if file to display is set
-		if (isset($_GET['show'])) {
-			$this->filename = 'layout.'.$_GET['show'];
-		} 
+		if (isset($_GET['show'])) $this->filename = 'layout.'.$_GET['show'];
 		
 		// Check if file is to be deleted
 		if (isset($_GET['delfile'])) $this->deleteFile();
+		
+		// Purge Revision
+		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
 		// Check if layout file is present
 		if (!file_exists('../'.$this->filename)) {
@@ -48,9 +49,7 @@ class ezLayouts extends ezCMS {
 		$this->content = htmlspecialchars(file_get_contents('../'.$this->filename));
 		
 		// Update the Controller of Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->update();
-		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 		
 		// Set selected class on home node if defaults file
 		if ($this->filename=="layout.php") {
@@ -69,6 +68,32 @@ class ezLayouts extends ezCMS {
 		// Get the Message to display if any
 		$this->getMessage();
 
+	}
+	
+	// Function to Update the Defaults Settings
+	private function delRevision() {
+
+		$show = substr($this->filename, 7 , strlen($this->filename)-7);
+		if ($show == 'php') $show = ''; 
+
+		// Check permissions
+		if (!$this->usr['editlayout']) {
+			header("Location: layouts.php?flg=noperms&show=$show");
+			exit;
+		}
+		
+		// Get the revision ID to delete
+		$revID = intval($_GET['purgeRev']);
+		
+		// Delete the revision
+		if ( $this->delete('git_files',$revID) ) {
+			header("Location: layouts.php?flg=saved&show=$show");
+			exit;
+		}
+		
+		header("Location: layouts.php?flg=failed&show=$show");
+		exit;		
+	
 	}
 	
 	// Function to Build Treeview HTML
@@ -95,13 +120,13 @@ class ezLayouts extends ezCMS {
 				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
 
 			$this->revs['log'] .= '<tr>
-				<td>'.$entry['id'].'</td>
+				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="layouts.php?purgeRev='.$entry['id'].'">Purge</a>	
+				<a href="layouts.php?show='.$show = substr($this->filename, 7 , strlen($this->filename)-7).'&purgeRev='.$entry['id'].'">Purge</a>	
 				</td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];
@@ -157,31 +182,52 @@ class ezLayouts extends ezCMS {
 		if ( (!isset($_POST['Submit'])) || (!isset($_POST['txtContents'])) || (!isset($_POST["txtName"])) ) {
 			header('HTTP/1.1 400 BAD REQUEST');
 			die('Invalid Request');
-		}		
-	
+		}
+		
 		$filename = $_POST["txtName"];
-		$contents = ($_POST["txtContents"]);
+		$contents = $_POST["txtContents"];
 		$show = substr($filename, 7 , strlen($filename)-7);
-
+		
+		
 		// Check permissions
 		if (!$this->usr['editlayout']) {
-			die('yo');
 			header("Location: layouts.php?flg=noperms&show=$show");
 			exit;
 		}
-	
+
 		// Layout file must begin with 'layout.' and end with '.php'
 		if ((substr($filename,0,7)!='layout.') || (substr($filename,-4)!='.php') ) {
 			header('HTTP/1.1 400 BAD REQUEST');
 			die('Invalid Request');
 		}
 
-		// Check if controller is writeable
-		if (!is_writable("../$filename")) {
-			$this->flg = 'unwriteable';
-			$this->filename = $filename;
-			$this->content = htmlspecialchars($contents);
-			return;
+		// If file is missing then it is a copy 
+		if (file_exists("../$filename")) {
+		
+			// Check if writeable
+			if (!is_writable("../$filename")) {
+				$this->flg = 'unwriteable';
+				$this->filename = $filename;
+				$this->content = htmlspecialchars($contents);
+				return;
+			}
+			
+			// Check if nothing has changed		
+			$original = file_get_contents("../$filename");
+			if ($original == $contents) {
+				header("Location: layouts.php?flg=nochange&show=$show");
+				exit;
+			}
+	
+			// Create a revision
+			$data = array (	'content' => $original, 
+							'fullpath' => $filename, 
+							'createdby' => $this->usr['id']);
+			if ( !$this->add('git_files', $data) ) {
+				header("Location: layouts.php?flg=revfailed&show=$show");
+				exit;
+			}			
+			
 		}
 		
 		// Save the layout file
@@ -212,6 +258,9 @@ class ezLayouts extends ezCMS {
 				break;
 			case "delfailed":
 				$this->setMsgHTML('error','Deleted Failed !','An error occurred and the layout was NOT deleted.');
+				break;
+			case "nochange":
+				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
 				break;
 			case "deleted":
 				$this->setMsgHTML('default','Layout Deleted !','You have successfully deleted the layout.');

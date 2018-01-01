@@ -92,7 +92,13 @@ class ezScripts extends ezCMS {
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		foreach ($this->query("SELECT git_files.*, users.username 
+		foreach ($this->query("SELECT git_files.id, users.username, git_files.content, git_files.createdon
+			FROM users LEFT JOIN git_files ON users.id = git_files.createdby
+			WHERE git_files.fullpath = '$cms->filename'
+			ORDER BY git_files.id DESC"
+		
+		
+		"SELECT git_files.*, users.username 
 				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
 				WHERE git_files.fullpath = 'index.php'
 				ORDER BY git_files.id DESC") as $entry) {

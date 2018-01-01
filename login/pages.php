@@ -466,7 +466,7 @@ $cms = new ezPages();
 							</div>
 						</div>
 						<textarea name="txtHeader" rows="30" id="txtHeader" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $header; ?></textarea>
+							class="input-block-level"><?php echo $cms->page['siderbar']; ?></textarea>
 					  </div>
 					  
 					  <div class="tab-pane" id="d-sidebar">
@@ -488,7 +488,7 @@ $cms = new ezPages();
 							</div>							
 						</div>
 						<textarea name="txtSide" rows="30" id="txtSide" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $sidebar; ?></textarea>
+							class="input-block-level"><?php echo $cms->page['sidebar']; ?></textarea>
 					  </div>
 					  
 					  <div class="tab-pane" id="d-siderbar">
@@ -506,23 +506,23 @@ $cms = new ezPages();
 											echo '<span class="label label-info">Page will display the default sidebar B.</span>'; ?>
 							</div>									
 							<div class="span4" style="text-align:right ">
-								<a href="scripts/copy-block.php?sidercopyid=<?php echo $id; ?>" class="btn btn-mini btn-primary">Copy Default Sidebar B</a>
+								<a href="scripts/copy-block.php?sidercopyid=<?php echo $cms->page['id']; ?>" class="btn btn-mini btn-primary">Copy Default Sidebar B</a>
 							</div>							
 						</div> 					  
 						<textarea name="txtrSide" rows="30" id="txtrSide" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $siderbar; ?></textarea>
+							class="input-block-level"><?php echo $cms->page['siderbar']; ?></textarea>
 					  </div>
 					  
 					  <div class="tab-pane" id="d-footer">
 						<div class="row" style="margin-left:0">
 							<div class="span4">
 								<label class="checkbox">
-								  <input name="ckFooter" type="checkbox" id="ckFooter" value="checkbox" <?php echo $usefooter; ?>>
+								  <input name="ckFooter" type="checkbox" id="ckFooter" value="checkbox" <?php echo $cms->page['usefooter'];?>>
 								  Enable custom footer
 								</label>
 							</div>
 							<div class="span4" style="text-align:center">
-								<?php if ($usefooter=='checked') 
+								<?php if ($cms->page['usefooter']=='checked') 
 											echo '<span class="label label-important">Page will display custom footer below.</span>';
 										else 
 											echo '<span class="label label-info">Page will display the default footer.</span>'; ?>							
@@ -532,7 +532,7 @@ $cms = new ezPages();
 							</div>							
 						</div> 
 						<textarea name="txtFooter" id="txtFooter" rows="30" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $footer; ?></textarea>
+							class="input-block-level"><?php $cms->page['footercontent']; ?></textarea>
 					  </div>
 					  
 					  <div class="tab-pane" id="d-head">
