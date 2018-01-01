@@ -149,15 +149,7 @@ class ezController extends ezCMS {
 	
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the URL Router was NOT saved.');
-				break;
-			case "saved":
-				$this->setMsgHTML('success','URL Router Saved !','You have successfully saved the URL Router.');
-				break;			
-			case "unwriteable":
-				$this->setMsgHTML('error','Not Writeable !','The URL Router file is NOT writeable.');
-				break;
+
 		}
 		
 	}

@@ -245,21 +245,7 @@ class ezLayouts extends ezCMS {
 	private function getMessage() {
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-			case "failed": // red
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the layout was NOT saved.');
-				break;
-			case "saved":
-				$this->setMsgHTML('success','Layout Saved !','You have successfully saved the Layout.');
-				break;
-			case "unwriteable":
-				$this->setMsgHTML('error','Not Writeable !','The Layout file is NOT writeable.');
-				break;
-			case "delfailed":
-				$this->setMsgHTML('error','Deleted Failed !','An error occurred and the layout was NOT deleted.');
-				break;
-			case "deleted":
-				$this->setMsgHTML('default','Layout Deleted !','You have successfully deleted the layout.');
-				break;
+
 		}
 		
 	}

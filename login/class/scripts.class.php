@@ -245,21 +245,7 @@ class ezScripts extends ezCMS {
 	
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the controller was NOT saved.');
-				break;
-			case "saved":
-				$this->setMsgHTML('success','Controller Saved !','You have successfully saved the controller.');
-				break;
-			case "delfailed":
-				$this->setMsgHTML('error','Deleted Failed !','An error occurred and the file was NOT deleted.');
-				break;
-			case "deleted":
-				$this->setMsgHTML('default','Deleted !','You have successfully deleted the filr.');
-				break;
-			case "unwriteable":
-				$this->setMsgHTML('error','Not Writeable !','The controller file is NOT writeable.');
-				break;
+
 		}
 		
 	}
