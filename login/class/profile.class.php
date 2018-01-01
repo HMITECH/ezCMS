@@ -12,18 +12,16 @@
 require_once ("ezcms.class.php"); // CMS Class for database access
 
 class ezProfile extends ezCMS {
-	
+
 	// Consturct the class
 	public function __construct () {
-	
+
 		// call parent constuctor
 		parent::__construct();
 				
 		// Update the Controller of Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->update();
-		}
-		
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
+
 	}
 	
 	// this function will check and update the password
@@ -55,7 +53,7 @@ class ezProfile extends ezCMS {
 		}
 		
 		// Prepare SQL to fetch user's record from dataabse
-		$id = $_SESSION['EZUSERID'];
+		$id = $this->usr['id'];
 		$stmt = $this->prepare("SELECT `id` FROM `users` WHERE `id` = $id AND `passwd` = SHA2( ? , 512 ) LIMIT 1");
 		$stmt->execute( array($curpass) );
 
