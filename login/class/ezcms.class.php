@@ -27,14 +27,10 @@ class ezCMS extends db {
 		parent::__construct();
 		
 		// Start SESSION if not started 
-		if (session_status() !== PHP_SESSION_ACTIVE) {
-			session_start(); 
-		}
+		if (session_status() !== PHP_SESSION_ACTIVE) session_start(); 
 		
 		// Set SESSION ADMIN Login Flag to false if not set
-		if (!isset($_SESSION['LOGGEDIN'])) {
-			$_SESSION['LOGGEDIN'] = false;
-		}
+		if (!isset($_SESSION['LOGGEDIN'])) $_SESSION['LOGGEDIN'] = false;
 		
 		// Redirect the user if NOT logged in
 		if ((!$_SESSION['LOGGEDIN']) && ($loginRequired) ) { 
@@ -52,9 +48,7 @@ class ezCMS extends db {
 		$this->revs = array('log' => '', 'opt' => '', 'cnt' => 1, 'jsn' => array());
 		
 		// Check if Message Flag is set
-		if (isset($_GET["flg"])) { 
-			$this->flg = $_GET["flg"];
-		}
+		if (isset($_GET["flg"])) $this->flg = $_GET["flg"];
 		
 		// Load message for standard flags
 		$this->getStdFlgMessage();
@@ -128,16 +122,12 @@ class ezCMS extends db {
 	}
 
 	protected  function fetchPOSTCheck($f, &$d) { 
-		foreach($f as $k) {
-			$d[$k] = (isset($_POST[$k])) ? 1 : 0;
-		}
+		foreach($f as $k) $d[$k] = (isset($_POST[$k])) ? 1 : 0;
 	}
 	
 	private function arrayToPDOstr($a) { 
 		$t = array(); 
-		foreach (array_keys($a) as $n) {
-			$t[] = "`$n` = ?"; 
-		}
+		foreach (array_keys($a) as $n) $t[] = "`$n` = ?"; 
 		return implode(', ', $t); 
 	}
 
@@ -159,7 +149,7 @@ class ezCMS extends db {
 				$this->setMsgHTML('default','Deleted !','You have successfully deleted the file.');
 				break;
 			case "revdeleted":
-				$this->setMsgHTML('default','Deleted !','You have successfully deleted the Revision.');
+				$this->setMsgHTML('success','Deleted !','You have successfully deleted the Revision.');
 				break;				
 			case "revdelfailed":
 				$this->setMsgHTML('error','Delete Failed !','An error occurred and the Revision was NOT deleted.');
@@ -176,7 +166,6 @@ class ezCMS extends db {
 		}
 
 	}
-
 
 }
 ?>

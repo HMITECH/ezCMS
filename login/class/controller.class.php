@@ -53,12 +53,12 @@ class ezController extends ezCMS {
 		
 		// Delete the revision
 		if ( $this->delete('git_files',$revID) ) {
-			header("Location: ?flg=saved");
+			header("Location: ?flg=revdeleted");
 			exit;
 		}
 		
-		header("Location: ?flg=failed");
-		exit;		
+		header("Location: ?flg=revdelfailed");
+		exit;
 	
 	}
 	

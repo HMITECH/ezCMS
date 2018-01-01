@@ -81,12 +81,12 @@ class ezLayouts extends ezCMS {
 		
 		// Delete the revision
 		if ( $this->delete('git_files',$revID) ) {
-			header("Location: ?flg=saved$show");
+			header("Location: ?flg=revdeleted$show");
 			exit;
 		}
 		
-		header("Location: ?flg=failed$show");
-		exit;		
+		header("Location: ?flg=revdelfailed$show");
+		exit;
 	
 	}
 	
