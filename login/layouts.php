@@ -6,36 +6,6 @@
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/layouts.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the layouts in the site
  * 
-if (isset($_GET["flg"])) $flg = $_GET["flg"]; else $flg = "";
-$msg = "";
-if ($flg=="red") 
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> An error occurred and the layout was NOT saved.</div>';
-if ($flg=="green")
-	$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Saved!</strong> You have successfully saved the layout.</div>';
-if ($flg=="pink") 
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> The layout file is NOT writeable.
-				You must contact HMI Tech Support to resolve this issue.</div>';
-if ($flg=="delfailed") 
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Delete Failed!</strong> An error occurred and the layout was NOT deleted.</div>';
-if ($flg=="deleted")
-	$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Deleted!</strong> You have successfully deleted the layout.</div>';
-if ($flg=="noperms") 
-	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Permission Denied!</strong> You do not have permissions for this action.</div>';
-if ($flg=="redrev") 
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> An error occurred and the controller revision was not purged.</div>';
-if ($flg=="greenrev")
-	$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Purged!</strong> You have successfully purged the controller revision.</div>';
-if ($flg=="nochange") 
-	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>No Change!</strong> There are no changes to save.</div>';
  */
 
 // **************** ezCMS LAYOUTS CLASS ****************

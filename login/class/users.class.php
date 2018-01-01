@@ -2,7 +2,6 @@
 /*
  * ezCMS Code written by mo.ahmed@hmi-tech.net & mosh.ahmed@gmail.com
  *
- * Version 4.160210
  * HMI Technologies Mumbai
  *
  * Class: ezCMS Users Class 

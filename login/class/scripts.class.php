@@ -2,33 +2,10 @@
 /*
  * ezCMS Code written by mo.ahmed@hmi-tech.net & mosh.ahmed@gmail.com
  *
- * Version 4.160210
  * HMI Technologies Mumbai
  *
- * Class: ezCMS Javascripts Class 
+ * Class: ezCMS Users Class 
  * 
-
-
-if ($flg=="red")
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> An error occurred and the javascript file was NOT saved.</div>';
-if ($flg=="green")
-	$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Saved!</strong> You have successfully saved the javascript file.</div>';
-if ($flg=="pink")
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> The javascript file is NOT writeable.
-				You must contact HMI Tech Support to resolve this issue.</div>';
-if ($flg=="delfailed")
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Delete Failed!</strong> An error occurred and the javascript file was NOT deleted.</div>';
-if ($flg=="deleted")
-	$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Deleted!</strong> You have successfully deleted the javascript file.</div>';
-if ($flg=="noperms")
-	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Permission Denied!</strong> You do not have permissions for this action.</div>'; 
- 
  */
 
 // **************** ezCMS CLASS ****************

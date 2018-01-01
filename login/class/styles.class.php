@@ -2,52 +2,10 @@
 /*
  * ezCMS Code written by mo.ahmed@hmi-tech.net & mosh.ahmed@gmail.com
  *
- * Version 4.160210
  * HMI Technologies Mumbai
  *
- * Class: ezCMS Stylessheets Class 
+ * Class: ezCMS Users Class 
  * 
- 
-
-
-$filelist = '';
-
-if ($handle = opendir('../site-assets/css')) {
-	while (false !== ($entry = readdir($handle))) {
-		if (preg_match('/\.css$/i',$entry)) {
-			if ($filename==$entry) $myclass = 'label label-info'; else $myclass = '';
-			$filelist .= '<li><i class="icon-tint icon-white"></i> <a href="styles.php?show='.
-				$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
-		}
-	}
-	closedir($handle);
-}
-
-if ($filename != "../style.css") $filename = "../site-assets/css/$filename";
-$content = @fread(fopen($filename, "r"), filesize($filename));
-$content =  htmlspecialchars($content);
-if (isset($_GET["flg"])) $flg = $_GET["flg"]; else $flg = "";
-$msg = "";
-if ($flg=="red")
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> An error occurred and the stylesheet was NOT saved.</div>';
-if ($flg=="green")
-	$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Saved!</strong> You have successfully saved the stylesheet.</div>';
-if ($flg=="pink")
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> The stylesheet file is NOT writeable.
-				You must contact HMI Tech Support to resolve this issue.</div>';
-if ($flg=="delfailed")
-	$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Delete Failed!</strong> An error occurred and the stylesheet was NOT deleted.</div>';
-if ($flg=="deleted")
-	$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Deleted!</strong> You have successfully deleted the stylesheet.</div>';
-if ($flg=="noperms")
-	$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Permission Denied!</strong> You do not have permissions for this action.</div>'; 
- 
  */
 
 // **************** ezCMS CLASS ****************
