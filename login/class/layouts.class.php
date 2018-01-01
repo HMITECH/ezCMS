@@ -15,13 +15,9 @@ require_once ("ezcms.class.php"); // CMS Class for database access
 class ezLayouts extends ezCMS {
 
 	public $filename = "layout.php";
-	
 	public $homeclass = '';
-	
 	public $deletebtn = '';
-	
 	public $content = '';
-	
 	public $treehtml = '';
 	
 	// Consturct the class
@@ -32,6 +28,12 @@ class ezLayouts extends ezCMS {
 		
 		// Check if file to display is set
 		if (isset($_GET['show'])) $this->filename = 'layout.'.$_GET['show'];
+		if ($this->filename=="layout.php") {
+			$this->homeclass = 'label label-info';
+		} else {
+			$this->deletebtn = '<a href="?delfile='.$this->filename.
+				'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';
+		}
 		
 		// Check if file is to be deleted
 		if (isset($_GET['delfile'])) $this->deleteFile();
@@ -48,16 +50,8 @@ class ezLayouts extends ezCMS {
 		// get the contents of the layout file
 		$this->content = htmlspecialchars(file_get_contents('../'.$this->filename));
 		
-		// Update the Controller of Posted
+		// Update if Posted
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
-		
-		// Set selected class on home node if defaults file
-		if ($this->filename=="layout.php") {
-			$this->homeclass = 'label label-info';
-		} else {
-			$this->deletebtn = '<a href="layouts.php?delfile='.
-				$this->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';
-		}
 		
 		//Build the HTML Treeview
 		$this->buildTree();
@@ -73,12 +67,13 @@ class ezLayouts extends ezCMS {
 	// Function to Update the Defaults Settings
 	private function delRevision() {
 
-		$show = substr($this->filename, 7 , strlen($this->filename)-7);
-		if ($show == 'php') $show = ''; 
+		$show = '';
+		if ($this->filename != "layout.php")
+			$show = '&show='.substr($this->filename, 7 , strlen($this->filename)-7);
 
 		// Check permissions
 		if (!$this->usr['editlayout']) {
-			header("Location: layouts.php?flg=noperms&show=$show");
+			header("Location: ?flg=noperms$show");
 			exit;
 		}
 		
@@ -87,11 +82,11 @@ class ezLayouts extends ezCMS {
 		
 		// Delete the revision
 		if ( $this->delete('git_files',$revID) ) {
-			header("Location: layouts.php?flg=saved&show=$show");
+			header("Location: ?flg=saved$show");
 			exit;
 		}
 		
-		header("Location: layouts.php?flg=failed&show=$show");
+		header("Location: ?flg=failed$show");
 		exit;		
 	
 	}
@@ -118,7 +113,11 @@ class ezLayouts extends ezCMS {
 
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
 				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
-
+			
+			$show = '';
+			if ($this->filename != "layout.php")
+				$show = '&show='.substr($this->filename, 7 , strlen($this->filename)-7);
+			
 			$this->revs['log'] .= '<tr>
 				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
@@ -126,7 +125,7 @@ class ezLayouts extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="layouts.php?show='.$show = substr($this->filename, 7 , strlen($this->filename)-7).'&purgeRev='.$entry['id'].'">Purge</a>	
+				<a href="layouts.php?purgeRev='.$entry['id'].$show.'">Purge</a>	
 				</td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];
@@ -149,7 +148,7 @@ class ezLayouts extends ezCMS {
 		// Check permissions
 		if (!$this->usr['editlayout']) {
 			die('MA');
-			header("Location: layouts.php?flg=noperms&show=$show");
+			header("Location: ?flg=noperms&show=$show");
 			exit;
 		}
 		
@@ -161,17 +160,17 @@ class ezLayouts extends ezCMS {
 
 		// Check if layout is writeable
 		if (!is_writable("../$filename")) {
-			header("Location: layouts.php?flg=unwriteable&show=$show");
+			header("Location: ?flg=unwriteable&show=$show");
 			exit;	
 		}		
 		
 		// Delete the file
 		if (unlink("../$filename")) {
-			header("Location: layouts.php?flg=deleted");
+			header("Location: ?flg=deleted");
 			exit;
 		}
 		// Failed to delete the file	
-		header("Location: layouts.php?flg=delfailed&show=$show");
+		header("Location: ?flg=delfailed&show=$show");
 		exit;	
 	}
 	
@@ -191,7 +190,7 @@ class ezLayouts extends ezCMS {
 		
 		// Check permissions
 		if (!$this->usr['editlayout']) {
-			header("Location: layouts.php?flg=noperms&show=$show");
+			header("Location: ?flg=noperms&show=$show");
 			exit;
 		}
 
@@ -215,7 +214,7 @@ class ezLayouts extends ezCMS {
 			// Check if nothing has changed		
 			$original = file_get_contents("../$filename");
 			if ($original == $contents) {
-				header("Location: layouts.php?flg=nochange&show=$show");
+				header("Location: ?flg=nochange&show=$show");
 				exit;
 			}
 	
@@ -224,7 +223,7 @@ class ezLayouts extends ezCMS {
 							'fullpath' => $filename, 
 							'createdby' => $this->usr['id']);
 			if ( !$this->add('git_files', $data) ) {
-				header("Location: layouts.php?flg=revfailed&show=$show");
+				header("Location: ?flg=revfailed&show=$show");
 				exit;
 			}			
 			
@@ -232,7 +231,7 @@ class ezLayouts extends ezCMS {
 		
 		// Save the layout file
 		if (file_put_contents("../$filename", $contents ) !== false) {
-			header("Location: layouts.php?flg=saved&show=$show");
+			header("Location: ?flg=saved&show=$show");
 			exit;
 		}
 		

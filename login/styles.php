@@ -133,9 +133,7 @@ $cms = new ezStyles();
 						  </div>
 						  
 						</div>
-						<?php if ($cms->filename!='../style.css') 
-							echo '<a href="scripts/del-styles.php?delfile='.
-								$cms->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+						<?php echo $cms->deletebtn; ?>
 						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
 						<?php } ?>

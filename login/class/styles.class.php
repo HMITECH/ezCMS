@@ -56,13 +56,9 @@ require_once ("ezcms.class.php"); // CMS Class for database access
 class ezStyles extends ezCMS {
 
 	public $filename = "../style.css";
-	
 	public $homeclass = '';
-	
 	public $deletebtn = '';
-	
 	public $content = '';
-	
 	public $treehtml = '';
 	
 	// Consturct the class
@@ -72,22 +68,20 @@ class ezStyles extends ezCMS {
 		parent::__construct();
 		
 		// Check if file to display is set
-		if (isset($_GET['show'])) {
-			$this->filename = $_GET['show'];
-		} 
+		if (isset($_GET['show'])) $this->filename = $_GET['show'];
+		if ($this->filename != "../style.css") {
+			$this->filename = "../site-assets/css/".$this->filename;
+			$this->deletebtn = '<a href="?delfile='.$this->filename.
+				'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';			
+		} else {
+			$this->homeclass = 'label label-info';
+		}
 		
 		// Check if file is to be deleted
 		if (isset($_GET['delfile'])) $this->deleteFile();
-
-		// Get the path to the target file
-		if ($this->filename != "../style.css") {
-			$this->filename = "../site-assets/css/".$this->filename;
-			
-		} else {
-			$this->homeclass = 'label label-info';
-			$this->deletebtn = '<a href="styles.php?delfile='.
-				$this->filename.'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';
-		}
+		
+		// Purge Revision
+		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
 		// Check if layout file is present
 		if (!file_exists($this->filename)) {
@@ -98,11 +92,14 @@ class ezStyles extends ezCMS {
 		// get the contents of the controller file (index.php)
 		$this->content = htmlspecialchars(file_get_contents($this->filename));
 		
-		// Update the Controller of Posted
+		// Update if Posted
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
-				
+
 		//Build the HTML Treeview
 		$this->buildTree();
+		
+		// Get the Revisions
+		$this->getRevisions();
 
 		// Get the Message to display if any
 		$this->getMessage();
@@ -112,9 +109,9 @@ class ezStyles extends ezCMS {
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		foreach ($this->query("SELECT git_files.*, users.username 
+		foreach ($this->query("SELECT git_files.*, users.username
 				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
-				WHERE git_files.fullpath = 'index.php'
+				WHERE git_files.fullpath = '".$this->filename."'
 				ORDER BY git_files.id DESC") as $entry) {
 	
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
@@ -144,8 +141,8 @@ class ezStyles extends ezCMS {
 	private function buildTree() {
 		$this->treehtml = '<ul>';
 		foreach (glob("../site-assets/css/*.css") as $entry) {
-			$entry = substr($entry, 19, strlen($entry)-19);
 			$myclass = ($this->filename == $entry) ? 'label label-info' : '';
+			$entry = substr($entry, 19, strlen($entry)-19);
 			$this->treehtml .= '<li><i class="icon-tint"></i> <a href="styles.php?show='.
 				$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
 
@@ -161,7 +158,7 @@ class ezStyles extends ezCMS {
 		
 		// Check permissions
 		if (!$this->usr['editcss']) {
-			header("Location: styles.php?flg=noperms&show=$show");
+			header("Location: ?flg=noperms&show=$show");
 			exit;
 		}
 		
@@ -173,17 +170,17 @@ class ezStyles extends ezCMS {
 
 		// Check if stylesheet is writeable
 		if (!is_writable($filename)) {
-			header("Location: styles.php?flg=unwriteable&show=$show");
+			header("Location: ?flg=unwriteable&show=$show");
 			exit;	
 		}		
 		
 		// Delete the file
 		if (unlink($filename)) {
-			header("Location: styles.php?flg=deleted");
+			header("Location: ?flg=deleted");
 			exit;
 		}
 		// Failed to delete the file	
-		header("Location: styles.php?flg=delfailed&show=$show");
+		header("Location: ?flg=delfailed&show=$show");
 		exit;	
 	}
 
@@ -198,36 +195,57 @@ class ezStyles extends ezCMS {
 		}		
 	
 		$filename = $_POST["txtName"];
-		$contents = ($_POST["txtContents"]);
-		$show = substr($filename, 18 , strlen($filename)-18);
+		$contents = $_POST["txtContents"];
+		$show = substr($filename, 19 , strlen($filename)-19);
 
 		// Check permissions
 		if (!$this->usr['editcss']) {
-			header("Location: styles.php?flg=noperms&show=$show");
+			header("Location: ?flg=noperms&show=$show");
 			exit;
 		}
 	
-		// Layout file must end with '.js'
+		// CSS file must end with '.css'
 		if (substr($filename,-4)!='.css') {
 			header('HTTP/1.1 400 BAD REQUEST');
 			die('Invalid Request');
 		}
 
-		// Check if controller is writeable
-		if (!is_writable($filename)) {
-			$this->flg = 'unwriteable';
-			$this->filename = $filename;
-			$this->content = htmlspecialchars($contents);
-			return;
+		// If file is missing then it is a copy 
+		if (file_exists($filename)) {
+
+			// Check if writeable
+			if (!is_writable($filename)) {
+				$this->flg = 'unwriteable';
+				$this->filename = $filename;
+				$this->content = htmlspecialchars($contents);
+				return;
+			}
+			
+			// Check if nothing has changed		
+			$original = file_get_contents($filename);
+			if ($original == $contents) {
+				header("Location: ?flg=nochange&show=$show");
+				exit;
+			}
+	
+			// Create a revision
+			$data = array (	'content' => $original, 
+							'fullpath' => $filename, 
+							'createdby' => $this->usr['id']);
+			if ( !$this->add('git_files', $data) ) {
+				header("Location: ?flg=revfailed&show=$show");
+				exit;
+			}			
+			
 		}
 		
-		// Save the layout file
+		// Save the file
 		if (file_put_contents($filename, $contents ) !== false) {
-			header("Location: styles.php?flg=saved&show=$show");
+			header("Location: ?flg=saved&show=$show");
 			exit;
 		}
 		
-		// Failed to update layout
+		// Failed to update
 		$this->flg = 'failed';
 		$this->filename = $filename;
 		$this->content = htmlspecialchars($contents);
@@ -244,6 +262,15 @@ class ezStyles extends ezCMS {
 				break;
 			case "saved":
 				$this->setMsgHTML('success','Controller Saved !','You have successfully saved the controller.');
+				break;
+			case "delfailed":
+				$this->setMsgHTML('error','Deleted Failed !','An error occurred and the file was NOT deleted.');
+				break;
+			case "nochange":
+				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
+				break;
+			case "deleted":
+				$this->setMsgHTML('default','Deleted !','You have successfully deleted the file.');
 				break;
 			case "unwriteable":
 				$this->setMsgHTML('error','Not Writeable !','The controller file is NOT writeable.');

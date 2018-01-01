@@ -45,7 +45,7 @@ class ezController extends ezCMS {
 
 		// Check permissions
 		if (!$this->usr['editcont']) {
-			header("Location: controllers.php?flg=noperms");
+			header("Location: ?flg=noperms");
 			exit;
 		}
 		
@@ -54,11 +54,11 @@ class ezController extends ezCMS {
 		
 		// Delete the revision
 		if ( $this->delete('git_files',$revID) ) {
-			header("Location: controllers.php?flg=saved");
+			header("Location: ?flg=saved");
 			exit;
 		}
 		
-		header("Location: controllers.php?flg=failed");
+		header("Location: ?flg=failed");
 		exit;		
 	
 	}
@@ -105,7 +105,7 @@ class ezController extends ezCMS {
 
 		// Check permissions
 		if (!$this->usr['editcont']) {
-			header("Location: controllers.php?flg=noperms");
+			header("Location: ?flg=noperms");
 			exit;
 		}
 		
@@ -122,7 +122,7 @@ class ezController extends ezCMS {
 		// Check if nothing has changed		
 		$original = file_get_contents("../index.php");
 		if ($original == $contents) {
-			header("Location: controllers.php?flg=nochange");
+			header("Location: ?flg=nochange");
 			exit;
 		}
 		
@@ -131,12 +131,12 @@ class ezController extends ezCMS {
 						'fullpath' => 'index.php', 
 						'createdby' => $this->usr['id']);
 		if ( !$this->add('git_files', $data) ) {
-			header("Location: controllers.php?flg=revfailed");
+			header("Location: ?flg=revfailed");
 			exit;
 		}
 		
 		if (file_put_contents('../index.php', $contents )) {
-			header("Location: controllers.php?flg=saved");
+			header("Location: ?flg=saved");
 			exit;
 		}
 

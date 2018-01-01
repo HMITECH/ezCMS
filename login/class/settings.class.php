@@ -48,7 +48,7 @@ class ezSettings extends ezCMS {
 
 		// Check permissions
 		if (!$this->usr['editsettings']) {
-			header("Location: setting.php?flg=noperms");
+			header("Location: ?flg=noperms");
 			exit;
 		}
 		
@@ -57,17 +57,17 @@ class ezSettings extends ezCMS {
 		
 		// Validations - cannot delete current record.
 		if ($this->site['id'] == $revID) {
-			header("Location: setting.php?flg=invalid");
+			header("Location: ?flg=invalid");
 			exit;		
 		}
 		
 		// Delete the revision
 		if ( $this->delete('site',$revID) ) {
-			header("Location: setting.php?flg=saved");
+			header("Location: ?flg=saved");
 			exit;
 		}
 		
-		header("Location: setting.php?flg=failed");
+		header("Location: ?flg=failed");
 		exit;		
 	
 	}
@@ -111,7 +111,7 @@ class ezSettings extends ezCMS {
 
 		// Check permissions
 		if (!$this->usr['editsettings']) {
-			header("Location: setting.php?flg=noperms");
+			header("Location: ?flg=noperms");
 			exit;
 		}
 		
@@ -131,17 +131,17 @@ class ezSettings extends ezCMS {
 			($data['sidecontent'  ] == $this->site['sidecontent'  ]) && 
 			($data['sidercontent' ] == $this->site['sidercontent' ]) && 
 			($data['footercontent'] == $this->site['footercontent']) ){
-				header("Location: setting.php?flg=nochange");
+				header("Location: ?flg=nochange");
 				exit;		
 		}
 		
 		// Save to database
 		if ( $this->add('site',$data) ) {
-			header("Location: setting.php?flg=saved");
+			header("Location: ?flg=saved");
 			exit;
 		}
 		
-		header("Location: setting.php?flg=failed");
+		header("Location: ?flg=failed");
 		exit;
 
 	}
