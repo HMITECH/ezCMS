@@ -30,8 +30,7 @@ class ezLayouts extends ezCMS {
 		if ($this->filename=="layout.php") {
 			$this->homeclass = 'label label-info';
 		} else {
-			$this->deletebtn = '<a href="?delfile='.$this->filename.
-				'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';
+			$this->deletebtn = '<a href="?delfile='.$this->filename.'" class="btn btn-danger conf-del">Delete</a>';
 		}
 		
 		// Check if file is to be deleted
@@ -57,9 +56,6 @@ class ezLayouts extends ezCMS {
 		
 		// Get the Revisions
 		$this->getRevisions();
-
-		// Get the Message to display if any
-		$this->getMessage();
 
 	}
 	
@@ -124,7 +120,7 @@ class ezLayouts extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="?purgeRev='.$entry['id'].$show.'">Purge</a>	
+				<a href="?purgeRev='.$entry['id'].$show.'" class="conf-del">Purge</a>	
 				</td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];
@@ -239,15 +235,6 @@ class ezLayouts extends ezCMS {
 		$this->filename = $filename;
 		$this->content = htmlspecialchars($contents);
 
-	}
-	
-	// Function to Set the Display Message
-	private function getMessage() {
-		// Set the HTML to display for this flag
-		switch ($this->flg) {
-
-		}
-		
 	}
 	
 }

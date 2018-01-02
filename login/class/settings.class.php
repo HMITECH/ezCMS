@@ -36,9 +36,6 @@ class ezSettings extends ezCMS {
 		
 		// Get the Revisions
 		$this->getRevisions();
-		
-		// Get the Message to display if any
-		$this->getMessage();
 
 	}
 
@@ -88,7 +85,7 @@ class ezSettings extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="setting.php?purgeRev='.$entry['id'].'">Purge</a>	
+				<a href="?purgeRev='.$entry['id'].'" class="conf-del">Purge</a>	
 				</td></tr>';
 				
 			$this->revs['jsn'][$entry['id']] = array( 
@@ -142,16 +139,6 @@ class ezSettings extends ezCMS {
 		
 		header("Location: ?flg=failed");
 		exit;
-
-	}
-	
-	// Function to Set the Display Message
-	private function getMessage() {
-
-		// Set the HTML to display for this flag
-		switch ($this->flg) {
-
-		}
 
 	}
 

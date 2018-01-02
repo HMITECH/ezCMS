@@ -29,8 +29,7 @@ class ezStyles extends ezCMS {
 		if (isset($_GET['show'])) $this->filename = $_GET['show'];
 		if ($this->filename != "../style.css") {
 			$this->filename = "../site-assets/css/".$this->filename;
-			$this->deletebtn = '<a href="?delfile='.$this->filename.
-				'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';			
+			$this->deletebtn = '<a href="?delfile='.$this->filename.'" class="btn btn-danger conf-del">Delete</a>';			
 		} else {
 			$this->homeclass = 'label label-info';
 		}
@@ -58,9 +57,6 @@ class ezStyles extends ezCMS {
 		
 		// Get the Revisions
 		$this->getRevisions();
-
-		// Get the Message to display if any
-		$this->getMessage();
 
 	}
 	
@@ -113,7 +109,7 @@ class ezStyles extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="?purgeRev='.$entry['id'].$show.'">Purge</a>	
+				<a href="?purgeRev='.$entry['id'].$show.'" class="conf-del">Purge</a>	
 				</td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];
@@ -185,11 +181,12 @@ class ezStyles extends ezCMS {
 	
 		$filename = $_POST["txtName"];
 		$contents = $_POST["txtContents"];
-		$show = substr($filename, 19 , strlen($filename)-19);
+		$show = '';
+		if ($filename != "../main.js") $show = '&show='.substr($filename, 19 , strlen($filename)-19);
 
 		// Check permissions
 		if (!$this->usr['editcss']) {
-			header("Location: ?flg=noperms&show=$show");
+			header("Location: ?flg=noperms$show");
 			exit;
 		}
 	
@@ -213,7 +210,7 @@ class ezStyles extends ezCMS {
 			// Check if nothing has changed		
 			$original = file_get_contents($filename);
 			if ($original == $contents) {
-				header("Location: ?flg=nochange&show=$show");
+				header("Location: ?flg=nochange$show");
 				exit;
 			}
 	
@@ -222,15 +219,15 @@ class ezStyles extends ezCMS {
 							'fullpath' => $filename, 
 							'createdby' => $this->usr['id']);
 			if ( !$this->add('git_files', $data) ) {
-				header("Location: ?flg=revfailed&show=$show");
+				header("Location: ?flg=revfailed$show");
 				exit;
-			}			
-			
+			}
+
 		}
 		
 		// Save the file
 		if (file_put_contents($filename, $contents ) !== false) {
-			header("Location: ?flg=saved&show=$show");
+			header("Location: ?flg=saved$show");
 			exit;
 		}
 		
@@ -238,16 +235,6 @@ class ezStyles extends ezCMS {
 		$this->flg = 'failed';
 		$this->filename = $filename;
 		$this->content = htmlspecialchars($contents);
-		
-	}
-	
-	// Function to Set the Display Message
-	private function getMessage() {
-	
-		// Set the HTML to display for this flag
-		switch ($this->flg) {
-
-		}
 		
 	}
 	

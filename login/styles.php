@@ -107,11 +107,9 @@ $cms = new ezStyles();
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(0)").addClass('active');
 	$("#top-bar li:eq(0) ul li:eq(4)").addClass('active');
-	
 	$('#SaveAsDDM').click(function (e) {
 		e.stopPropagation();
 	});	
-	
 	$('#btnsaveas').click( function () {
 		var saveasfile = $('#txtSaveAs').val().trim();
 		if (saveasfile.length < 1) {
@@ -128,7 +126,9 @@ $cms = new ezStyles();
 		$('#Submit').click();
 		return false;
 	});
-
+	$('.conf-del').click( function () {
+		return confirm('Confirm Delete Action ?');
+	});	
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
 

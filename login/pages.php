@@ -640,7 +640,10 @@ $cms = new ezPages();
 		$(this).tab('show');
 		window.location.hash = $(this).attr('href').replace('#d-','');
 	});
-	
+	$('.conf-del').click( function () {
+		return confirm('Confirm Delete Action ?');
+	});	
+
 </script>
 <script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 
