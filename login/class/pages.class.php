@@ -18,9 +18,11 @@ class ezPages extends ezCMS {
 	
 	public $treehtml = '';
 	
+	public $ddOptions = '';
+	
 	public $addNewBtn;
 	
-	public $page;	
+	public $page;
 	
 	// Consturct the class
 	public function __construct () {
@@ -44,6 +46,7 @@ class ezPages extends ezCMS {
 		
 		//Build the HTML Treeview
 		$this->buildTree();
+		//die($this->treehtml);
 		
 		// Get the Message to display if any
 		$this->getMessage();
@@ -92,14 +95,50 @@ class ezPages extends ezCMS {
 	}		
 	
 	// Function to Build Treeview HTML
-	private function buildTree() {
-		$this->treehtml = '<ul id="left-tree">';
-		foreach ($this->query('select `id` , `title` , `url`, `published`, `description` from  `pages` where `parentid` = 1 order by place;') as $entry) {
-			$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
-			$this->treehtml .= '<li><i class="icon-user"></i> <a href="pages.php?id='.
-				$entry['id'].'" class="'.$myclass.'">'.$entry["title"].'</a></li>';
+	private function buildTree($parentid = 0) {
+		
+		static $nestCount;
+		
+		$treeSQL = $this->prepare(
+			"SELECT `id`, `title`, `url`, `published`, `description` FROM  `pages` WHERE `parentid` = ? order by place");
+		$treeSQL->execute( array($parentid) );
+
+		if ($treeSQL->rowCount()) {
+
+			$nestCount += 1;
+			if ($nestCount == 1) $this->treehtml .= '<ul id="left-tree">'; else $this->treehtml .=  '<ul>';
+			$cnt = 0;
+			
+			while ($entry = $treeSQL->fetch()) {
+				$cnt++;
+				
+				$liclass = '';
+				$action = '<i class="icon-file"></i>';
+				if ($entry['id']==1) {
+					 $action = '<i class="icon-home"></i>';
+					 $liclass = 'class="open"';
+				}
+				if ($entry['id']==2) $action = '<i class="icon-question-sign"></i> ';
+				
+				$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
+				
+				$this->treehtml .= '<li '.$liclass.'>'.$action.' <a href="pages.php?id='.$entry['id'].
+										'" class="'.$myclass.'">'.$entry["title"].'</a>';
+				
+				if ($parentid == $entry['id'])
+					$this->ddOptions .= '<option value="' . $entry['id'] . '" SELECTED>';
+				else
+					$this->ddOptions .= '<option value="' . $entry['id'] . '">';
+				$this->ddOptions .= str_repeat(' > ',$nestCount - 1) . $entry['title'] . '</option>';
+				
+				
+				$this->buildTree($entry['id']);
+				
+				$this->treehtml .= '</li>';
+
+			}
+			$this->treehtml .= '</ul>';
 		}
-		$this->treehtml .= '</ul>';		
 
 	}
 	

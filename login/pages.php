@@ -33,8 +33,27 @@ $cms = new ezPages();
 				<form id="frmPage" action="" method="post" enctype="multipart/form-data">
 				<div class="navbar">
 					<div class="navbar-inner">
-						NAV BAR COMES HERE...
-					</div>
+						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+						<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
+						<?php } ?>
+						<input type="submit" name="Submit" class="btn btn-primary"
+							value="<?php if ($cms->id == 'new') echo 'Add Page'; else echo 'Save Changes';?>">
+						  <?php if ($cms->id != 'new') { ?>
+							<a href="<?php echo $cms->page['url']; ?>" target="_blank" 
+								<?php if ( !$cms->page['published'] ) 
+										echo 'onclick="return confirm(\'The page is Not published, its only visible to you.\');"'; 
+								?>
+								class="btn btn-success">View</a>
+							<a href="pages.php?id=new" class="btn btn-info">New</a>
+							<a href="scripts/copy-page.php?copyid=<?php echo $cms->id; ?>" class="btn btn-warning">Copy</a>
+							<?php if ($cms->id != 1 && $cms->id != 2) echo '<a href="scripts/del-page.php?delid='.$cms->id.
+									'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
+							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+							<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo 1 ?></sup></a>
+							<?php } ?>
+						  <?php } ?>
+
+					</div><!-- /navbar-inner  -->
 				</div>
 
 				<?php echo $cms->msg; ?>
@@ -53,7 +72,122 @@ $cms = new ezPages();
 				<div class="tab-content">
 
 				  <div class="tab-pane active" id="d-main">
-				  	d-main
+
+						<div class="row">
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="inputTitle">Title Tag</label>
+								<div class="controls">
+									<input type="text" id="txtTitle" name="txtTitle"
+										placeholder="Enter the title of the page"
+										title="Enter the full title of the page here."
+										data-toggle="tooltip" 
+										value="<?php echo $cms->page['title']; ?>"
+										data-placement="top"
+										class="input-block-level tooltipme2 countme2"><br>
+										<label class="checkbox" <?php if ($cms->id == 1 || $cms->id == 2) echo 'style="display:none"';?>>
+										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $cms->page['published']; ?>>
+										  Published on site
+										</label>
+								</div>
+							  </div>
+							</div>
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="inputName">Name (URL)</label>
+								<div class="controls">
+									<input type="text" id="txtName" name="txtName"
+										placeholder="Enter the name of the page"
+										title="Enter the full name of the page here."
+										data-toggle="tooltip" 
+										value="<?php echo $cms->page['pagename']; ?>"
+										data-placement="top"
+										class="input-block-level tooltipme2 countme2"><br>
+									<?php if (!$cms->page['published']) 
+												echo '<span class="label label-important">Unpublished page only visible when logged in.</span>';
+											else 
+												echo '<span class="label label-info">Page is published and visible to all.</span>'; ?>
+									<label class="checkbox checkRight" <?php if ($cms->id == 1 || $cms->id == 2) echo 'style="display:none"';?>>
+									  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $cms->page['nositemap']; ?>>
+									  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
+									</label>
+								</div>
+							  </div>								
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="inputName">Parent Page</label>
+								<div class="controls">
+								  <?php if ($cms->id == 1 || $cms->id == 2) echo 
+								  			'<div class="alert alert-info" style="margin: 0 0 3px;padding: 5px 10px;"><strong>'.
+												'Site Root</strong></div>';
+										else echo 
+											'<select name="slGroup" id="slGroup" class="input-block-level">' . 
+													$cms->ddOptions . '</select>'; ?>
+								</div>
+							  </div>
+							</div>
+							<div class="span6">
+							
+							  <div class="control-group">
+								<label class="control-label" for="inputName">Layout</label>
+								<div class="controls">
+									<select name="slLayout" id="slLayout" class="input-block-level">
+										<?php 
+											if (($cms->page['slLayout'] =='') || ($cms->page['slLayout']=='layout.php'))
+												echo '<option value="layout.php" selected>Default - layout.php</option>';
+											else
+												echo '<option value="layout.php">Default - layout.php</option>';
+												
+											if ($handle = opendir('..')) {
+												while (false !== ($entry = readdir($handle))) {
+													if (preg_match('/^layout\.[a-z0-9_-]+\.php$/i',$entry)) {
+														if ($entry==$slLayout) $myclass = 'selected'; else $myclass = '';
+														echo "<option $myclass>$entry</option>";
+													}
+												}
+												closedir($handle);
+											}
+										?>	
+									</select>
+								</div>
+							  </div>
+							
+							</div>
+						</div>	
+						
+						<div class="row">
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="inputDescription">Meta Description</label>
+								<div class="controls">
+									<textarea name="txtDesc" rows="5" id="txtDesc" 
+										placeholder="Enter the description of the page"
+										title="Enter the description of the page here, this is VERY IMPORTANT for SEO. Do not duplicate on all pages"
+										data-toggle="tooltip"
+										data-placement="top"
+										class="input-block-level tooltipme2 countme2"><?php echo $cms->page['description']; ?></textarea>
+								</div>
+							  </div>								
+							</div>
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="inputKeywords">Meta Keywords</label>
+								<div class="controls">
+									<textarea name="txtKeywords" rows="5" id="txtKeywords" 
+										placeholder="Enter the Keywords of the page"
+										title="Enter list keywords of the page here, not so important now but use it anyways. Do not stuff keywords"
+										data-toggle="tooltip"
+										data-placement="top"
+										class="input-block-level tooltipme2 countme2"><?php echo $cms->page['keywords']; ?></textarea>
+								</div>
+							  </div>							
+							</div>
+						</div>
+
 				  </div><!-- /d-main  -->
 
 				  <div class="tab-pane" id="d-content">
