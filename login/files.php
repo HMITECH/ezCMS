@@ -13,7 +13,7 @@ $cms = new ezCMS(); // create new instance of CMS Class with loginRequired = tru
 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>File Manager &middot; ezCMS Admin</title>
+	<title>File Manager : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>

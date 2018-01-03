@@ -5,47 +5,6 @@
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/profile.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the users in the site
-
-require_once("include/init.php");
-$msg = "";
-if (isset($_REQUEST['Submit'])) {
-	
-	// check all the variables are posted
-	if (isset($_POST['txtcpass'])) $curpass = trim($_POST['txtcpass']); else die('xx');
-	if (isset($_POST['txtnpass'])) $newpass = trim($_POST['txtnpass']); else die('xx');
-	if (isset($_POST['txtrpass'])) $reppass = trim($_POST['txtrpass']); else die('xx');
-
-	// check password match
-	if ($newpass != $reppass) {
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> The new password and repeat password do not match.</div>';
-	} elseif (strlen($newpass)<6) {
-		// check password len
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> The new password must be more than 6 characters in lenght.</div>';
-	} else {
-		// check current password
-		$id = $_SESSION['EZUSERID'];
-		$sql = "SELECT `username` FROM `users` WHERE `id` = $id AND `passwd` = '$curpass' LIMIT 1";
-		$rs = mysql_query($sql);
-		if (!mysql_num_rows($rs)) {
-			$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-				<strong>Failed!</strong> Your current password is incorrect.</div>';	
-		} else {
-			// update
-			$sql = "UPDATE `users`SET `passwd` = '$newpass' WHERE `id` = $id ";					
-			if (mysql_query($sql)) 
-				// updated
-				$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Saved!</strong> You have successfully changed your password.</div>';
-			else 
-				// failed
-				$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-							<strong>Failed!</strong> An error occurred and the layout was NOT saved.</div>';
-							
-		}
-	}
-}
  */
  // **************** ezCMS USERS CLASS ****************
 require_once ("class/profile.class.php"); 

@@ -15,7 +15,7 @@ $cms = new ezScripts();
 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Scripts &middot; ezCMS Admin</title>
+	<title>Scripts : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>

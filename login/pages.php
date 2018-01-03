@@ -5,242 +5,6 @@
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
  * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/pages.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
  * View: Displays the web pages in the site
-
-require_once("include/init.php");
-require_once("include/pages.functions.php");
-
-if (isset( $_REQUEST["id"])) $id = $_REQUEST["id"]; else $id = 1;
-$usefooter      = '';
-$useheader      = '';
-$useside        = '';
-$usesider       = '';
-$published      = '';
-$nositemap      = '';
-$parentid       = '';
-$slLayout		= '';
-$name           = '';
-$title          = '';
-$keywords       = '';
-$redirect       = '';
-$description 	= '';
-$maincontent 	= '';
-$sidebar    	= '';
-$siderbar 		= '';
-$header			= '';
-$footer 		= '';
-$head 			= '';
-$url        	= '';
-
-// check if form is posted 
-if (isset($_REQUEST['Submit'])) {
-
-	if (!$_SESSION['editpage']) {header("Location: pages.php?id=$id&flg=noperms");exit;}	// permission denied
-
-	$title       	= mysql_real_escape_string($_REQUEST['txtTitle']);
-	$name      	    = validateName($_REQUEST['txtName']);
-	$keywords    	= mysql_real_escape_string($_REQUEST['txtKeywords']);
-	$description 	= mysql_real_escape_string($_REQUEST['txtDesc']);
-	$maincontent 	= mysql_real_escape_string($_REQUEST['txtMain']);
-	$sidebar 		= mysql_real_escape_string($_REQUEST['txtSide']);
-	$siderbar 		= mysql_real_escape_string($_REQUEST['txtrSide']);
-	$header 		= mysql_real_escape_string($_REQUEST['txtHeader']);
-	$footer 		= mysql_real_escape_string($_REQUEST['txtFooter']);
-	$head 			= mysql_real_escape_string($_REQUEST['txtHead']);
-	
-	if (isset($_REQUEST['slGroup'])) $parentid = ($_REQUEST['slGroup']); else $parentid = '0';
-	$slLayout		= ($_REQUEST['slLayout']);
-
-	if(isset($_REQUEST['ckPublished'])) $published     =1; else $published    = '0';
-	if(isset($_REQUEST['cknositemap'])) $nositemap     =1; else $nositemap    = '0';
-	if(isset($_REQUEST['ckside'     ])) $useside       =1; else $useside      = '0';
-	if(isset($_REQUEST['cksider'    ])) $usesider      =1; else $usesider     = '0';
-	if(isset($_REQUEST['ckHeader'   ])) $useheader     =1; else $useheader    = '0';
-	if(isset($_REQUEST['ckFooter'   ])) $usefooter     =1; else $usefooter    = '0';
-
-	if (strlen(trim($_REQUEST['txtName'])) < 1 ) {
-		$_GET["flg"] = 'noname';
-		include("include/set-page-vars.php");
-	} elseif (strlen(trim($_REQUEST['txtTitle'])) < 1 ) {
-		$_GET["flg"] = 'notitle';
-		include("include/set-page-vars.php");
-	} elseif ($parentid == $id && $id > 1 ) {
-		$_GET["flg"] = 'nestedparent';
-		include("include/set-page-vars.php");
-	} else {
-		if ($id == 'new') { 
-			// add new page here !
-			$qry = "INSERT INTO `pages` ( 
-				`pagename` , `title`, `keywords` , `description` , `maincontent` , 
-				`useheader` , `headercontent` , `head` , `layout` , 
-				`usefooter` , `footercontent` ,`useside` , `sidecontent` , `usesider` , `sidercontent` ,
-				`published` , `nositemap` ,  `parentid`) VALUES ( ";
-			$qry .= "'" . $name          . "', ";
-			$qry .= "'" . $title         . "', ";
-			$qry .= "'" . $keywords      . "', ";
-			$qry .= "'" . $description   . "', ";
-			$qry .= "'" . $maincontent   . "', ";
-			$qry .= "'" . $useheader     . "', ";
-			$qry .= "'" . $header 		 . "', ";
-			$qry .= "'" . $head			 . "', ";
-			$qry .= "'" . $slLayout		 . "', ";
-			$qry .= "'" . $usefooter     . "', ";
-			$qry .= "'" . $footer 		 . "', ";
-			$qry .= "'" . $useside       . "', ";
-			$qry .= "'" . $sidebar   	 . "', ";
-			$qry .= "'" . $usesider      . "', ";
-			$qry .= "'" . $siderbar  	 . "', ";
-			$qry .= "'" . $published     . "', ";
-			$qry .= "'" . $nositemap     . "', ";
-			$qry .= "'" . $parentid      . "');";
-			if (mysql_query($qry)) {
-				$id = mysql_insert_id();
-				resolveplace();
-				reIndexPages();
-				mysql_query('OPTIMIZE TABLE `pages`;');
-				header("Location: pages.php?id=".$id."&flg=added");	// added
-				exit;
-			} else {
-				$_GET["flg"] = 'pink';
-				include("include/set-page-vars.php");
-			}
-
-		} else {
-			// update page here !
-			
-			// create a copy here ....
-			mysql_query("INSERT INTO `git_pages` ( 
-						  `page_id`, 
-						  `pagename`,
-						  `title`,
-						  `keywords`,
-						  `description`,
-						  `maincontent`,
-						  `useheader` ,
-						  `headercontent` ,
-						  `usefooter` ,
-						  `footercontent` ,
-						  `useside` ,
-						  `sidecontent` ,
-						  `published` ,
-						  `parentid` ,
-						  `place` ,
-						  `url` ,
-						  `sidercontent` ,
-						  `usesider` ,
-						  `head` ,
-						  `layout` ,
-						  `nositemap` , 
-						  `createdby` ) SELECT 
-						  `id` AS page_id, 
-						  `pagename`,
-						  `title`,
-						  `keywords`,
-						  `description`,
-						  `maincontent`,
-						  `useheader` ,
-						  `headercontent` ,
-						  `usefooter` ,
-						  `footercontent` ,
-						  `useside` ,
-						  `sidecontent` ,
-						  `published` ,
-						  `parentid` ,
-						  `place` ,
-						  `url` ,
-						  `sidercontent` ,
-						  `usesider` ,
-						  `head` ,
-						  `layout` ,
-						  `nositemap` , 
-						  '".$_SESSION['EZUSERID']."' as `createdby` 
-						  FROM `pages` WHERE `id` = $id");
-			
-			$qry = "UPDATE `pages` SET ";
-			$qry .= "`pagename`      = '" . $name          . "', ";
-			$qry .= "`title`         = '" . $title         . "', ";
-			$qry .= "`keywords`      = '" . $keywords      . "', ";
-			$qry .= "`description`   = '" . $description   . "', ";
-			$qry .= "`maincontent`   = '" . $maincontent   . "', ";
-			$qry .= "`useheader`     = '" . $useheader     . "', ";
-			$qry .= "`headercontent` = '" . $header 	   . "', ";
-			$qry .= "`head`          = '" . $head          . "', ";
-			$qry .= "`usefooter`     = '" . $usefooter     . "', ";
-			$qry .= "`footercontent` = '" . $footer 	   . "', ";
-			$qry .= "`useside`       = '" . $useside       . "', ";
-			$qry .= "`sidecontent`   = '" . $sidebar   	   . "', ";
-			$qry .= "`usesider`      = '" . $usesider      . "', ";
-			$qry .= "`sidercontent`  = '" . $siderbar  	   . "', ";
-			$qry .= "`published`     = '" . $published     . "', ";
-			$qry .= "`nositemap`     = '" . $nositemap     . "', ";
-			$qry .= "`parentid`      = '" . $parentid      . "', ";
-			$qry .= "`layout`      = '" . $slLayout      . "'  ";
-			$qry .= "WHERE `id` =" . $id . " LIMIT 1";
-			if (mysql_query($qry)) {
-				reIndexPages();
-				mysql_query('OPTIMIZE TABLE `pages`;');
-				header("Location: pages.php?id=".$id."&flg=green");	// updated
-			} else
-				header("Location: pages.php?id=".$id."&flg=red");	// failed
-			exit;
-		}
-	}
-} else if ($id <> 'new')  {
-
-	$qry = "SELECT * FROM `pages` WHERE `id` = " . $id;
-	$rs = mysql_query($qry);
-	
-	if (!mysql_num_rows($rs))
-		header("Location: pages.php?show=&flg=yell");
-	
-	$arr = mysql_fetch_array($rs);
-	mysql_free_result($rs);
-	$title       	= $arr["title"     ];
-	$name      	 	= $arr["pagename"  ];
-	$url      	 	= $arr["url"       ];
-	if ((!isset($url)) or ($url == "" ) or (empty($url))) $url="/";
-	$keywords    	= htmlspecialchars($arr["keywords"     ]);
-	$description 	= htmlspecialchars($arr["description"  ]);
-	$maincontent 	= htmlspecialchars($arr["maincontent"  ]);
-	$header      	= htmlspecialchars($arr["headercontent" ]);
-	$sidebar     	= htmlspecialchars($arr["sidecontent"   ]);
-	$siderbar    	= htmlspecialchars($arr["sidercontent"  ]);
-	$footer			= htmlspecialchars($arr["footercontent" ]);
-	$head			= htmlspecialchars($arr["head" ]);
-	$parentid 		= $arr["parentid"];
-	$slLayout		= $arr["layout"];
-	$usefooter      = '';
-	$useheader      = '';
-	$useside        = '';
-	$usesider       = '';
-	$published      =  '';
-	$nositemap      =  '';
-	if ($arr["published"   ] == 1) $published    = "checked";
-	if ($arr["nositemap"   ] == 1) $nositemap    = "checked";
-	if ($arr["useheader"   ] == 1) $useheader    = "checked";
-	if ($arr["usefooter"   ] == 1) $usefooter    = "checked";
-	if ($arr["useside"     ] == 1) $useside      = "checked";
-	if ($arr["usesider"    ] == 1) $usesider     = "checked";
-	
-	// Create the Revision Log here
-	$revsql = "SELECT git_pages.id,git_pages.page_id,users.username,git_pages.createdon
-				FROM git_pages LEFT JOIN users ON git_pages.createdby = users.id
-				WHERE git_pages.page_id = $id 
-				ORDER BY git_pages.id DESC";		
-    $rs = mysql_query($revsql) or die("Unable to Execute  Select query");
-	$revLog = '';
-	$revCount = 1;
-	while ($row = mysql_fetch_assoc($rs)) {	
-		$revLog .= 	'<tr><td>'.$revCount.'</td><td>'.$row['username'].'</td><td>'.$row['createdon'].'</td>
-		  <td data-rev-id="'.$row['id'].'"><a href="#">Revert</a> | <a href="#">Purge</a></td></tr>';
-		$revCount++;
-	}
-	$revCount--;
-	if ($revLog == '') $revLog = '<tr><td colspan="3">There are no revisions of this page.</td></tr>';
-
-} else {
-	if (!$_SESSION['editpage']) {header("Location: pages.php?flg=noperms");exit;}	// permission denied
-}
-if (isset($_GET["flg"])) $msg = getErrorMsg($_GET["flg"]); else $msg = "";
  */ 
 
 // **************** ezCMS PAGES CLASS ****************
@@ -251,340 +15,89 @@ $cms = new ezPages();
  
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Pages &middot; ezCMS Admin</title>
-	<style>
-		.countDisplay {float: right;}
-		.checkRight { float: right; }
-	</style>
+	<title>Pages : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>
   
-	<div id="wrap">
-		<?php include('include/nav.php'); ?>  
-		<div class="container">
-			<div class="row-fluid">
-				<div class="span3 white-boxed">
-					<p><input type="text" id="txtsearch" class="input-block-level" placeholder="Search here ..."></p>
-					<?php echo $cms->treehtml; ?>
-				</div>
-				<div class="span9 white-boxed">
-				
-					<form id="frmPage" action="" method="post" enctype="multipart/form-data">
-					<div class="navbar">
-						<div class="navbar-inner">
-							<input type="submit" name="Submit" class="btn btn-inverse"
-								value="<?php if ($cms->id == 'new') echo 'Add Page'; else echo 'Save Changes';?>">
-							  <?php if ($cms->id != 'new') { ?>
-								<a href="<?php echo $cms->page['url']; ?>" target="_blank"
-									<?php if ($cms->page['published']!='checked') echo 'onclick="return confirm(\'The page is Not published, its only visible to you.\');"'; ?>
-									class="btn btn-inverse">View</a>
-								<a href="pages.php?id=new" class="btn btn-inverse">New</a>
-								<a href="scripts/copy-page.php?copyid=<?php echo $cms->id; ?>" class="btn btn-inverse">Copy</a>
-								<?php if ($cms->id != 1 && $cms->id != 2) echo '<a href="scripts/del-page.php?delid='.$cms->id.
-										'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
-								<div class="btn-group">
-									<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>
-									<ul class="dropdown-menu">
-									  <li class="nav-header">Validate</li>
-									  <li><a class="lframe" target="_blank" title="Validate the Page HTML" href=
-									  	"http://validator.w3.org/check?uri=http%3A%2F%2F<?php
-										echo $_SERVER['HTTP_HOST'] . $cms->page['url'];
-										?>&charset=%28detect+automatically%29&fbc=1&doctype=Inline&fbd=1&group=0&verbose=1">
-										<i class="icon-chevron-right"></i> HTML W3C</a></li>
-									  <li><a class="lframe" target="_blank" title="Validate the Page CSS" href=
-									  	"http://jigsaw.w3.org/css-validator/validator?uri=http%3A%2F%2F<?php
-										echo $_SERVER['HTTP_HOST'] . $cms->page['url'];
-										?>&profile=css21&usermedium=all&warning=1&vextwarning=&lang=en">
-										<i class="icon-chevron-right"></i> CSS W3C</a></li>
-									  <li class="divider"></li>
-									  <li class="nav-header">Check</li>
-									  <li><a class="lframe" target="_blank" title="Check the Page for broken links" href=
-									  	"http://validator.w3.org/checklink?uri=http%3A%2F%2F<?php
-										echo $_SERVER['HTTP_HOST'] . $cms->page['url']; ?>&hide_type=all&depth=1&check=Check">
-										<i class="icon-chevron-right"></i> Broken Links</a></li>
- 									  <li><a class="lframe" target="_blank" title="Check the Page keyword density" href=
-									  	"http://www.webconfs.com/keyword-density-checker.php?url=http%3A%2F%2F<?php
-										echo $_SERVER['HTTP_HOST'] . $cms->page['url']; ?>">
-										<i class="icon-chevron-right"></i> Keyword Density</a></li>
-									</ul>
-								</div>
-							  <?php } ?>
-						</div>
-					</div>
-
-					<?php echo $cms->msg; ?>
-										
-					<div id="revBlock">
-					  <table class="table table-striped"><thead>
-						<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-					  </thead><tbody><?php echo $revLog; ?></tbody></table>
-					</div>
-					
-				    <div class="tabbable tabs-top">
-					<ul class="nav nav-tabs" id="myTab">
-					  <li class="active"><a href="#d-main">Main</a></li>
-					  <li><a href="#d-content">Content</a></li>
-					  <li><a href="#d-header">Header</a></li>
-					  <li><a href="#d-sidebar">Aside A</a></li>
-					  <li><a href="#d-siderbar">Aside B</a></li>
-					  <li><a href="#d-footer">Footer</a></li>
-					  <li><a href="#d-head">Head</a></li>
-					</ul>
-					 
-					<div class="tab-content">
-					  <div class="tab-pane active" id="d-main">
-
-						<div class="row">
-							<div class="span6">
-							  <div class="control-group">
-								<label class="control-label" for="inputTitle">Title Tag</label>
-								<div class="controls">
-									<input type="text" id="txtTitle" name="txtTitle"
-										placeholder="Enter the title of the page"
-										title="Enter the full title of the page here."
-										data-toggle="tooltip"
-										value="<?php echo $cms->page['title']; ?>"
-										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><br>
-										<label class="checkbox" <?php if ($cms->id == 1 || $cms->id == 2) echo 'style="display:none"';?>>
-										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
-										  Published on site
-										</label>
-								</div>
-							  </div>
-							</div>
-							<div class="span6">
-							  <div class="control-group">
-								<label class="control-label" for="inputName">Name (URL)</label>
-								<div class="controls">
-									<input type="text" id="txtName" name="txtName"
-										placeholder="Enter the name of the page"
-										title="Enter the full name of the page here."
-										data-toggle="tooltip"
-										value="<?php echo $cms->page['pagename']; ?>"
-										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><br>
-									<?php echo $cms->page['publishedMsg']; ?>
-
-								</div>
-							  </div>
-							</div>
-						</div>
-
-						<div class="row" style="margin-left:0">
-							<div class="span6">
-
-							  <div class="control-group">
-								<label class="control-label" for="inputName">Parent Page</label>
-								<div class="controls">
-								  <?php if ($cms->id == 1 || $cms->id == 2) echo
-								  			'<div class="alert alert-info"><strong>Site Root</strong></div>';
-										else echo
-											'<select name="slGroup" id="slGroup" class="input-block-level">' .
-													$dropdownOptionsHTML . '</select>'; ?>
-								</div>
-							  </div>
-
-							</div>
-							<div class="span6">
-
-							  <div class="control-group">
-								<label class="control-label" for="inputName">Layout</label>
-								<div class="controls">
-									<select name="slLayout" id="slLayout" class="input-block-level">
-										<?php
-											if (($slLayout=='') || ($slLayout=='layout.php'))
-												echo '<option value="layout.php" selected>Default - layout.php</option>';
-											else
-												echo '<option value="layout.php">Default - layout.php</option>';
-
-											if ($handle = opendir('..')) {
-												while (false !== ($entry = readdir($handle))) {
-													if (preg_match('/^layout\.[a-z0-9_-]+\.php$/i',$entry)) {
-														if ($entry==$slLayout) $myclass = 'selected'; else $myclass = '';
-														echo "<option $myclass>$entry</option>";
-													}
-												}
-												closedir($handle);
-											}
-										?>
-									</select>
-								</div>
-							  </div>
-
-							</div>
-						</div>
-
-						<div class="row" style="margin-left:0">
-							<div class="span6">
-							  <div class="control-group">
-								<label class="control-label" for="inputDescription">Meta Description</label>
-								<div class="controls">
-									<textarea name="txtDesc" rows="5" id="txtDesc"
-										placeholder="Enter the description of the page"
-										title="Enter the description of the page here, this is VERY IMPORTANT for SEO. Do not duplicate on all pages"
-										data-toggle="tooltip"
-										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><?php echo $cms->page['description']; ?></textarea>
-								</div>
-							  </div>
-							</div>
-							<div class="span6">
-							  <div class="control-group">
-								<label class="control-label" for="inputKeywords">Meta Keywords</label>
-								<div class="controls">
-									<textarea name="txtKeywords" rows="5" id="txtKeywords"
-										placeholder="Enter the Keywords of the page"
-										title="Enter list keywords of the page here, not so important now but use it anyways. Do not stuff keywords"
-										data-toggle="tooltip"
-										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><?php echo $cms->page['keywords']; ?></textarea>
-								</div>
-							  </div>
-							</div>
-						</div>
-					  </div>
-					    
-					  <div class="tab-pane" id="d-header">
-						<div class="row" style="margin-left:0">
-							<div class="span4">
-								<label class="checkbox">
-								  <input name="ckHeader" type="checkbox" id="ckHeader" value="checkbox" 
-								  	<?php echo $cms->page{'useheader'}; ?>>
-								  Enable custom header
-								</label>
-							</div>
-							<div class="span4" style="text-align:center">
-								<?php if ($useheader=='checked') 
-											echo '<span class="label label-important">Page will display custom header below.</span>';
-										else 
-											echo '<span class="label label-info">Page will display the default header.</span>'; ?>
-							</div>									
-							<div class="span4" style="text-align:right ">
-								<a href="scripts/copy-block.php?headcopyid=<?php echo $id; ?>" class="btn btn-mini btn-primary">Copy Default Header</a>
-							</div>
-						</div>
-						<textarea name="txtHeader" rows="30" id="txtHeader" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $cms->page['siderbar']; ?></textarea>
-					  </div>
-					  
-					  <div class="tab-pane" id="d-sidebar">
-						<div class="row" style="margin-left:0">
-							<div class="span4">
-								<label class="checkbox">
-								  <input name="ckside" type="checkbox" id="ckside" value="checkbox" <?php echo $useside; ?>>
-								  Enable custom sidebar A
-								</label>
-							</div>
-							<div class="span4" style="text-align:center">
-								<?php if ($useside=='checked') 
-											echo '<span class="label label-important">Page will display custom sidebar A below.</span>';
-										else 
-											echo '<span class="label label-info">Page will display the default sidebar A.</span>'; ?>
-							</div>									
-							<div class="span4" style="text-align:right ">
-								<a href="scripts/copy-block.php?sidecopyid=<?php echo $id; ?>" class="btn btn-mini btn-primary">Copy Default Sidebar A</a>
-							</div>							
-						</div>
-						<textarea name="txtSide" rows="30" id="txtSide" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $cms->page['sidebar']; ?></textarea>
-					  </div>
-					  
-					  <div class="tab-pane" id="d-siderbar">
-						<div class="row" style="margin-left:0">
-							<div class="span4">
-								<label class="checkbox">
-								  <input name="cksider" type="checkbox" id="cksider" value="checkbox" <?php echo $usesider; ?>>
-								  Enable custom sidebar B
-								</label>
-							</div>
-							<div class="span4" style="text-align:center">
-								<?php if ($usesider=='checked') 
-											echo '<span class="label label-important">Page will display custom sidebar B below.</span>';
-										else 
-											echo '<span class="label label-info">Page will display the default sidebar B.</span>'; ?>
-							</div>									
-							<div class="span4" style="text-align:right ">
-								<a href="scripts/copy-block.php?sidercopyid=<?php echo $cms->page['id']; ?>" class="btn btn-mini btn-primary">Copy Default Sidebar B</a>
-							</div>							
-						</div> 					  
-						<textarea name="txtrSide" rows="30" id="txtrSide" style="height: 420px; width:100%"
-							class="input-block-level"><?php echo $cms->page['siderbar']; ?></textarea>
-					  </div>
-					  
-					  <div class="tab-pane" id="d-footer">
-						<div class="row" style="margin-left:0">
-							<div class="span4">
-								<label class="checkbox">
-								  <input name="ckFooter" type="checkbox" id="ckFooter" value="checkbox" <?php echo $cms->page['usefooter'];?>>
-								  Enable custom footer
-								</label>
-							</div>
-							<div class="span4" style="text-align:center">
-								<?php if ($cms->page['usefooter']=='checked') 
-											echo '<span class="label label-important">Page will display custom footer below.</span>';
-										else 
-											echo '<span class="label label-info">Page will display the default footer.</span>'; ?>							
-							</div>								
-							<div class="span4" style="text-align:right ">
-								<a href="scripts/copy-block.php?footcopyid=<?php echo $id; ?>" class="btn btn-mini btn-primary">Copy Default Footer</a>
-							</div>							
-						</div> 
-						<textarea name="txtFooter" id="txtFooter" rows="30" style="height: 420px; width:100%"
-							class="input-block-level"><?php $cms->page['footercontent']; ?></textarea>
-					  </div>
-					  
-					  <div class="tab-pane" id="d-head">
-
-						<blockquote>
-						  <p>Append to page head (&lt;head&gt;...include here&lt;\head&gt;) </p>
-						  <small>Enter additional <strong>page head content</strong> for this page, you can include js, css, or anything else here</small>
-						</blockquote>
-
-						<textarea name="txtHead" rows="30" id="txtHead" style="height: 320px; width:100%"
-							class="input-block-level"><?php echo $cms->page['head']; ?></textarea>
-					  </div>
-					
-					  </div>
-					</div>				  
-				  	</form>
-				</div>
-				<div class="clearfix"></div>
+<div id="wrap">
+	<?php include('include/nav.php'); ?>  
+	<div class="container">
+		<div class="row-fluid">
+			<div class="span3 white-boxed">
+				<p><input type="text" id="txtsearch" class="input-block-level" placeholder="Search here ..."></p>
+				<?php echo $cms->treehtml; ?>
 			</div>
-		</div> 
-	</div>
+			<div class="span9 white-boxed">
+			
+				<form id="frmPage" action="" method="post" enctype="multipart/form-data">
+				<div class="navbar">
+					<div class="navbar-inner">
+						NAV BAR COMES HERE...
+					</div>
+				</div>
+
+				<?php echo $cms->msg; ?>
+				
+			    <div class="tabbable tabs-top">
+				<ul class="nav nav-tabs" id="myTab">
+				  <li class="active"><a href="#d-main">Main</a></li>
+				  <li><a href="#d-content">Content</a></li>
+				  <li><a href="#d-header">Header</a></li>
+				  <li><a href="#d-sidebar">Aside A</a></li>
+				  <li><a href="#d-siderbar">Aside B</a></li>
+				  <li><a href="#d-footer">Footer</a></li>
+				  <li><a href="#d-head">Head</a></li>
+				</ul>
+				 
+				<div class="tab-content">
+
+				  <div class="tab-pane active" id="d-main">
+				  	d-main
+				  </div><!-- /d-main  -->
+
+				  <div class="tab-pane" id="d-content">
+					<textarea id="txtMain" name="maincontent"><?php echo $cms->page['maincontent']; ?></textarea>
+				  </div><!-- /d-content  -->
+				    
+				  <div class="tab-pane" id="d-header">
+					<textarea id="txtHeader" name="headercontent"><?php echo $cms->page['headercontent']; ?></textarea>
+				  </div><!-- /d-header  -->
+				    
+				  <div class="tab-pane" id="d-sidebar">
+					<textarea id="txtSide" name="sidecontent"><?php echo $cms->page['sidecontent']; ?></textarea>
+				  </div><!-- /d-sidebar  -->
+				  
+				  <div class="tab-pane" id="d-siderbar">
+				  	<textarea id="txtrSide" name="sidercontent"><?php echo $cms->page['sidercontent']; ?></textarea>
+				  </div><!-- /d-siderbar  -->
+				  
+				  <div class="tab-pane" id="d-footer">
+					<textarea id="txtFooter" name="footercontent"><?php echo $cms->page['footercontent']; ?></textarea>
+				  </div><!-- /d-footer  -->
+				  
+				  <div class="tab-pane" id="d-head">
+				  	<textarea id="txtHead" name="head"><?php echo $cms->page['head']; ?></textarea>
+				  </div><!-- /d-head  -->
+
+				</div><!-- /tab-content  -->
+				</div><!-- /tabbable tabs-top  -->
+			  	</form>
+			</div><!-- /span9 white-boxed  -->
+			<div class="clearfix"></div>
+		</div><!-- /row-fluid  -->
+	</div><!-- /container  -->
+</div><!-- /wrap  -->
 	
 <?php include('include/footer.php'); ?>
-<div id="myModal" class="modal hide fade" style="width:90%; margin:2% auto;left: 5%;">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h5 style="margin:0; ">Page Stats</h5>
-  </div>
-  <div class="modal-body">
-    <iframe id="shrFrm" src="loading.php"
-		width='100%' height='480px' frameborder='0' marginheight='0' marginwidth='0' scrolling="auto"></iframe>
-  </div>
-</div>
+
 <script type="text/javascript">
-	
-	$('.lframe').click( function() {
-		// set the src of the iframe here		
-		$('#myModal .modal-header h5').text($(this).attr('title'));
-		$('#shrFrm').attr('src',$(this).attr('href'));
-		$('#myModal').modal('show');
-		return false;
-	});
-	
+		
 	$('#left-tree.treeview li a').click( function() {
 		$(this).attr('href', $(this).attr('href')+window.location.hash);
 		return true;
 	});
-	
-	$('#myModal').on('hidden', function () {
-  		$('#shrFrm').attr('src','loading.php');
-	});
-	
+		
 	$('#txtsearch').typeahead({
 		source: function (typeahead, query) {
 			var pgs=new Array(); 
@@ -645,7 +158,7 @@ $cms = new ezPages();
 	});	
 
 </script>
-<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
+
 
 <?php if ($_SESSION['EDITORTYPE'] == 0) { ?>
 	<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
@@ -657,6 +170,7 @@ $cms = new ezPages();
 	CKEDITOR.replace( 'txtFooter', { uiColor : '#CCCCCC' });	
 	</script>  
 <?php } else if ($_SESSION['EDITORTYPE'] == 1) { ?>
+	<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 	<script language="javascript" type="text/javascript">
 	var txtMain_loaded = false;
 	var txtHeader_loaded = false;
@@ -739,36 +253,26 @@ $cms = new ezPages();
 		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
 		viewportMargin: Infinity
 	}
+	
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
-		if ((!txtMain_loaded)&&($(this).attr('href')=='#d-content')) {
-			CodeMirror.fromTextArea(document.getElementById("txtMain"), codeMirrorJSON);
-			txtMain_loaded = true;
-		}
-		if ((!txtHeader_loaded)&&($(this).attr('href')=='#d-header')) {
-			CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
-			txtHeader_loaded = true;
-		}
-		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
-			CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
-			txtFooter_loaded = true;
-		}
-		if ((!txtSider_loaded)&&($(this).attr('href')=='#d-siderbar')) {
-			CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
-			txtSider_loaded = true;
-		}
-		if ((!txtSide_loaded)&&($(this).attr('href')=='#d-sidebar')) {
-			CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
-			txtSide_loaded = true;
-		}
-		if ((!txtHead_loaded)&&($(this).attr('href')=='#d-head')) {
-			CodeMirror.fromTextArea(document.getElementById("txtHead"), codeMirrorJSON);
-			txtHead_loaded = true;
-		}
+		myCodeMain.refresh();
+		myCodeHeader.refresh();
+		myCodeSide1.refresh();
+		myCodeSide2.refresh();
+		myCodeFooter.refresh();
+		myCodeHead.refresh();
+	});	
+	$(window).load( function () {
+		myCodeMain = CodeMirror.fromTextArea(document.getElementById("txtMain"), codeMirrorJSON);
+		myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
+		myCodeFooter = CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
+		myCodeSide1 = CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
+		myCodeSide2 = CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
+		myCodeHead = CodeMirror.fromTextArea(document.getElementById("txtHead"), codeMirrorJSON);
 	});
-	</script>
 
-
+</script>
 <?php } ?>
 <script language="javascript" type="text/javascript">
 	if(window.location.hash) $('a[href="'+window.location.hash.replace('#','#d-')+'"]').click(); 

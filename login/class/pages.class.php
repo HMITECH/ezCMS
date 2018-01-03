@@ -11,6 +11,7 @@
 // **************** ezCMS CLASS ****************
 require_once ("ezcms.class.php"); // CMS Class for database access
 
+// Handles Web Pages in ezCMS
 class ezPages extends ezCMS {
 
 	public $id = 1;

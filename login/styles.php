@@ -15,7 +15,7 @@ $cms = new ezStyles();
 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Styles &middot; ezCMS Admin</title>
+	<title>Styles : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>

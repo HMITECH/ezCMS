@@ -49,7 +49,7 @@ switch ($cms->flg) {
 } 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Login :: ezCMS Admin</title>
+	<title>Login : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>

@@ -155,7 +155,7 @@ $cms = new ezUsers();
  
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>Users &middot; ezCMS Admin</title>
+	<title>Users : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 	
 </head><body>
