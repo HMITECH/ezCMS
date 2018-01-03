@@ -15,14 +15,12 @@ require_once ("ezcms.class.php"); // CMS Class for database access
 class ezPages extends ezCMS {
 
 	public $id = 1;
-	
 	public $treehtml = '';
-	
 	public $ddOptions = '';
-	
+	public $slOptions = '';	
 	public $addNewBtn;
-	
 	public $page;
+	public $btns;
 	
 	// Consturct the class
 	public function __construct () {
@@ -44,6 +42,11 @@ class ezPages extends ezCMS {
 				'Unpublished page only visible when logged in.');
 		}
 		
+		//Build the Menu to show
+		$this->buildMenu();
+		
+		
+		
 		//Build the HTML Treeview
 		$this->buildTree();
 		//die($this->treehtml);
@@ -51,6 +54,29 @@ class ezPages extends ezCMS {
 		// Get the Message to display if any
 		$this->getMessage();
 
+	}
+	
+	// Function to build the menu to display
+	private function buildMenu() {
+	
+		$this->btns = '';
+		if ($this->id == 'new') { 
+			$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
+			return;
+		}
+		if ($_SESSION['EDITORTYPE'] == 3)
+			$this->btns .= '<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>';
+		$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">';
+		$myclass = ''; // 
+		if ( !$this->page['published'] ) $myclass = 'nopubmsg';
+		$this->btns .= '<a href="../'.$this->page['url'].'" target="_blank"  class="btn btn-success '.$myclass.' ">View</a>';
+		$this->btns .= '<a href="?id=new" class="btn btn-info">New</a>';
+		$this->btns .= '<a href="?copyid='.$this->id.'" class="btn btn-warning">Copy</a>';
+		if ($this->id > 2)
+			$this->btns .= '<a href="?delid='.$this->id.'" class="btn btn-danger conf-del">Delete</a>';
+		if ($_SESSION['EDITORTYPE'] == 3)
+			$this->btns .= '<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup>1</sup></a>';
+	
 	}
 	
 	// Function to fetch the revisions

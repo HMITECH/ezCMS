@@ -32,28 +32,7 @@ $cms = new ezPages();
 			
 				<form id="frmPage" action="" method="post" enctype="multipart/form-data">
 				<div class="navbar">
-					<div class="navbar-inner">
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
-						<?php } ?>
-						<input type="submit" name="Submit" class="btn btn-primary"
-							value="<?php if ($cms->id == 'new') echo 'Add Page'; else echo 'Save Changes';?>">
-						  <?php if ($cms->id != 'new') { ?>
-							<a href="<?php echo $cms->page['url']; ?>" target="_blank" 
-								<?php if ( !$cms->page['published'] ) 
-										echo 'onclick="return confirm(\'The page is Not published, its only visible to you.\');"'; 
-								?>
-								class="btn btn-success">View</a>
-							<a href="pages.php?id=new" class="btn btn-info">New</a>
-							<a href="scripts/copy-page.php?copyid=<?php echo $cms->id; ?>" class="btn btn-warning">Copy</a>
-							<?php if ($cms->id != 1 && $cms->id != 2) echo '<a href="scripts/del-page.php?delid='.$cms->id.
-									'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>'; ?>
-							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-							<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo 1 ?></sup></a>
-							<?php } ?>
-						  <?php } ?>
-
-					</div><!-- /navbar-inner  -->
+					<div class="navbar-inner"><?php echo $cms->btns ?></div><!-- /navbar-inner  -->
 				</div>
 
 				<?php echo $cms->msg; ?>
@@ -63,9 +42,9 @@ $cms = new ezPages();
 				  <li class="active"><a href="#d-main">Main</a></li>
 				  <li><a href="#d-content">Content</a></li>
 				  <li><a href="#d-header">Header</a></li>
-				  <li><a href="#d-sidebar">Aside A</a></li>
-				  <li><a href="#d-siderbar">Aside B</a></li>
-				  <li><a href="#d-footer">Footer</a></li>
+				  <li><a href="#d-sidebar">Aside 1</a></li>
+				  <li><a href="#d-siderbar">Aside 2</a></li>
+				  <li><a href="#d-footers">Footer</a></li>
 				  <li><a href="#d-head">Head</a></li>
 				</ul>
 				 
@@ -206,7 +185,7 @@ $cms = new ezPages();
 				  	<textarea id="txtrSide" name="sidercontent"><?php echo $cms->page['sidercontent']; ?></textarea>
 				  </div><!-- /d-siderbar  -->
 				  
-				  <div class="tab-pane" id="d-footer">
+				  <div class="tab-pane" id="d-footers">
 					<textarea id="txtFooter" name="footercontent"><?php echo $cms->page['footercontent']; ?></textarea>
 				  </div><!-- /d-footer  -->
 				  
@@ -289,6 +268,10 @@ $cms = new ezPages();
 	});
 	$('.conf-del').click( function () {
 		return confirm('Confirm Delete Action ?');
+	});
+	
+	$('.nopubmsg').click( function () {
+		return confirm('The page is Not published, its only visible to you.');
 	});	
 
 </script>
