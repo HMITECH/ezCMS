@@ -38,8 +38,11 @@ class ezPages extends ezCMS {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
 			$this->setOptions('nositemap', '', '');
-			$this->setOptions('published', 'Page is published and visible to all.', 
-				'Unpublished page is only visible when logged in.');
+			$this->setOptions('useheader', 'Page will display this custom HEADER.', 'Page will display the default HEADER.');
+			$this->setOptions('useside'  , 'Page will display this custom ASIDE1.', 'Page will display the default ASIDE1.');
+			$this->setOptions('usesider' , 'Page will display this custom ASIDE2.', 'Page will display the default ASIDE2.');
+			$this->setOptions('usefooter', 'Page will display this custom FOOTER.', 'Page will display the default FOOTER.');
+			$this->setOptions('published','Page is published.','Unpublished page is only visible when logged in.');
 		}
 		
 		//Build the Menu to show

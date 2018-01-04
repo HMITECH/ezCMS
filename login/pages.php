@@ -140,26 +140,72 @@ $cms = new ezPages();
 				  </div><!-- /d-main  -->
 
 				  <div class="tab-pane" id="d-content">
+					<div class="row">
+						<div class="span1" style="margin-top:6px;">Page URL :</div>
+						<div class="span11">
+							<input type="text" name="url" value="<?php echo $cms->page['url']; ?>" class="input-block-level">
+						</div>
+					</div>
 					<textarea id="txtMain" name="maincontent"><?php echo $cms->page['maincontent']; ?></textarea>
 				  </div><!-- /d-content  -->
 				    
 				  <div class="tab-pane" id="d-header">
+					<div class="row">
+						<div class="span4"><label class="checkbox">
+							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['useheaderCheck']; ?>>
+							Enable custom HEADER</label></div>
+						<div class="span4 text-center"><?php echo $cms->page['useheaderMsg']; ?></div>									
+						<div class="span4 text-right">
+							<a href="scripts/copy-block.php?headcopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
+						</div>
+					</div>
 					<textarea id="txtHeader" name="headercontent"><?php echo $cms->page['headercontent']; ?></textarea>
 				  </div><!-- /d-header  -->
 				    
 				  <div class="tab-pane" id="d-sidebar">
+					<div class="row">
+						<div class="span4"><label class="checkbox">
+							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['usesideCheck']; ?>>
+							Enable custom ASIDE 1</label></div>
+						<div class="span4 text-center"><?php echo $cms->page['usesideMsg']; ?></div>									
+						<div class="span4 text-right">
+							<a href="scripts/copy-block.php?sidecopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
+						</div>
+					</div>
 					<textarea id="txtSide" name="sidecontent"><?php echo $cms->page['sidecontent']; ?></textarea>
 				  </div><!-- /d-sidebar  -->
 				  
 				  <div class="tab-pane" id="d-siderbar">
+					<div class="row">
+						<div class="span4"><label class="checkbox">
+							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['usesiderCheck']; ?>>
+							Enable custom ASIDE 2</label></div>
+						<div class="span4 text-center"><?php echo $cms->page['usesiderMsg']; ?></div>									
+						<div class="span4 text-right">
+							<a href="scripts/copy-block.php?sidercopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
+						</div>
+					</div>
 				  	<textarea id="txtrSide" name="sidercontent"><?php echo $cms->page['sidercontent']; ?></textarea>
 				  </div><!-- /d-siderbar  -->
 				  
 				  <div class="tab-pane" id="d-footers">
+					<div class="row">
+						<div class="span4"><label class="checkbox">
+							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['usefooterCheck']; ?>>
+							Enable custom FOOTER</label></div>
+						<div class="span4 text-center"><?php echo $cms->page['usefooterMsg']; ?></div>									
+						<div class="span4 text-right">
+							<a href="scripts/copy-block.php?footcopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
+						</div>
+					</div>
 					<textarea id="txtFooter" name="footercontent"><?php echo $cms->page['footercontent']; ?></textarea>
 				  </div><!-- /d-footer  -->
 				  
 				  <div class="tab-pane" id="d-head">
+					<blockquote>
+					  <p>Append to PAGE</p>
+					  <small>Enter additional <strong>content</strong> for this page, you can include js, css, or anything else here</small>
+					</blockquote>
 				  	<textarea id="txtHead" name="head"><?php echo $cms->page['head']; ?></textarea>
 				  </div><!-- /d-head  -->
 
