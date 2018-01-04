@@ -37,23 +37,41 @@ class ezPages extends ezCMS {
 		if ($this->id <> 'new' ) {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
-			$this->setOptions('published', 
-				'Page is published and visible to all.', 
-				'Unpublished page only visible when logged in.');
+			$this->setOptions('nositemap', '', '');
+			$this->setOptions('published', 'Page is published and visible to all.', 
+				'Unpublished page is only visible when logged in.');
 		}
 		
 		//Build the Menu to show
 		$this->buildMenu();
-		
-		
-		
+
+		// Get the layouts for select options
+		$this->buildlayoutOpts();
+
 		//Build the HTML Treeview
 		$this->buildTree();
-		//die($this->treehtml);
+
+		//Disable parent page drop down
+		if ( ($this->id > 2) || ($this->id == 'new') ) $this->ddOptions = 
+			'<select name="slGroup" id="slGroup" class="input-block-level">'.$this->ddOptions .'</select>';
+		else $this->ddOptions = '<div class="alert alert-info slRootMsg">'.'Root</div>';
 		
 		// Get the Message to display if any
 		$this->getMessage();
 
+	}
+
+	// Function to build the menu to display
+	private function buildlayoutOpts() {
+		$isSel = '';
+		if (($this->page['layout'] =='') || ($this->page['layout']=='layout.php')) $isSel = 'selected';
+		$this->slOptions .= '<option value="layout.php" '.$isSel.'>Default - layout.php</option>';
+		foreach (glob("../layout.*.php") as $entry) {
+			$entry = substr($entry, 3 , strlen($entry)-3);
+			$isSel = '';
+			if ($this->page['layout'] == $entry) $isSel = 'selected';
+			$this->slOptions .= "<option $isSel>$entry</option>";
+		}
 	}
 	
 	// Function to build the menu to display
@@ -126,7 +144,8 @@ class ezPages extends ezCMS {
 		static $nestCount;
 		
 		$treeSQL = $this->prepare(
-			"SELECT `id`, `title`, `url`, `published`, `description` FROM  `pages` WHERE `parentid` = ? order by place");
+			"SELECT `id`, `title`, `url`, `published`, `description` 
+			FROM  `pages` WHERE `parentid` = ? order by place");
 		$treeSQL->execute( array($parentid) );
 
 		if ($treeSQL->rowCount()) {
@@ -138,30 +157,21 @@ class ezPages extends ezCMS {
 			while ($entry = $treeSQL->fetch()) {
 				$cnt++;
 				
-				$liclass = '';
 				$action = '<i class="icon-file"></i>';
-				if ($entry['id']==1) {
-					 $action = '<i class="icon-home"></i>';
-					 $liclass = 'class="open"';
-				}
+				if ($entry['id']==1) $action = '<i class="icon-home"></i>';
 				if ($entry['id']==2) $action = '<i class="icon-question-sign"></i> ';
 				
 				$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
-				
-				$this->treehtml .= '<li '.$liclass.'>'.$action.' <a href="pages.php?id='.$entry['id'].
-										'" class="'.$myclass.'">'.$entry["title"].'</a>';
-				
-				if ($parentid == $entry['id'])
-					$this->ddOptions .= '<option value="' . $entry['id'] . '" SELECTED>';
-				else
-					$this->ddOptions .= '<option value="' . $entry['id'] . '">';
-				$this->ddOptions .= str_repeat(' > ',$nestCount - 1) . $entry['title'] . '</option>';
-				
+				$myPub   = ($entry["published"]) ? '' : ' <i class="icon-ban-circle" title="Page is not published"></i>';
+				$this->treehtml .= '<li>'.$action.' <a href="pages.php?id='.$entry['id'].
+							'" class="'.$myclass.'">'.$entry["title"].'</a>'.$myPub;
+				$isSel = '';
+				if ($this->page['parentid'] == $entry['id']) $isSel = 'selected';
+				$this->ddOptions .= '<option value="' . $entry['id'] . '" '.$isSel.'>'.
+					str_repeat(' - ',$nestCount - 1) . $entry['title'].'</option>';				
 				
 				$this->buildTree($entry['id']);
-				
 				$this->treehtml .= '</li>';
-
 			}
 			$this->treehtml .= '</ul>';
 		}

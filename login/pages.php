@@ -64,8 +64,8 @@ $cms = new ezPages();
 										value="<?php echo $cms->page['title']; ?>"
 										data-placement="top"
 										class="input-block-level tooltipme2 countme2"><br>
-										<label class="checkbox" <?php if ($cms->id == 1 || $cms->id == 2) echo 'style="display:none"';?>>
-										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $cms->page['published']; ?>>
+										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
+										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
 										  Published on site
 										</label>
 								</div>
@@ -73,7 +73,7 @@ $cms = new ezPages();
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputName">Name (URL)</label>
+								<label class="control-label" for="inputName">Name</label>
 								<div class="controls">
 									<input type="text" id="txtName" name="txtName"
 										placeholder="Enter the name of the page"
@@ -82,12 +82,9 @@ $cms = new ezPages();
 										value="<?php echo $cms->page['pagename']; ?>"
 										data-placement="top"
 										class="input-block-level tooltipme2 countme2"><br>
-									<?php if (!$cms->page['published']) 
-												echo '<span class="label label-important">Unpublished page only visible when logged in.</span>';
-											else 
-												echo '<span class="label label-info">Page is published and visible to all.</span>'; ?>
-									<label class="checkbox checkRight" <?php if ($cms->id == 1 || $cms->id == 2) echo 'style="display:none"';?>>
-									  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $cms->page['nositemap']; ?>>
+									<?php echo $cms->page['publishedMsg']; ?>
+									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
+									  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $cms->page['nositemapCheck']; ?>>
 									  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
 									</label>
 								</div>
@@ -99,44 +96,17 @@ $cms = new ezPages();
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Parent Page</label>
-								<div class="controls">
-								  <?php if ($cms->id == 1 || $cms->id == 2) echo 
-								  			'<div class="alert alert-info" style="margin: 0 0 3px;padding: 5px 10px;"><strong>'.
-												'Site Root</strong></div>';
-										else echo 
-											'<select name="slGroup" id="slGroup" class="input-block-level">' . 
-													$cms->ddOptions . '</select>'; ?>
-								</div>
+								<div class="controls"><?php echo $cms->ddOptions; ?></div>
 							  </div>
 							</div>
 							<div class="span6">
-							
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Layout</label>
-								<div class="controls">
-									<select name="slLayout" id="slLayout" class="input-block-level">
-										<?php 
-											if (($cms->page['slLayout'] =='') || ($cms->page['slLayout']=='layout.php'))
-												echo '<option value="layout.php" selected>Default - layout.php</option>';
-											else
-												echo '<option value="layout.php">Default - layout.php</option>';
-												
-											if ($handle = opendir('..')) {
-												while (false !== ($entry = readdir($handle))) {
-													if (preg_match('/^layout\.[a-z0-9_-]+\.php$/i',$entry)) {
-														if ($entry==$slLayout) $myclass = 'selected'; else $myclass = '';
-														echo "<option $myclass>$entry</option>";
-													}
-												}
-												closedir($handle);
-											}
-										?>	
-									</select>
-								</div>
+								<div class="controls"><select name="slLayout" id="slLayout" class="input-block-level">
+									<?php echo $cms->slOptions; ?></select></div>
 							  </div>
-							
 							</div>
-						</div>	
+						</div>
 						
 						<div class="row">
 							<div class="span6">
@@ -202,7 +172,7 @@ $cms = new ezPages();
 	</div><!-- /container  -->
 	<br><br>
 </div><!-- /wrap  -->
-	
+
 <?php include('include/footer.php'); ?>
 
 <script type="text/javascript">
@@ -352,12 +322,8 @@ $cms = new ezPages();
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
-	var txtMain_loaded = false;
-	var txtHeader_loaded = false;
-	var txtFooter_loaded = false;
-	var txtSide_loaded = false;
-	var txtSider_loaded = false;
-	var txtHead_loaded = false;
+	var myCodeMain, myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter, myCodeHead;
+
 	var codeMirrorJSON = {
 		lineNumbers: true,
 		matchBrackets: true,

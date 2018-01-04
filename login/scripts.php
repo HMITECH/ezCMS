@@ -27,7 +27,7 @@ $cms = new ezScripts();
 		<div class="span3 white-boxed">
 		
 			<ul id="left-tree">
-			  <li class="open" ><i class="icon-align-left"></i> 
+			  <li><i class="icon-align-left"></i> 
 				<a class="<?php if ($cms->filename=="../main.js") echo 'label label-info'; ?>" href="scripts.php">main.js</a>
 				<ul><?php echo $cms->treehtml; ?></ul>
 			  </li>

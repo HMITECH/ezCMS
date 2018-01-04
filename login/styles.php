@@ -28,7 +28,7 @@ $cms = new ezStyles();
 		<div class="span3 white-boxed">
 		
 			<ul id="left-tree">
-			  <li class="open" ><i class="icon-pencil"></i> 
+			  <li><i class="icon-pencil"></i> 
 				<a class="<?php if ($cms->filename=="../style.css") echo 'label label-info'; ?>" href="styles.php">style.css</a>
 				<ul><?php echo $cms->treehtml; ?></ul>
 			  </li>

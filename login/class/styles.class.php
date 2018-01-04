@@ -130,7 +130,6 @@ class ezStyles extends ezCMS {
 			$entry = substr($entry, 19, strlen($entry)-19);
 			$this->treehtml .= '<li><i class="icon-tint"></i> <a href="styles.php?show='.
 				$entry.'" class="'.$myclass.'">'.$entry.'</a></li>';
-
 		}
 		$this->treehtml .= '</ul>';		
 	}

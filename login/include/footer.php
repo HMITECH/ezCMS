@@ -29,7 +29,15 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 <script src="js/pass-strength.js" ></script>
 <script src="js/jscolor.min.js" ></script>
 <script type="text/javascript">
+
+	var tSelc = $('#left-tree a.label-info').closest('li');
+	while ( tSelc.length ) {
+		tSelc.addClass('open');
+		tSelc = tSelc.parent().closest('li');
+	}
+	
 	$('.tooltipme2').tooltip();
+
 	$("#left-tree").treeview({
 		collapsed: true,
 		animated: "medium",

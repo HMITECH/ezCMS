@@ -27,7 +27,7 @@ $cms = new ezLayouts();
 		  <div id="editBlock" class="row-fluid">
 			<div class="span3 white-boxed">
 				<ul id="left-tree">
-				  <li class="open" ><i class="icon-list-alt"></i> 
+				  <li><i class="icon-list-alt"></i> 
 					<a class="<?php echo $cms->homeclass; ?>" href="layouts.php">layout.php</a>
 					<?php echo $cms->treehtml; ?>
 				  </li>					

@@ -56,6 +56,15 @@ div.white-boxed {
     width: 100%;
     margin: 0;
 }
+.slRootMsg {
+	margin: 0 0 3px;
+	padding: 5px 10px;
+	font-weight:bold;
+}
+#left-tree > li > a, 
+#left-tree > li > ul > li > a {
+    font-weight: bold;
+}
 #shrFrm {
 	width:100%;
 	min-height:500px;
