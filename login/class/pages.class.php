@@ -28,22 +28,25 @@ class ezPages extends ezCMS {
 		// call parent constuctor
 		parent::__construct();
 		
+		// Check if file to display is set
+		if (isset($_GET['id'])) $this->id = $_GET['id'];		
+		
 		// Update the Controller of Posted
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
-		
-		// Check if file to display is set
-		if (isset($_GET['id'])) $this->id = $_GET['id'];
 		
 		if ($this->id <> 'new' ) {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
 			$this->setOptions('nositemap', '', '');
-			$this->setOptions('useheader', 'Page will display this custom HEADER.', 'Page will display the default HEADER.');
-			$this->setOptions('useside'  , 'Page will display this custom ASIDE1.', 'Page will display the default ASIDE1.');
-			$this->setOptions('usesider' , 'Page will display this custom ASIDE2.', 'Page will display the default ASIDE2.');
-			$this->setOptions('usefooter', 'Page will display this custom FOOTER.', 'Page will display the default FOOTER.');
-			$this->setOptions('published','Page is published.','Unpublished page is only visible when logged in.');
+			$this->setOptions('useheader', 'Page will display this custom HEADER', 'Page will display the default HEADER');
+			$this->setOptions('useside'  , 'Page will display this custom ASIDE1', 'Page will display the default ASIDE1');
+			$this->setOptions('usesider' , 'Page will display this custom ASIDE2', 'Page will display the default ASIDE2');
+			$this->setOptions('usefooter', 'Page will display this custom FOOTER', 'Page will display the default FOOTER');
+			$this->setOptions('published','Page is published','Unpublished page is only visible when logged in');
 		}
+		
+		// Get the Revisions
+		$this->getRevisions();
 		
 		//Build the Menu to show
 		$this->buildMenu();
@@ -56,8 +59,8 @@ class ezPages extends ezCMS {
 
 		//Disable parent page drop down
 		if ( ($this->id > 2) || ($this->id == 'new') ) $this->ddOptions = 
-			'<select name="slGroup" id="slGroup" class="input-block-level">'.$this->ddOptions .'</select>';
-		else $this->ddOptions = '<div class="alert alert-info slRootMsg">'.'Root</div>';
+			'<select name="parentid" class="input-block-level">'.$this->ddOptions.'</select>';
+		else $this->ddOptions = '<div class="alert alert-info slRootMsg">Root</div>';
 		
 		// Get the Message to display if any
 		$this->getMessage();
@@ -96,32 +99,31 @@ class ezPages extends ezCMS {
 		if ($this->id > 2)
 			$this->btns .= '<a href="?delid='.$this->id.'" class="btn btn-danger conf-del">Delete</a>';
 		if ($_SESSION['EDITORTYPE'] == 3)
-			$this->btns .= '<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup>1</sup></a>';
+			$this->btns .= '<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup>'.$this->revs['cnt'].'</sup></a>';
 	
 	}
 	
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		foreach ($this->query("SELECT git_files.*, users.username 
-				FROM users LEFT JOIN git_files ON users.id = git_files.createdby
-				WHERE git_files.fullpath = 'index.php'
-				ORDER BY git_files.id DESC") as $entry) {
+		foreach ($this->query("SELECT git_pages.id,git_pages.page_id,users.username,git_pages.createdon
+				FROM git_pages LEFT JOIN users ON git_pages.createdby = users.id
+				WHERE git_pages.page_id = ".$this->id." ORDER BY git_pages.id DESC") as $entry) {
 	
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
 				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
 			
 			$this->revs['log'] .= '<tr>
-				<td>'.$entry['id'].'</td>
+				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="controllers.php?purgeRev='.$entry['id'].'">Purge</a>	
+				<a href="?purgeRev='.$entry['id'].'">Purge</a>	
 				</td></tr>';
 
-			$this->revs['jsn'][$entry['id']] = $entry['content'];
+			$this->revs['jsn'][$entry['id']] = $entry;
 
 			$this->revs['cnt']++;
 		}
@@ -183,18 +185,68 @@ class ezPages extends ezCMS {
 	
 	// Function to Update the Controller
 	private function update() {
-	
-		// Check all the variables are posted
-		if ( (!isset($_POST['Submit'])) || (!isset($_POST['txtContents'])) ) {
-			header('HTTP/1.1 400 BAD REQUEST');
-			die('Invalid Request');
-		}
 
 		// Check permissions
 		if (!$this->usr['editpages']) {
-			header("Location: controllers.php?flg=noperms");
+			header("Location: ?flg=noperms&id=".$this->id);
 			exit;
 		}
+		
+		// array to hold the data
+		$data = array();
+		
+		// get the required post varables 
+		$this->fetchPOSTData(array(
+			'pagename',
+			'title', 
+			'keywords',
+			'description', 			
+			'maincontent',
+			'headercontent', 
+			'sidecontent', 			
+			'sidercontent', 						
+			'sidercontent', 
+			'footercontent',
+			'head',
+			'layout',
+			'parentid',
+			'url'), $data);
+		// get the required post checkboxes 
+		$this->fetchPOSTCheck( array(
+			'published',
+			'useheader',
+			'useside',
+			'usesider',
+			'usefooter',
+			'nositemap'), $data);
+		$data['createdby'] = $_SESSION['EZUSERID'];
+	
+		
+		
+		if ($this->id == 'new') {
+			// add new
+			$newID = $this->add( 'pages' , $data);
+			if ($newID) {
+				header("Location: ?id=".$newID."&flg=added");	// added
+				exit; 
+			} 
+		} else {
+		
+			// Test if nothing has changed 
+			
+			// Create a revision
+		
+			// update
+			if ($this->edit( 'pages' , $this->id , $data )) {
+				header("Location: ?id=".$this->id."&flg=saved");	// added
+				exit; 
+			}		
+		}
+
+		// Update sitemap 
+		
+		// reindex pages ...
+		
 		
 	}
 	

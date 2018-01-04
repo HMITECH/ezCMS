@@ -23,7 +23,7 @@ $cms = new ezPages();
 <div id="wrap">
 	<?php include('include/nav.php'); ?>  
 	<div class="container">
-		<div class="row-fluid">
+		<div id="editBlock" class="row-fluid">
 			<div class="span3 white-boxed">
 				<p><input type="text" id="txtsearch" class="input-block-level" placeholder="Search here ..."></p>
 				<?php echo $cms->treehtml; ?>
@@ -36,6 +36,12 @@ $cms = new ezPages();
 				</div>
 
 				<?php echo $cms->msg; ?>
+				
+				<div id="revBlock">
+				  <table class="table table-striped"><thead>
+					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
+				</div>
 				
 			    <div class="tabbable tabs-top">
 				<ul class="nav nav-tabs" id="myTab">
@@ -57,7 +63,7 @@ $cms = new ezPages();
 							  <div class="control-group">
 								<label class="control-label" for="inputTitle">Title Tag</label>
 								<div class="controls">
-									<input type="text" id="txtTitle" name="txtTitle"
+									<input type="text" id="txtTitle" name="title"
 										placeholder="Enter the title of the page"
 										title="Enter the full title of the page here."
 										data-toggle="tooltip" 
@@ -65,7 +71,7 @@ $cms = new ezPages();
 										data-placement="top"
 										class="input-block-level tooltipme2 countme2"><br>
 										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-										  <input name="ckPublished" type="checkbox" id="ckPublished" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
+										  <input name="published" type="checkbox" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
 										  Published on site
 										</label>
 								</div>
@@ -75,7 +81,7 @@ $cms = new ezPages();
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Name</label>
 								<div class="controls">
-									<input type="text" id="txtName" name="txtName"
+									<input type="text" id="txtName" name="pagename"
 										placeholder="Enter the name of the page"
 										title="Enter the full name of the page here."
 										data-toggle="tooltip" 
@@ -84,7 +90,7 @@ $cms = new ezPages();
 										class="input-block-level tooltipme2 countme2"><br>
 									<?php echo $cms->page['publishedMsg']; ?>
 									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-									  <input name="cknositemap" type="checkbox" id="cknositemap" value="checkbox" <?php echo $cms->page['nositemapCheck']; ?>>
+									  <input name="nositemap" type="checkbox" value="checkbox" <?php echo $cms->page['nositemapCheck']; ?>>
 									  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
 									</label>
 								</div>
@@ -102,7 +108,7 @@ $cms = new ezPages();
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Layout</label>
-								<div class="controls"><select name="slLayout" id="slLayout" class="input-block-level">
+								<div class="controls"><select name="layout" class="input-block-level">
 									<?php echo $cms->slOptions; ?></select></div>
 							  </div>
 							</div>
@@ -113,7 +119,7 @@ $cms = new ezPages();
 							  <div class="control-group">
 								<label class="control-label" for="inputDescription">Meta Description</label>
 								<div class="controls">
-									<textarea name="txtDesc" rows="5" id="txtDesc" 
+									<textarea name="description" rows="5" id="txtDesc" 
 										placeholder="Enter the description of the page"
 										title="Enter the description of the page here, this is VERY IMPORTANT for SEO. Do not duplicate on all pages"
 										data-toggle="tooltip"
@@ -126,7 +132,7 @@ $cms = new ezPages();
 							  <div class="control-group">
 								<label class="control-label" for="inputKeywords">Meta Keywords</label>
 								<div class="controls">
-									<textarea name="txtKeywords" rows="5" id="txtKeywords" 
+									<textarea name="keywords" rows="5" id="txtKeywords" 
 										placeholder="Enter the Keywords of the page"
 										title="Enter list keywords of the page here, not so important now but use it anyways. Do not stuff keywords"
 										data-toggle="tooltip"
@@ -165,7 +171,7 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-sidebar">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['usesideCheck']; ?>>
+							<input name="useside" type="checkbox" value="checkbox" <?php echo $cms->page['usesideCheck']; ?>>
 							Enable custom ASIDE 1</label></div>
 						<div class="span4 text-center"><?php echo $cms->page['usesideMsg']; ?></div>									
 						<div class="span4 text-right">
@@ -178,7 +184,7 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-siderbar">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['usesiderCheck']; ?>>
+							<input name="usesider" type="checkbox" value="checkbox" <?php echo $cms->page['usesiderCheck']; ?>>
 							Enable custom ASIDE 2</label></div>
 						<div class="span4 text-center"><?php echo $cms->page['usesiderMsg']; ?></div>									
 						<div class="span4 text-right">
@@ -191,7 +197,7 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-footers">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['usefooterCheck']; ?>>
+							<input name="usefooter" type="checkbox" value="checkbox" <?php echo $cms->page['usefooterCheck']; ?>>
 							Enable custom FOOTER</label></div>
 						<div class="span4 text-center"><?php echo $cms->page['usefooterMsg']; ?></div>									
 						<div class="span4 text-right">
@@ -214,7 +220,34 @@ $cms = new ezPages();
 			  	</form>
 			</div><!-- /span9 white-boxed  -->
 			<div class="clearfix"></div>
-		</div><!-- /row-fluid  -->
+		</div><!-- /editBlock row-fluid  -->
+
+		<div id="diffBlock" class="white-boxed">
+			<div class="navbar"><div class="navbar-inner">
+				<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
+				<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
+				<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
+			</div></div>
+			<table id="diffviewerControld" width="100%" border="0">
+			  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+				</td><td><select disabled><option selected>Your Current Edit</option></select>
+				</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+			  </td></tr>
+			</table>
+			<div class="tabbable tabs-top">
+				<ul class="nav nav-tabs" id="revTab">
+				  <li class="active"><a href="#rev-content">Content</a></li>
+				  <li><a href="#rev-header">Header</a></li>
+				  <li><a href="#rev-sidebar">Aside 1</a></li>
+				  <li><a href="#rev-siderbar">Aside 2</a></li>
+				  <li><a href="#rev-footers">Footer</a></li>
+				  <li><a href="#rev-head">Head</a></li>
+				</ul>
+				<div id="diffviewer"></div>
+			</div><!-- /tabbable  -->
+		</div><!-- /diffBlock  -->
+		<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
+
 	</div><!-- /container  -->
 	<br><br>
 </div><!-- /wrap  -->
@@ -368,6 +401,9 @@ $cms = new ezPages();
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
+	
+	var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
+	
 	var myCodeMain, myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter, myCodeHead;
 
 	var codeMirrorJSON = {
@@ -381,8 +417,51 @@ $cms = new ezPages();
 		extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
 		foldGutter: true,
 		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-		viewportMargin: Infinity
 	}
+	
+	// DIFF Viewer Options
+	var codeMain = '',
+		codeRight = $("#txtMain").val(), 
+		codeLeft = codeRight,
+		panes = 2, collapse = false, dv;
+	
+	// function to build DIFF UI
+	var buildDiffUI = function () {
+		var target = document.getElementById("diffviewer");
+		target.innerHTML = "";
+		dv = CodeMirror.MergeView(target, {
+			value: codeMain,
+			origLeft: panes == 3 ? codeLeft : null,
+			orig: codeRight,
+			lineNumbers: true,
+			mode: "htmlmixed",
+			theme: '<?php echo $_SESSION["CMTHEME"]; ?>',
+			extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+			foldGutter: true,
+			gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+			highlightDifferences: true,
+			connect: null,
+			collapseIdentical: collapse
+		});
+	}
+	
+	// Change to DIff UI
+	$('#showdiff').click( function () {
+		$('#editBlock').slideUp('slow');
+		$('#diffBlock').slideDown('slow', function () {
+			codeMain = myCodeMain.getValue(),
+			buildDiffUI();
+		});
+		return false;
+	});
+	
+	// Back to Main editor from DIFF UI
+	$('#backEditBTN').click( function () {
+		$('#editBlock').slideDown('slow');
+		$('#diffBlock').slideUp('slow');
+		//myCode.setValue(dv.editor().getValue());
+		return false;
+	});
 	
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
@@ -393,14 +472,12 @@ $cms = new ezPages();
 		myCodeFooter.refresh();
 		myCodeHead.refresh();
 	});	
-	$(window).load( function () {
-		myCodeMain = CodeMirror.fromTextArea(document.getElementById("txtMain"), codeMirrorJSON);
-		myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
-		myCodeFooter = CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
-		myCodeSide1 = CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
-		myCodeSide2 = CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
-		myCodeHead = CodeMirror.fromTextArea(document.getElementById("txtHead"), codeMirrorJSON);
-	});
+	myCodeMain = CodeMirror.fromTextArea(document.getElementById("txtMain"), codeMirrorJSON);
+	myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
+	myCodeFooter = CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
+	myCodeSide1 = CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
+	myCodeSide2 = CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
+	myCodeHead = CodeMirror.fromTextArea(document.getElementById("txtHead"), codeMirrorJSON);
 
 </script>
 <?php } ?>
