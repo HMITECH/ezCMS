@@ -20,86 +20,87 @@ $cms = new ezScripts();
 	
 </head><body>
   
-	<div id="wrap">
-		<?php include('include/nav.php'); ?>  
-		<div class="container">
-		  <div id="editBlock" class="row-fluid">
-			<div class="span3 white-boxed">
+<div id="wrap">
+	<?php include('include/nav.php'); ?>  
+	<div class="container">
+	  <div id="editBlock" class="row-fluid">
+		<div class="span3 white-boxed">
+		
+			<ul id="left-tree">
+			  <li class="open" ><i class="icon-align-left"></i> 
+				<a class="<?php if ($cms->filename=="../main.js") echo 'label label-info'; ?>" href="scripts.php">main.js</a>
+				<ul><?php echo $cms->treehtml; ?></ul>
+			  </li>
+			</ul>
 			
-				<ul id="left-tree">
-				  <li class="open" ><i class="icon-align-left"></i> 
-					<a class="<?php if ($cms->filename=="../main.js") echo 'label label-info'; ?>" href="scripts.php">main.js</a>
-				  	<ul><?php echo $cms->treehtml; ?></ul>
-				  </li>
-				</ul>
-				
-			</div>
-			<div class="span9 white-boxed">
-			  <form id="frm" action="scripts.php" method="post" enctype="multipart/form-data">
-				<div class="navbar">
-					<div class="navbar-inner">
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
-						<?php } ?>
-						<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary" style="padding:5px 12px;"> 
-						<div class="btn-group">
-						  <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
-							Save As <span class="caret"></span></a>
-							
-						  <div id="SaveAsDDM" class="dropdown-menu" style="padding:10px;">
-							<blockquote>
-							  <div>Save Javascript file as</div>
-							  <small>Only Alphabets and Numbers, no spaces</small>
-							</blockquote>
-							<div class="input-prepend input-append">
-							  <span class="add-on">/site-assets/js/</span>
-							  <input id="txtSaveAs" name="txtSaveAs" type="text" class="input-medium appendedPrependedInput">
-							  <span class="add-on">.js</span>
-							</div><br>
-							<p><a id="btnsaveas" href="#" class="btn btn-large btn-info">Save Now</a></p>
-						  </div>
-						  
-						</div>
-						<?php echo $cms->deletebtn; ?>
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
-						<?php } ?>
+		</div>
+		<div class="span9 white-boxed">
+		  <form id="frm" action="scripts.php" method="post" enctype="multipart/form-data">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
+					<?php } ?>
+					<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary" style="padding:5px 12px;"> 
+					<div class="btn-group">
+					  <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
+						Save As <span class="caret"></span></a>
+						
+					  <div id="SaveAsDDM" class="dropdown-menu" style="padding:10px;">
+						<blockquote>
+						  <div>Save Javascript file as</div>
+						  <small>Only Alphabets and Numbers, no spaces</small>
+						</blockquote>
+						<div class="input-prepend input-append">
+						  <span class="add-on">/site-assets/js/</span>
+						  <input id="txtSaveAs" name="txtSaveAs" type="text" class="input-medium appendedPrependedInput">
+						  <span class="add-on">.js</span>
+						</div><br>
+						<p><a id="btnsaveas" href="#" class="btn btn-large btn-info">Save Now</a></p>
+					  </div>
+					  
 					</div>
+					<?php echo $cms->deletebtn; ?>
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
+					<?php } ?>
 				</div>
-				<?php echo $cms->msg; ?>
-				<div id="revBlock">
-				  <table class="table table-striped"><thead>
-					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
-				</div>
-				<input border="0" class="input-block-level" name="txtlnk" onFocus="this.select();" 
-					style="cursor: pointer;" onClick="this.select();"  type="text" title="include this link in layouts or page head"
-					value="&lt;script src=&quot;<?php echo substr($cms->filename, 2); ?>&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;" readonly/>
-				<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
-				<textarea name="txtContents" id="txtContents" class="input-block-level"
-			  		style="height: 460px; width:100%"><?php echo $cms->content; ?></textarea>
-			  </form>
 			</div>
-		  </div>
+			<?php echo $cms->msg; ?>
+			<div id="revBlock">
+			  <table class="table table-striped"><thead>
+				<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+			  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
+			</div>
+			<input border="0" class="input-block-level" name="txtlnk" onFocus="this.select();" 
+				style="cursor: pointer;" onClick="this.select();"  type="text" title="include this link in layouts or page head"
+				value="&lt;script src=&quot;<?php echo substr($cms->filename, 2); ?>&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;" readonly/>
+			<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
+			<textarea name="txtContents" id="txtContents" class="input-block-level"
+				style="height: 460px; width:100%"><?php echo $cms->content; ?></textarea>
+		  </form>
+		</div>
+	  </div>
+	  
+	  <div id="diffBlock" class="white-boxed">
+		<div class="navbar"><div class="navbar-inner">
+			<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
+			<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
+			<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
+		</div></div>
+		<table id="diffviewerControld" width="100%" border="0">
+		  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+			</td><td><select disabled><option selected>Your Current Edit</option></select>
+			</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+		  </td></tr>
+		</table>
+		<div id="diffviewer"></div>
+	  </div>
+	  <textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
 		  
-		  <div id="diffBlock" class="white-boxed">
-			<div class="navbar"><div class="navbar-inner">
-				<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
-				<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
-				<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
-			</div></div>
-			<table id="diffviewerControld" width="100%" border="0">
-			  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
-				</td><td><select disabled><option selected>Your Current Edit</option></select>
-				</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
-			  </td></tr>
-			</table>
-			<div id="diffviewer"></div>
-		  </div>
-		  <textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
-			  
-		</div> 
-	</div>
+	</div> 
+	<br><br>
+</div><!-- /wrap  -->
 
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">

@@ -160,117 +160,118 @@ $cms = new ezUsers();
 	
 </head><body>
   
-	<div id="wrap">
-		<?php include('include/nav.php'); ?>  
-		<div class="container">
-		  <div class="row-fluid">
-			<div class="span3 white-boxed"><?php echo $cms->treehtml; ?></div>
-			<div class="span9 white-boxed">
-				<form id="frmUser" action="" method="post" enctype="multipart/form-data" class="form-horizontal"> 
-				  	<div class="navbar">
-						<div class="navbar-inner">
-						  <?php echo $cms->barBtns; ?>
-						</div>
+<div id="wrap">
+	<?php include('include/nav.php'); ?>  
+	<div class="container">
+	  <div class="row-fluid">
+		<div class="span3 white-boxed"><?php echo $cms->treehtml; ?></div>
+		<div class="span9 white-boxed">
+			<form id="frmUser" action="" method="post" enctype="multipart/form-data" class="form-horizontal"> 
+				<div class="navbar">
+					<div class="navbar-inner">
+					  <?php echo $cms->barBtns; ?>
 					</div>
-						
-					<?php echo $cms->msg; ?>
+				</div>
 					
-					<div class="row" style="margin-left:0">
-						<div class="span4">
-							<label for="inputName">User Name</label>
-							<input type="text" name="username"
-								placeholder="Enter the full name"
-								title="Enter the full name of the user here."
-								data-toggle="tooltip"
-								value="<?php echo $cms->thisUser['username']; ?>"
-								data-placement="top"
-								class="input-block-level tooltipme2">
-						</div>
-						<div class="span4">
-							<label for="inputEmail">Email Address</label>
-							<input type="text" name="email"
-								placeholder="Enter the full email address"
-								title="Enter the full email address of the user here."
-								data-toggle="tooltip"
-								value="<?php echo $cms->thisUser['email']; ?>"
-								data-placement="top"
-								class="input-block-level tooltipme2">
-						</div>
-						<div class="span4">
-							<label for="txtpsswd">Password</label>
-							<input type="text" name="psswd"
-								placeholder="<?php echo ($cms->id=='new') ? 'Enter the password' : 'Leave blank to keep unchanged' ?>"
-								title="<?php echo ($cms->id=='new') ? 'Enter the password here' : 'Enter a new password or leave blank to keep unchanged' ?>"
-								data-toggle="tooltip"
-								data-placement="top"
-								class="input-block-level tooltipme2">
-						</div>
+				<?php echo $cms->msg; ?>
+				
+				<div class="row" style="margin-left:0">
+					<div class="span4">
+						<label for="inputName">User Name</label>
+						<input type="text" name="username"
+							placeholder="Enter the full name"
+							title="Enter the full name of the user here."
+							data-toggle="tooltip"
+							value="<?php echo $cms->thisUser['username']; ?>"
+							data-placement="top"
+							class="input-block-level tooltipme2">
 					</div>
-					<h4 style="margin:20px 0; padding:10px; text-align:center; background:#fff">User privileges </h4>
+					<div class="span4">
+						<label for="inputEmail">Email Address</label>
+						<input type="text" name="email"
+							placeholder="Enter the full email address"
+							title="Enter the full email address of the user here."
+							data-toggle="tooltip"
+							value="<?php echo $cms->thisUser['email']; ?>"
+							data-placement="top"
+							class="input-block-level tooltipme2">
+					</div>
+					<div class="span4">
+						<label for="txtpsswd">Password</label>
+						<input type="text" name="psswd"
+							placeholder="<?php echo ($cms->id=='new') ? 'Enter the password' : 'Leave blank to keep unchanged' ?>"
+							title="<?php echo ($cms->id=='new') ? 'Enter the password here' : 'Enter a new password or leave blank to keep unchanged' ?>"
+							data-toggle="tooltip"
+							data-placement="top"
+							class="input-block-level tooltipme2">
+					</div>
+				</div>
+				<h4 style="margin:20px 0; padding:10px; text-align:center; background:#fff">User privileges </h4>
 
-					<div class="row" style="margin-left:0">
-						<div class="span4">
-							<label class="checkbox">
-								<input name="ckactive" type="checkbox" id="ckactive"
-									value="checkbox" <?php echo $cms->thisUser['activeCheck']; ?>>
-								Active</label><?php echo $cms->thisUser['activeMsg']; ?>
-							<hr>
-							<label class="checkbox">
-								<input name="ckeditpage" type="checkbox" id="ckeditpage" 
-									value="checkbox" <?php echo $cms->thisUser['editpageCheck']; ?>>
-								Manage Pages</label><?php echo $cms->thisUser['editpageMsg']; ?>
-							<br><br>
-							<label class="checkbox">
-								<input name="ckdelpage" type="checkbox" id="ckdelpage" value="checkbox" 
-									<?php echo $cms->thisUser['delpageCheck']; ?>>
-								Delete Pages</label><?php echo $cms->thisUser['delpageMsg']; ?>
-							<hr>
-						</div>
-						<div class="span4">
-							<label class="checkbox">
-								<input name="ckedituser" type="checkbox" id="ckedituser" value="checkbox" <?php echo $cms->thisUser['edituserCheck']; ?>>
-								Manage Users</label><?php echo $cms->thisUser['edituserMsg']; ?>
+				<div class="row" style="margin-left:0">
+					<div class="span4">
+						<label class="checkbox">
+							<input name="ckactive" type="checkbox" id="ckactive"
+								value="checkbox" <?php echo $cms->thisUser['activeCheck']; ?>>
+							Active</label><?php echo $cms->thisUser['activeMsg']; ?>
+						<hr>
+						<label class="checkbox">
+							<input name="ckeditpage" type="checkbox" id="ckeditpage" 
+								value="checkbox" <?php echo $cms->thisUser['editpageCheck']; ?>>
+							Manage Pages</label><?php echo $cms->thisUser['editpageMsg']; ?>
+						<br><br>
+						<label class="checkbox">
+							<input name="ckdelpage" type="checkbox" id="ckdelpage" value="checkbox" 
+								<?php echo $cms->thisUser['delpageCheck']; ?>>
+							Delete Pages</label><?php echo $cms->thisUser['delpageMsg']; ?>
+						<hr>
+					</div>
+					<div class="span4">
+						<label class="checkbox">
+							<input name="ckedituser" type="checkbox" id="ckedituser" value="checkbox" <?php echo $cms->thisUser['edituserCheck']; ?>>
+							Manage Users</label><?php echo $cms->thisUser['edituserMsg']; ?>
 
-							<br><br>
-							<label class="checkbox">
-								<input name="ckdeluser" type="checkbox" id="ckdeluser" value="checkbox" <?php echo $cms->thisUser['deluserCheck']; ?>>
-								Delete Users</label><?php echo $cms->thisUser['deluserMsg']; ?>
+						<br><br>
+						<label class="checkbox">
+							<input name="ckdeluser" type="checkbox" id="ckdeluser" value="checkbox" <?php echo $cms->thisUser['deluserCheck']; ?>>
+							Delete Users</label><?php echo $cms->thisUser['deluserMsg']; ?>
 
-							<hr>
-							<label class="checkbox">
-								<input name="ckeditsettings" type="checkbox" id="ckusemailer" value="checkbox" <?php echo $cms->thisUser['editsettingsCheck']; ?>>
-								Manage Settings</label><?php echo $cms->thisUser['editsettingsMsg']; ?>
+						<hr>
+						<label class="checkbox">
+							<input name="ckeditsettings" type="checkbox" id="ckusemailer" value="checkbox" <?php echo $cms->thisUser['editsettingsCheck']; ?>>
+							Manage Settings</label><?php echo $cms->thisUser['editsettingsMsg']; ?>
 
-							<br><br>
-							<label class="checkbox">
-								<input name="ckeditcontroller" type="checkbox" id="ckeditcontroller" value="checkbox" <?php echo $cms->thisUser['editcontCheck']; ?>>
-								Manage Router</label><?php echo $cms->thisUser['editcontMsg']; ?>
-								
-							<hr>
-						</div>
-						<div class="span4">
-							<label class="checkbox">
-								<input name="ckeditlayout" type="checkbox" id="ckeditlayout" value="checkbox" <?php echo $cms->thisUser['editlayoutCheck']; ?>>
-								Manage Layouts</label><?php echo $cms->thisUser['editlayoutMsg']; ?>
+						<br><br>
+						<label class="checkbox">
+							<input name="ckeditcontroller" type="checkbox" id="ckeditcontroller" value="checkbox" <?php echo $cms->thisUser['editcontCheck']; ?>>
+							Manage Router</label><?php echo $cms->thisUser['editcontMsg']; ?>
+							
+						<hr>
+					</div>
+					<div class="span4">
+						<label class="checkbox">
+							<input name="ckeditlayout" type="checkbox" id="ckeditlayout" value="checkbox" <?php echo $cms->thisUser['editlayoutCheck']; ?>>
+							Manage Layouts</label><?php echo $cms->thisUser['editlayoutMsg']; ?>
 
-							<br><br>
-							<label class="checkbox">
-								<input name="ckeditcss" type="checkbox" id="ckeditcss" value="checkbox" <?php echo $cms->thisUser['editcssCheck']; ?>>
-								Manage Styles</label><?php echo $cms->thisUser['editcssMsg']; ?>
+						<br><br>
+						<label class="checkbox">
+							<input name="ckeditcss" type="checkbox" id="ckeditcss" value="checkbox" <?php echo $cms->thisUser['editcssCheck']; ?>>
+							Manage Styles</label><?php echo $cms->thisUser['editcssMsg']; ?>
 
-							<br><br>
-							<label class="checkbox">
-								<input name="ckeditjs" type="checkbox" id="ckeditjs" value="checkbox" <?php echo $cms->thisUser['editjsCheck']; ?>>
-								Manage Javascripts</label><?php echo $cms->thisUser['editjsMsg']; ?>
+						<br><br>
+						<label class="checkbox">
+							<input name="ckeditjs" type="checkbox" id="ckeditjs" value="checkbox" <?php echo $cms->thisUser['editjsCheck']; ?>>
+							Manage Javascripts</label><?php echo $cms->thisUser['editjsMsg']; ?>
 
-							<hr>
-						</div>
-					</div><!-- / row -->
-			    </form>
-			</div>
-		  </div>
-		</div> 
-	</div>
+						<hr>
+					</div>
+				</div><!-- / row -->
+			</form>
+		</div>
+	  </div>
+	</div> 
+	<br><br>
+</div><!-- /wrap  -->
 	
 <?php include('include/footer.php'); ?>
 

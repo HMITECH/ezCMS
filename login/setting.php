@@ -20,76 +20,77 @@ $cms = new ezSettings();
 	
 </head><body>
   
-	<div id="wrap">
-		<?php include('include/nav.php'); ?>  
-		<div class="container">
-		
-			<div id="diffBlock" class="white-boxed">
-				<div class="navbar"><div class="navbar-inner">
-					<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
-					<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way DIFF</a>
-					<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
-				</div></div>
-				<table id="diffviewerControld" width="100%" border="0">
-				  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
-					</td><td><select disabled><option selected>Your Current Edit</option></select>
-					</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
-				  </td></tr>
-				</table>
-				<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
-				<div id="difBlockSide1"><div id="diffviewerSide1"></div></div>
-				<div id="difBlockSide2"><div id="diffviewerSide2"></div></div>
-				<div id="difBlockFooter"><div id="diffviewerFooter"></div></div>
-			</div>
-
-			<div id="editBlock" class="white-boxed" >
-			  <form id="frmSettings" action="setting.php" method="post" enctype="multipart/form-data" class="form-horizontal">
-				<div class="navbar">
-					<div class="navbar-inner">
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
-						<?php } ?>
-						<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
-						<?php } ?>
-					</div>
-				</div>
-				<?php echo $cms->msg; ?>
-				<div id="revBlock">
-				  <table class="table table-striped"><thead>
-					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
-				</div>
-				<div class="tabbable tabs-top">
-				<ul class="nav nav-tabs" id="myTab">
-				  <li class="active"><a href="#d-header">Header</a></li>
-				  <li><a href="#d-sidebar">Aside 1</a></li>
-				  <li><a href="#d-siderbar">Aside 2</a></li>
-				  <li><a href="#d-footer">Footer</a></li>
-				</ul>
-				 
-				<div class="tab-content">
-					<div class="tab-pane active" id="d-header">
-						<textarea name="headercontent" id="txtHeader"><?php echo $cms->site['headercontent']; ?></textarea>
-					</div>
-					<div class="tab-pane" id="d-sidebar">
-						<textarea name="sidecontent" id="txtSide"><?php echo $cms->site['sidecontent']; ?></textarea>
-					</div>
-					<div class="tab-pane" id="d-siderbar">
-						<textarea name="sidercontent" id="txtrSide"><?php echo $cms->site['sidercontent']; ?></textarea>
-					</div>
-					<div class="tab-pane" id="d-footer">
-						<textarea name="footercontent" id="txtFooter"><?php echo $cms->site['footercontent']; ?></textarea>
-					</div>
-				</div>
-				</div>
-			  </form>
-			</div>
-			<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>			
-			
+<div id="wrap">
+	<?php include('include/nav.php'); ?>  
+	<div class="container">
+	
+		<div id="diffBlock" class="white-boxed">
+			<div class="navbar"><div class="navbar-inner">
+				<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
+				<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way DIFF</a>
+				<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
+			</div></div>
+			<table id="diffviewerControld" width="100%" border="0">
+			  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+				</td><td><select disabled><option selected>Your Current Edit</option></select>
+				</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+			  </td></tr>
+			</table>
+			<div id="difBlockHeader"><div id="diffviewerHeader"></div></div>
+			<div id="difBlockSide1"><div id="diffviewerSide1"></div></div>
+			<div id="difBlockSide2"><div id="diffviewerSide2"></div></div>
+			<div id="difBlockFooter"><div id="diffviewerFooter"></div></div>
 		</div>
+
+		<div id="editBlock" class="white-boxed" >
+		  <form id="frmSettings" action="setting.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
+					<?php } ?>
+					<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary">
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
+					<?php } ?>
+				</div>
+			</div>
+			<?php echo $cms->msg; ?>
+			<div id="revBlock">
+			  <table class="table table-striped"><thead>
+				<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+			  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
+			</div>
+			<div class="tabbable tabs-top">
+			<ul class="nav nav-tabs" id="myTab">
+			  <li class="active"><a href="#d-header">Header</a></li>
+			  <li><a href="#d-sidebar">Aside 1</a></li>
+			  <li><a href="#d-siderbar">Aside 2</a></li>
+			  <li><a href="#d-footer">Footer</a></li>
+			</ul>
+			 
+			<div class="tab-content">
+				<div class="tab-pane active" id="d-header">
+					<textarea name="headercontent" id="txtHeader"><?php echo $cms->site['headercontent']; ?></textarea>
+				</div>
+				<div class="tab-pane" id="d-sidebar">
+					<textarea name="sidecontent" id="txtSide"><?php echo $cms->site['sidecontent']; ?></textarea>
+				</div>
+				<div class="tab-pane" id="d-siderbar">
+					<textarea name="sidercontent" id="txtrSide"><?php echo $cms->site['sidercontent']; ?></textarea>
+				</div>
+				<div class="tab-pane" id="d-footer">
+					<textarea name="footercontent" id="txtFooter"><?php echo $cms->site['footercontent']; ?></textarea>
+				</div>
+			</div>
+			</div>
+		  </form>
+		</div>
+		<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>			
+		
 	</div>
+	<br><br>
+</div><!-- /wrap  -->
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">
 	$("#top-bar li").removeClass('active');

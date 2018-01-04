@@ -18,15 +18,16 @@ $cms = new ezCMS(); // create new instance of CMS Class with loginRequired = tru
 	
 </head><body>
   
-	<div id="wrap">
-		<?php include('include/nav.php'); ?>  
-		<div class="container">
-			<div class="white-boxed">
-				<iframe id="shrFrm" src="ckeditor/plugins/pgrfilemanager/PGRFileManager.php"
-            		width='100%' height='500px' frameborder='0' marginheight='0' marginwidth='0' scrolling="no"></iframe>
-			</div>
+<div id="wrap">
+	<?php include('include/nav.php'); ?>  
+	<div class="container">
+		<div class="white-boxed">
+			<iframe id="shrFrm" src="ckeditor/plugins/pgrfilemanager/PGRFileManager.php"
+				frameborder='0' marginheight='0' marginwidth='0' scrolling="no"></iframe>
 		</div>
 	</div>
+	<br><br>
+</div><!-- /wrap  -->
 	
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">

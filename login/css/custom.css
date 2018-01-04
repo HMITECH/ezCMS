@@ -34,7 +34,7 @@ a,button { outline:none; }
 	margin: 0 auto -30px;
 }
 textarea {
-	height: 400px; 
+	height: 300px; 
 	width:99%;
 }
 #txtDesc, #txtKeywords {
@@ -55,6 +55,10 @@ div.white-boxed {
 .tab-pane .row {
     width: 100%;
     margin: 0;
+}
+#shrFrm {
+	width:100%;
+	min-height:500px;
 }
 #revBlock {display:none;}
 #revBlock,

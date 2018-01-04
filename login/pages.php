@@ -200,6 +200,7 @@ $cms = new ezPages();
 			<div class="clearfix"></div>
 		</div><!-- /row-fluid  -->
 	</div><!-- /container  -->
+	<br><br>
 </div><!-- /wrap  -->
 	
 <?php include('include/footer.php'); ?>

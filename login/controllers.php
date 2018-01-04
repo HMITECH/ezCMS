@@ -21,51 +21,52 @@ $cms = new ezController();
 
 </head><body>
 
-	<div id="wrap">
-		<?php include('include/nav.php'); ?>  
-		<div class="container">
+<div id="wrap">
+	<?php include('include/nav.php'); ?>  
+	<div class="container">
 
-			<div id="editBlock" class="white-boxed">
-			  <form id="frmHome" action="controllers.php" method="post" enctype="multipart/form-data">
-				<div class="navbar">
-					<div class="navbar-inner">
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
-						<?php } ?>
-						<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary ">
-						<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-						<a id="showrevs" href="#" class="btn btn-secondary">Revision Log <sup><?php echo $cms->revs['cnt']; ?></sup></a>
-						<?php } ?>
-					</div>
+		<div id="editBlock" class="white-boxed">
+		  <form id="frmHome" action="controllers.php" method="post" enctype="multipart/form-data">
+			<div class="navbar">
+				<div class="navbar-inner">
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
+					<?php } ?>
+					<input type="submit" name="Submit" value="Save Changes" class="btn btn-primary ">
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showrevs" href="#" class="btn btn-secondary">Revision Log <sup><?php echo $cms->revs['cnt']; ?></sup></a>
+					<?php } ?>
 				</div>
-				<?php echo $cms->msg; ?>
-				<div id="revBlock">
-				  <table class="table table-striped"><thead>
-					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
-				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
-				</div>
-				<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $cms->content; ?></textarea>
-			  </form>
 			</div>
-
-			<div id="diffBlock" class="white-boxed">
-				<div class="navbar"><div class="navbar-inner">
-					<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
-					<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
-					<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
-				</div></div>
-				<table id="diffviewerControld" width="100%" border="0">
-				  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
-					</td><td><select disabled><option selected>Your Current Edit</option></select>
-					</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
-				  </td></tr>
-				</table>
-				<div id="diffviewer"></div>
+			<?php echo $cms->msg; ?>
+			<div id="revBlock">
+			  <table class="table table-striped"><thead>
+				<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+			  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 			</div>
-			<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
-
+			<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $cms->content; ?></textarea>
+		  </form>
 		</div>
+
+		<div id="diffBlock" class="white-boxed">
+			<div class="navbar"><div class="navbar-inner">
+				<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
+				<a id="waysDiffBTN" href="#" class="btn btn-inverted btn-warning">Three Way (3)</a>
+				<a id="collaspeBTN" href="#" class="btn btn-inverted btn-warning">Collaspe Unchanged</a>
+			</div></div>
+			<table id="diffviewerControld" width="100%" border="0">
+			  <tr><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+				</td><td><select disabled><option selected>Your Current Edit</option></select>
+				</td><td><select><option value="0">Current (Last Saved)</option><?php echo $cms->revs['opt']; ?></select>
+			  </td></tr>
+			</table>
+			<div id="diffviewer"></div>
+		</div>
+		<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
+
 	</div>
+	<br><br>
+</div><!-- /wrap  -->
 
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">
