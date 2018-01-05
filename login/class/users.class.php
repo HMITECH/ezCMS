@@ -57,17 +57,16 @@ class ezUsers extends ezCMS {
 			$this->setOptions('editjs', 'Javascript management available.', 'Javascript management blocked.');
 			
 			$this->barBtns = 
-				'<input type="submit" name="Submit" class="btn btn-inverse" value="Save Changes">
-				 <a href="?id=new" class="btn btn-inverse">New User</a>';
+				'<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">
+				 <a href="?id=new" class="btn btn-info">New User</a>';
 				
 			if ($this->id <> 1) {
-				$this->barBtns .=  ' <a href="scripts/del-user.php?delid=' . $this->id .
-				'" onclick="return confirm(\'Confirm Delete ?\');" class="btn btn-danger">Delete</a>';
+				$this->barBtns .=  ' <a href="?delid=' . $this->id .'" class="btn btn-danger conf-del">Delete</a>';
 			}
 
 		} else {
 
-			$this->barBtns = '<input type="submit" name="Submit" class="btn btn-inverse" value="Add New">';
+			$this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
 
 		}
 
@@ -94,11 +93,11 @@ class ezUsers extends ezCMS {
 		foreach ($this->query("SELECT `id`, `username`, `active` FROM `users` ORDER BY id;") as $entry) {
 			$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
 			if ($entry["id"] == 1) {
-				$this->treehtml .= '<li class="open"><i class="icon-user icon-white"></i> <a href="users.php?id='.
+				$this->treehtml .= '<li class="open"><i class="icon-user"></i> <a href="?id='.
 					$entry['id'].'" class="'.$myclass.'">'.$entry["username"].'</a><ul>';
 			} else {
-				$active = ($entry["active"] != 1) ? ' <i class="icon-ban-circle icon-white" title="User is not active, cannot login"></i>' : '';
-				$this->treehtml .= '<li><i class="icon-user icon-white"></i> <a href="users.php?id='.
+				$active = ($entry["active"] != 1) ? ' <i class="icon-ban-circle" title="User is not active, cannot login"></i>' : '';
+				$this->treehtml .= '<li><i class="icon-user"></i> <a href="?id='.
 					$entry['id'].'" class="'.$myclass.'">'.$entry["username"].$active.'</a></li>';
 			}
 			
@@ -128,8 +127,7 @@ class ezUsers extends ezCMS {
 	
 		// Check permissions
 		if (!$this->usr['edituser']) {
-			die('hi');
-			header("Location: users.php?flg=noperms");
+			header("Location: ?flg=noperms");
 			exit;
 		}
 		
@@ -139,8 +137,9 @@ class ezUsers extends ezCMS {
 		// get the required post varables 
 		$this->fetchPOSTData(array(
 			'username',
-			'psswd', 
+			'passwd', 
 			'email'), $data);
+		$data['passwd'] = hash('sha512',$data['passwd']); // encrypt the password
 			
 		// get the required post checkboxes 
 		$this->fetchPOSTCheck( array(
@@ -159,11 +158,13 @@ class ezUsers extends ezCMS {
 		
 		if ($this->id == 'new') {
 			// add new
+			
 			$newID = $this->add( 'users' , $data);
 			if ($newID) {
 				header("Location: ?id=".$newID."&flg=added");	// added
 				exit; 
 			} 
+			
 		} else {
 			// update
 			if ($this->edit( 'users' , $this->id , $data )) {
@@ -179,15 +180,7 @@ class ezUsers extends ezCMS {
 
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the controller was NOT saved.');
-				break;
-			case "saved":
-				$this->setMsgHTML('success','Controller Saved !','You have successfully saved the controller.');
-				break;
-			case "unwriteable":
-				$this->setMsgHTML('error','Not Writeable !','The controller file is NOT writeable.');
-				break;
+
 		}
 
 	}

@@ -64,11 +64,11 @@ class ezCMS extends db {
 	
 	// Add to Database table and returns new ID, false if failed
 	protected function add($table, $data) {
-	
-		/* Uncomment to debug 
+		/*Uncomment to debug 
 		die("INSERT INTO $table (`".
-			implode("`,`", array_keys($data))."`) VALUES (".
-			implode(',', array_fill(0, count($data), '?')).")");*/
+			implode("`,`", array_keys ($data))."`) VALUES ('".
+			implode("','", array_values($data))."')");	
+		*/ 
 		$stmt = $this->prepare("INSERT INTO $table (`".
 			implode("`,`", array_keys($data))."`) VALUES (".
 			implode(',', array_fill(0, count($data), '?')).")");
@@ -78,16 +78,10 @@ class ezCMS extends db {
 			return $newid;
 		} 
 		return false;
-		
 	}
 	
 	// Edit Database table row
 	protected function edit($table, $id, $data) {
-	
-		/* Uncomment to debug 
-		die("INSERT INTO $table (`".
-			implode("`,`", array_keys($data))."`) VALUES (".
-			implode(',', array_fill(0, count($data), '?')).")");*/	
 		$stmt = $this->prepare("UPDATE $table SET ".$this->arrayToPDOstr($data)." WHERE id = ? ");
 		$data[] = $id;
 		if ($stmt->execute(array_values($data))) {
@@ -95,21 +89,19 @@ class ezCMS extends db {
 			return true;
 		} 
 		return false;
-		
 	}
 	
 	// Delete from Database table
 	protected function delete($t, $id) {
-	
 		$stmt = $this->prepare("DELETE FROM $t where id = ?");
 		if ($stmt->execute(array($id))) {
 			$this->query("OPTIMIZE TABLE $t");
 			return true;
 		}
 		return false;
-		
 	}	
 	
+	// Fetch POST data and place into array
 	protected  function fetchPOSTData($f, &$d) { 
 		foreach($f as $k) {
 			if (isset($_POST[$k])) {
@@ -121,10 +113,12 @@ class ezCMS extends db {
 		}
 	}
 
+	// Fetch POST checkbox data and place into array
 	protected  function fetchPOSTCheck($f, &$d) { 
 		foreach($f as $k) $d[$k] = (isset($_POST[$k])) ? 1 : 0;
 	}
 	
+	// Converts a php array into a PDO string (INTERNAL)
 	private function arrayToPDOstr($a) { 
 		$t = array(); 
 		foreach (array_keys($a) as $n) $t[] = "`$n` = ?"; 
@@ -164,7 +158,6 @@ class ezCMS extends db {
 				$this->setMsgHTML('info','Permission Denied','You do not have permissions for this action.');
 				break;
 		}
-
 	}
 
 }

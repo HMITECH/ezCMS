@@ -49,9 +49,18 @@ div.white-boxed {
 }
 .countDisplay {float: right;}
 .checkRight { float: right; }
-.tab-pane .row {
+.row {
     width: 100%;
     margin: 0;
+}
+.inv-banner {
+    margin: 20px 0;
+    padding: 10px;
+    text-align: center;
+    background: #000000d4;
+    color: #efefef;
+    font-size: 1.6em;
+    letter-spacing: 1px;
 }
 .slRootMsg {
 	margin: 0 0 3px;
