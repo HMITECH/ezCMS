@@ -31,9 +31,6 @@ class ezPages extends ezCMS {
 		// Check if file to display is set
 		if (isset($_GET['id'])) $this->id = $_GET['id'];		
 		
-		// Update the Controller of Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
-		
 		if ($this->id <> 'new' ) {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
@@ -44,6 +41,9 @@ class ezPages extends ezCMS {
 			$this->setOptions('usefooter', 'Page will display this custom FOOTER', 'Page will display the default FOOTER');
 			$this->setOptions('published','Page is published','Unpublished page is only visible when logged in');
 		}
+		
+		// Update the Controller of Posted
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 		
 		// Get the Revisions
 		if ($this->id != 'new') $this->getRevisions();
@@ -63,7 +63,8 @@ class ezPages extends ezCMS {
 		else $this->ddOptions = '<div class="alert alert-info slRootMsg">Root</div>';
 		
 		// Get the Message to display if any
-		$this->getMessage();
+		//$this->getMessage();
+		$this->msg = str_replace('File','Page',$this->msg);
 
 	}
 
@@ -171,14 +172,16 @@ class ezPages extends ezCMS {
 				$this->treehtml .= '<li>'.$action.' <a href="pages.php?id='.$entry['id'].
 							'" class="'.$myclass.'">'.$entry["title"].'</a>'.$myPub;
 				$isSel = '';
-				if ($this->page['parentid'] == $entry['id']) $isSel = 'selected';
-				$this->ddOptions .= '<option value="' . $entry['id'] . '" '.$isSel.'>'.
-					str_repeat(' - ',$nestCount - 1) . $entry['title'].'</option>';				
-				
+				if ( $entry['id'] != 2) {
+					if ($this->page['parentid'] == $entry['id']) $isSel = 'selected';
+					$this->ddOptions .= '<option value="' . $entry['id'] . '" '.$isSel.'>'.
+						str_repeat(' - ',$nestCount - 1) . $entry['title'].'</option>';				
+				}
 				$this->buildTree($entry['id']);
 				$this->treehtml .= '</li>';
 			}
 			$this->treehtml .= '</ul>';
+			$nestCount -= 1;
 		}
 
 	}
@@ -196,33 +199,21 @@ class ezPages extends ezCMS {
 		$data = array();
 		
 		// get the required post varables 
-		$this->fetchPOSTData(array(
-			'pagename',
-			'title', 
-			'keywords',
-			'description', 			
-			'maincontent',
-			'headercontent', 
-			'sidecontent', 			
-			'sidercontent', 						
-			'sidercontent', 
-			'footercontent',
-			'head',
-			'layout',
-			'parentid',
-			'url'), $data);
+		$txtFlds = array(
+			'pagename', 'title', 'keywords', 'description', 			
+			'maincontent', 'headercontent', 'sidecontent', 
+			'sidercontent', 'sidercontent', 'footercontent',
+			'head', 'layout', 'parentid', 'url');
+		$this->fetchPOSTData($txtFlds, $data);
 		// get the required post checkboxes 
-		$this->fetchPOSTCheck( array(
-			'published',
-			'useheader',
-			'useside',
-			'usesider',
-			'usefooter',
-			'nositemap'), $data);
+		$cksFlds = array(
+			'published', 'useheader', 'useside',
+			'usesider', 'usefooter', 'nositemap');
+		$this->fetchPOSTCheck($cksFlds, $data);
 		$data['createdby'] = $_SESSION['EZUSERID'];
-	
 		
-		
+		// Validate here ...
+
 		if ($this->id == 'new') {
 			// add new
 			$newID = $this->add( 'pages' , $data);
@@ -233,8 +224,16 @@ class ezPages extends ezCMS {
 		} else {
 		
 			// Test if nothing has changed 
-			
+			$isChanged = false;
+			foreach (array_merge($txtFlds, $cksFlds) as $fld)
+				if ($data[$fld] != $this->page[$fld]) $isChanged = true;
+			if (!$isChanged) {
+				header("Location: ?flg=nochange&id=".$this->id);
+				exit;
+			}			
+
 			// Create a revision
+			
 		
 			// update
 			if ($this->edit( 'pages' , $this->id , $data )) {

@@ -109,9 +109,8 @@ div.white-boxed {
 #push,#footer {height: 30px;}
 #footer { 
 	height: 30px; 
-	background: rgba(245, 245, 245, 0.75);
+	background: rgba(245, 245, 245, 0.8);
 	text-align:center; 
-	font-size:0.9em;
 }
 .tooltip-inner {font-size:18px;}
 .label, .badge {white-space:normal;}
