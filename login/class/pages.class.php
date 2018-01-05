@@ -34,6 +34,9 @@ class ezPages extends ezCMS {
 		// Check if delete ID is set
 		if (isset($_GET['delid'])) $this->deletePage();
 		
+		// Check if delete ID is set
+		if (isset($_GET['copyid'])) $this->copyPage();
+		
 		// Purge Revision
 		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
@@ -119,6 +122,39 @@ class ezPages extends ezCMS {
 			$this->btns .= '<a href="?delid='.$this->id.'" class="btn btn-danger conf-del">Delete</a>';
 		if ($_SESSION['EDITORTYPE'] == 3)
 			$this->btns .= '<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup>'.$this->revs['cnt'].'</sup></a>';
+	
+	}
+	
+	// Function to Copy a Page 
+	private function copyPage() {
+	
+if (isset($_REQUEST['copyid'])) $id = $_REQUEST['copyid']; else die('xx'); 
+if (!$_SESSION['editpage']) {header("Location: ../pages.php?id=$id&flg=noperms");exit;}	// permission denied
+
+$qry = "INSERT INTO `pages` ( ";
+$qry .= "`pagename` , `title` , `url` , `keywords` , `description`, `maincontent` , ";
+$qry .= "`useheader` , `headercontent` , `head`, `layout`, ";
+$qry .= "`usefooter` , `footercontent` ,`useside` , `sidecontent` , `usesider` , `sidercontent` ,";
+$qry .= "`published` , `parentid` ) ";
+$qry .= "SELECT ";
+$qry .= "`pagename` , `title` , `url` ,`keywords` , `description`, `maincontent` , ";
+$qry .= "`useheader` , `headercontent` , `head`, `layout`, ";
+$qry .= "`usefooter` , `footercontent` ,`useside` , `sidecontent` ,  `usesider` , `sidercontent` ,";
+$qry .= "`published` , if(`parentid`=0,1,`parentid`)";
+$qry .= " FROM `pages` WHERE id=" . $id;
+//die($qry);
+if (mysql_query($qry)) {
+	$id = mysql_insert_id();
+	// update name and title
+	mysql_query('UPDATE `pages` SET `pagename` = concat( `pagename` , "-copy", `id` ) ,'.
+					'`title` = concat( `title` , "-copy", `id` ) WHERE id ='.$id.' LIMIT 1 ');	
+	resolveplace();
+	reIndexPages();
+	mysql_query('OPTIMIZE TABLE `pages`;');
+	header("Location: ../pages.php?id=".$id."&flg=copied");	// added
+} else
+	header("Location: ../pages.php?id=".$id."&flg=copyfailed");	// failed
+exit;
 	
 	}
 	
@@ -282,8 +318,7 @@ class ezPages extends ezCMS {
 		$handle = fopen($filename,"w");
 		fwrite($handle, $sitemapXML);
 		fclose($handle);	
-		
-	
+
 	}
 	
 	
