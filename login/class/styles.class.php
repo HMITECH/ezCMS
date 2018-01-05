@@ -109,8 +109,7 @@ class ezStyles extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="?purgeRev='.$entry['id'].$show.'" class="conf-del">Purge</a>	
-				</td></tr>';
+				<a href="?purgeRev='.$entry['id'].$show.'" class="conf-del">Purge</a></td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry['content'];
 

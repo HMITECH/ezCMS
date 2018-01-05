@@ -29,11 +29,14 @@ class ezPages extends ezCMS {
 		parent::__construct();
 		
 		// Check if file to display is set
-		if (isset($_GET['id'])) $this->id = $_GET['id'];		
+		if (isset($_GET['id'])) $this->id = $_GET['id'];
+		
+		// Purge Revision
+		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
 		if ($this->id <> 'new' ) {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
-				->fetch(PDO::FETCH_ASSOC); // get the selected user details
+				 ->fetch(PDO::FETCH_ASSOC);
 			$this->setOptions('nositemap', '', '');
 			$this->setOptions('useheader', 'Page will display this custom HEADER', 'Page will display the default HEADER');
 			$this->setOptions('useside'  , 'Page will display this custom ASIDE1', 'Page will display the default ASIDE1');
@@ -114,6 +117,29 @@ class ezPages extends ezCMS {
 	
 	}
 	
+	// Function to Update the Defaults Settings
+	private function delRevision() {
+
+		// Check permissions
+		if (!$this->usr['editpage']) {
+			header("Location: ?flg=noperms&id=".$this->id);
+			exit;
+		}
+		
+		// Get the revision ID to delete
+		$revID = intval($_GET['purgeRev']);
+		
+		// Delete the revision
+		if ( $this->delete('git_pages',$revID) ) {
+			header("Location: ?flg=revdeleted&id=".$this->id);
+			exit;
+		}
+		
+		header("Location: ?flg=revdelfailed&id=".$this->id);
+		exit;		
+	
+	}
+	
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
@@ -131,8 +157,7 @@ class ezPages extends ezCMS {
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
 				<a href="#">Diff</a> &nbsp;|&nbsp;
-				<a href="?purgeRev='.$entry['id'].'">Purge</a>	
-				</td></tr>';
+				<a href="?id='.$this->id.'&purgeRev='.$entry['id'].'" class="conf-del">Purge</a></td></tr>';
 
 			$this->revs['jsn'][$entry['id']] = $entry;
 
