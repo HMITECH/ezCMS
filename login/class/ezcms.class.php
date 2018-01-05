@@ -137,31 +137,31 @@ class ezCMS extends db {
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
 			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the File was NOT saved.');
+				$this->setMsgHTML('error','Save Failed','An error occurred and the File was NOT saved.');
 				break;
 			case "saved":
-				$this->setMsgHTML('success','Saved !','You have successfully saved the File.');
+				$this->setMsgHTML('success','Saved','You have successfully saved the File.');
 				break;
 			case "delfailed":
-				$this->setMsgHTML('error','Delete Failed !','An error occurred and the File was NOT deleted.');
+				$this->setMsgHTML('error','Delete Failed','An error occurred and the File was NOT deleted.');
 				break;
 			case "deleted":
-				$this->setMsgHTML('success','Deleted !','You have successfully deleted the file.');
+				$this->setMsgHTML('success','Deleted','You have successfully deleted the file.');
 				break;
 			case "revdeleted":
-				$this->setMsgHTML('success','Deleted !','You have successfully deleted the Revision.');
+				$this->setMsgHTML('success','Revision Deleted','You have successfully deleted the Revision.');
 				break;				
 			case "revdelfailed":
-				$this->setMsgHTML('error','Delete Failed !','An error occurred and the Revision was NOT deleted.');
+				$this->setMsgHTML('error','Delete Failed','An error occurred and the Revision was NOT deleted.');
 				break;			
 			case "unwriteable":
 				$this->setMsgHTML('error','Not Writeable !','The File is NOT writeable.');
 				break;
 			case "nochange":
-				$this->setMsgHTML('warn','No Change !','Nothing has changed to save.');
+				$this->setMsgHTML('warn','No Change','Nothing has changed to save.');
 				break;
 			case "noperms":
-				$this->setMsgHTML('info','Permission Denied !','You do not have permissions for this action.');
+				$this->setMsgHTML('info','Permission Denied','You do not have permissions for this action.');
 				break;
 		}
 
