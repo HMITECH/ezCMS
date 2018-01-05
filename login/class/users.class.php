@@ -27,19 +27,14 @@ class ezUsers extends ezCMS {
 		// call parent constuctor
 		parent::__construct();
 		
+		// Check if user to display is set
+		if (isset($_GET['id'])) $this->id = $_GET['id'];
+		
 		// Update the user if Posted
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->update();
-		}
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 		
 		// Check if delete ID is set
-		if (isset($_GET['delid'])) {
-			$this->deleteUser ();
-		} 		
-		// Check if user to display is set
-		if (isset($_GET['id'])) {
-			$this->id = $_GET['id'];
-		} 
+		if (isset($_GET['delid'])) $this->deleteUser ();
 		
 		if ($this->id <> 'new' ) {
 			$this->thisUser = $this->query('SELECT * FROM `users` WHERE `id` = '.$this->id.' LIMIT 1')
@@ -74,7 +69,8 @@ class ezUsers extends ezCMS {
 		$this->buildTree();
 		
 		// Get the Message to display if any
-		$this->getMessage();
+		//$this->getMessage();
+		$this->msg = str_replace('File','User',$this->msg);
 
 	}
 
@@ -108,7 +104,7 @@ class ezUsers extends ezCMS {
 	private function deleteUser() {
 	
 		// Check permissions
-		if (!$this->usr['edituser']) {
+		if (!$this->usr['deluser']) {
 			header("Location: users.php?flg=noperms");
 			exit;
 		}
@@ -116,10 +112,16 @@ class ezUsers extends ezCMS {
 		$id = $_GET['delid']; 
 		// cannot delete home page
 		if (($id==1) || ($id==2)) {header("Location: ../users.php");exit;}	
-		if (mysql_query("delete from `users` where `id`=".$id)) 
-			header("Location: ../users.php?&flg=deleted");	// updated		
-		else header("Location: ../users.php?id=".$id."&flg=delfailed");	// failed		
-		exit;
+		
+		// Delete the User
+		if ( $this->delete('users',$id) ) {
+			header("Location: ?flg=deleted");
+			exit;
+		}
+		
+		// Failed to update
+		$this->flg = 'failed';
+
 	}
 	
 	// Function to Update the Controller
@@ -139,7 +141,8 @@ class ezUsers extends ezCMS {
 			'username',
 			'passwd', 
 			'email'), $data);
-		$data['passwd'] = hash('sha512',$data['passwd']); // encrypt the password
+		if (!$data['passwd']) unset($data['passwd']);
+		else $data['passwd'] = hash('sha512',$data['passwd']); // encrypt the password
 			
 		// get the required post checkboxes 
 		$this->fetchPOSTCheck( array(
@@ -153,22 +156,23 @@ class ezUsers extends ezCMS {
 			'editlayout',
 			'editcss',
 			'editjs'), $data);
-
-		$this->id = $_GET['id'];
 		
 		if ($this->id == 'new') {
 			// add new
 			
+			// password cannot be empty
+			if (!isset($data['passwd'])) die('New user password cannot be blank');
+			
 			$newID = $this->add( 'users' , $data);
 			if ($newID) {
-				header("Location: ?id=".$newID."&flg=added");	// added
+				header("Location: ?id=".$newID."&flg=saved");	// added
 				exit; 
 			} 
 			
 		} else {
 			// update
 			if ($this->edit( 'users' , $this->id , $data )) {
-				header("Location: ?id=".$this->id."&flg=added");	// added
+				header("Location: ?id=".$this->id."&flg=saved");	// added
 				exit; 
 			}		
 		}

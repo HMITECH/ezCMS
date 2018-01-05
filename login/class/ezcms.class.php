@@ -140,7 +140,7 @@ class ezCMS extends db {
 				$this->setMsgHTML('error','Delete Failed','An error occurred and the File was NOT deleted.');
 				break;
 			case "deleted":
-				$this->setMsgHTML('success','Deleted','You have successfully deleted the file.');
+				$this->setMsgHTML('success','Deleted','You have successfully deleted the File.');
 				break;
 			case "revdeleted":
 				$this->setMsgHTML('success','Revision Deleted','You have successfully deleted the Revision.');
