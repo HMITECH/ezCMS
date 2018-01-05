@@ -26,8 +26,8 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 <script src="js/jquery-1.9.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.treeview/jquery.treeview.js"></script>
-<script src="js/pass-strength.js" ></script>
-<script src="js/jscolor.min.js" ></script>
+<script src="js/pass-strength.js"></script>
+<script src="js/jscolor.min.js"></script>
 <script type="text/javascript">
 
 	var tSelc = $('#left-tree a.label-info').closest('li');

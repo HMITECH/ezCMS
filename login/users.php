@@ -203,63 +203,63 @@ $cms = new ezUsers();
 					</div>
 				</div>
 				
-				<h4 class="inv-banner">USER PERMISSIONS</h4>
+				<h4 class="well">USER PERMISSIONS</h4>
 
 				<div class="row">
 					<div class="span4">
 						<label class="checkbox">
-							<input name="active" type="checkbox" id="ckactive"
-								value="checkbox" <?php echo $cms->thisUser['activeCheck']; ?>>
+							<input name="active" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['activeCheck']; ?>>
 							Active</label><?php echo $cms->thisUser['activeMsg']; ?>
 						<hr>
 						<label class="checkbox">
-							<input name="editpage" type="checkbox" id="ckeditpage" 
-								value="checkbox" <?php echo $cms->thisUser['editpageCheck']; ?>>
+							<input name="editpage" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['editpageCheck']; ?>>
 							Manage Pages</label><?php echo $cms->thisUser['editpageMsg']; ?>
 						<br><br>
 						<label class="checkbox">
-							<input name="delpage" type="checkbox" id="ckdelpage" value="checkbox" 
+							<input name="delpage" type="checkbox" value="checkbox" 
 								<?php echo $cms->thisUser['delpageCheck']; ?>>
 							Delete Pages</label><?php echo $cms->thisUser['delpageMsg']; ?>
 						<hr>
 					</div>
 					<div class="span4">
 						<label class="checkbox">
-							<input name="edituser" type="checkbox" id="ckedituser" value="checkbox" <?php echo $cms->thisUser['edituserCheck']; ?>>
+							<input name="edituser" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['edituserCheck']; ?>>
 							Manage Users</label><?php echo $cms->thisUser['edituserMsg']; ?>
-
 						<br><br>
 						<label class="checkbox">
-							<input name="deluser" type="checkbox" id="ckdeluser" value="checkbox" <?php echo $cms->thisUser['deluserCheck']; ?>>
+							<input name="deluser" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['deluserCheck']; ?>>
 							Delete Users</label><?php echo $cms->thisUser['deluserMsg']; ?>
-
 						<hr>
 						<label class="checkbox">
-							<input name="editsettings" type="checkbox" id="ckusemailer" value="checkbox" <?php echo $cms->thisUser['editsettingsCheck']; ?>>
+							<input name="editsettings" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['editsettingsCheck']; ?>>
 							Manage Settings</label><?php echo $cms->thisUser['editsettingsMsg']; ?>
-
 						<br><br>
 						<label class="checkbox">
-							<input name="editcont" type="checkbox" id="ckeditcontroller" value="checkbox" <?php echo $cms->thisUser['editcontCheck']; ?>>
+							<input name="editcont" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['editcontCheck']; ?>>
 							Manage Router</label><?php echo $cms->thisUser['editcontMsg']; ?>
-							
 						<hr>
 					</div>
 					<div class="span4">
 						<label class="checkbox">
-							<input name="editlayout" type="checkbox" id="ckeditlayout" value="checkbox" <?php echo $cms->thisUser['editlayoutCheck']; ?>>
+							<input name="editlayout" type="checkbox" value="checkbox" 
+								<?php echo $cms->thisUser['editlayoutCheck']; ?>>
 							Manage Layouts</label><?php echo $cms->thisUser['editlayoutMsg']; ?>
-
 						<br><br>
 						<label class="checkbox">
-							<input name="editcss" type="checkbox" id="ckeditcss" value="checkbox" <?php echo $cms->thisUser['editcssCheck']; ?>>
+							<input name="editcss" type="checkbox" id="ckeditcss" value="checkbox" 
+								<?php echo $cms->thisUser['editcssCheck']; ?>>
 							Manage Styles</label><?php echo $cms->thisUser['editcssMsg']; ?>
-
 						<br><br>
 						<label class="checkbox">
-							<input name="editjs" type="checkbox" id="ckeditjs" value="checkbox" <?php echo $cms->thisUser['editjsCheck']; ?>>
+							<input name="editjs" type="checkbox" id="ckeditjs" value="checkbox" 
+								<?php echo $cms->thisUser['editjsCheck']; ?>>
 							Manage Javascripts</label><?php echo $cms->thisUser['editjsMsg']; ?>
-
 						<hr>
 					</div>
 				</div><!-- / row -->
@@ -271,7 +271,6 @@ $cms = new ezUsers();
 </div><!-- /wrap  -->
 	
 <?php include('include/footer.php'); ?>
-<script src="js/pass-strength.js" ></script>
 <script type="text/javascript">
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(10)").addClass('active');

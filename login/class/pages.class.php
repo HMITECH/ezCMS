@@ -66,14 +66,16 @@ class ezPages extends ezCMS {
 		else $this->ddOptions = '<div class="alert alert-info slRootMsg">Root</div>';
 		
 		// process variable for html display
-		$this->page['keywords'] = htmlspecialchars($this->page["keywords"]);
-		$this->page['description'] = htmlspecialchars($this->page["description"]);
-		$this->page['maincontent'] = htmlspecialchars($this->page["maincontent"]);		
-		$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
-		$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
-		$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
-		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
-		$this->page['head'] = htmlspecialchars($this->page["head"]);
+		if ($this->id != 'new') {
+			$this->page['keywords'] = htmlspecialchars($this->page["keywords"]);
+			$this->page['description'] = htmlspecialchars($this->page["description"]);
+			$this->page['maincontent'] = htmlspecialchars($this->page["maincontent"]);		
+			$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
+			$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
+			$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
+			$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
+			$this->page['head'] = htmlspecialchars($this->page["head"]);
+		}
 		
 		// Get the Message to display if any
 		//$this->getMessage();
@@ -234,26 +236,25 @@ class ezPages extends ezCMS {
 		$data = array();
 		
 		// get the required post varables 
-		$txtFlds = array(
-			'pagename', 'title', 'keywords', 'description', 			
-			'maincontent', 'headercontent', 'sidecontent', 
-			'sidercontent', 'sidercontent', 'footercontent',
-			'head', 'layout' );
+		$txtFlds = array('pagename', 'title', 'keywords', 'description', 'maincontent', 'headercontent',
+			 'sidecontent', 'sidercontent', 'sidercontent', 'footercontent','head', 'layout' );
 		if ( ($this->id != 1) && ($this->id != 2) )
 			array_push($txtFlds, 'parentid', 'url');
 		$this->fetchPOSTData($txtFlds, $data);
 
 		// get the required post checkboxes 
-		$cksFlds = array(
-			'published', 'useheader', 'useside',
-			'usesider', 'usefooter', 'nositemap');
+		$cksFlds = array('published','useheader','useside','usesider','usefooter','nositemap');
 		$this->fetchPOSTCheck($cksFlds, $data);
 		$data['createdby'] = $_SESSION['EZUSERID'];
 		
 		// Validate here ...
+		if (strlen(trim($data['pagename'])) < 2) die('Page Name must min 2 chars!');
+		if (strlen(trim($data['title'])) < 2) die('Page Title must min 2 chars!');
 		if (isset($data['parentid'])) 
 			if ($this->id == $data['parentid']) 
 				die('Parent cannot be same page');
+		
+
 
 		if ($this->id == 'new') {
 			// add new

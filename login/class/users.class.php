@@ -137,25 +137,13 @@ class ezUsers extends ezCMS {
 		$data = array();
 		
 		// get the required post varables 
-		$this->fetchPOSTData(array(
-			'username',
-			'passwd', 
-			'email'), $data);
+		$this->fetchPOSTData(array('username','passwd','email'), $data);
 		if (!$data['passwd']) unset($data['passwd']);
 		else $data['passwd'] = hash('sha512',$data['passwd']); // encrypt the password
 			
 		// get the required post checkboxes 
-		$this->fetchPOSTCheck( array(
-			'active',
-			'editpage',
-			'delpage',
-			'edituser',
-			'deluser',
-			'editsettings',
-			'editcont',
-			'editlayout',
-			'editcss',
-			'editjs'), $data);
+		$this->fetchPOSTCheck( array('active','editpage','delpage','edituser','deluser',
+			'editsettings','editcont','editlayout','editcss','editjs'), $data);
 		
 		if ($this->id == 'new') {
 			// add new
