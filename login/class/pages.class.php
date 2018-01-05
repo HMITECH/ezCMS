@@ -31,6 +31,9 @@ class ezPages extends ezCMS {
 		// Check if file to display is set
 		if (isset($_GET['id'])) $this->id = $_GET['id'];
 		
+		// Check if delete ID is set
+		if (isset($_GET['delid'])) $this->deletePage();
+		
 		// Purge Revision
 		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
@@ -120,10 +123,35 @@ class ezPages extends ezCMS {
 	}
 	
 	// Function to Update the Defaults Settings
+	private function deletePage() {
+
+		// Get ID of the page to delete
+		$id = intval($_GET['delid']);
+
+		// Check permissions
+		if (!$this->usr['delpage']) {
+			header("Location: ?flg=noperms&id=".$id);
+			exit;
+		}
+		
+		// Delete the Pge
+		if ( $this->delete('pages',$id) ) {
+			
+			// Re build the sitemap again
+		
+			header("Location: ?flg=deleted");
+			exit;
+		}
+		
+		// Failed to update
+		$this->flg = 'failed';
+	
+	}
+	// Function to Update the Defaults Settings
 	private function delRevision() {
 
 		// Check permissions
-		if (!$this->usr['editpage']) {
+		if (!$this->usr['delpage']) {
 			header("Location: ?flg=noperms&id=".$this->id);
 			exit;
 		}
@@ -222,6 +250,42 @@ class ezPages extends ezCMS {
 		}
 
 	}
+	
+	// Function to rebuild the sitemap
+	private function rebuildSitemap() {	
+	
+		// TODO ... 
+		
+		// Create the XML Site Map
+		$sitemapXML  = '<?xml version="1.0" encoding="UTF-8"?>';
+		$sitemapXML  .= '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+							<!-- generator="ezCMS" -->
+							<!-- sitemap-generator-url="http://www.hmi-tech.net" sitemap-generator-version="2.0" -->';
+		$sitemapXML  .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		$sitemapXML  .= '<url><loc>http://' . $_SERVER['SERVER_NAME'] .  '/index.html</loc></url>';
+	
+		$sql = 'SELECT `id` , `pagename` , `parentid`, `published` FROM `pages` WHERE `id` > 2 AND `nositemap` < 1';
+		$rs = mysql_query($sql) or die("Unable to Execute  Select query");
+	
+		while ($row = mysql_fetch_assoc($rs)) {
+			$url = $row['pagename'] . '.html';
+			if ($row['parentid'] > 1) $url = getPagePath($row['parentid']) . $url;
+			//  XML Site Map
+			if ($row['published']==1) $sitemapXML  .= '<url><loc>http://' . $_SERVER['SERVER_NAME'] . '/' . $url . '</loc></url>';
+
+		}
+		$sitemapXML  .= '</urlset>';
+	
+		// save XML Site Map
+		if (preg_match('/pages\.php$/', $_SERVER['SCRIPT_NAME'])) $filename = '../sitemap.xml';
+		else $filename = '../../sitemap.xml';
+		$handle = fopen($filename,"w");
+		fwrite($handle, $sitemapXML);
+		fclose($handle);	
+		
+	
+	}
+	
 	
 	// Function to Update the Controller
 	private function update() {

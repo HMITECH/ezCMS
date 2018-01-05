@@ -33,43 +33,7 @@ function getUserTreeHTML($id) {
 function getErrorMsg($flg) {
 	$msg = "";
 
-	if ($flg=="red") 
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Save Failed!</strong> An error occurred and the user was NOT saved.</div>';
-	if ($flg=="green")
-		$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Saved!</strong> You have successfully saved the page.</div>';	
-					
-	if ($flg=="pink") 
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Add Page Failed!</strong> An error occurred and the user was NOT added.</div>';
-	if ($flg=="added")
-		$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Added!</strong> You have successfully added the user.</div>';			
 
-	if ($flg=="delfailed") 
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Delete Failed!</strong> An error occurred and the user was NOT deleted.</div>';
-	if ($flg=="deleted")
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Deleted!</strong> You have successfully deleted the user.</div>';
-
-	if ($flg=="noname") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Invalid User Name!</strong> Please check the user name, lenght must be more that FOUR.</div>';
-	if ($flg=="noemail") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Invalid Email!</strong> Please check the email, lenght must be more that FOUR.</div>';					
-	if ($flg=="nopass") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Invalid Password!</strong> Please check the password, lenght must be more that FOUR.</div>';
-	if ($flg=="noperms") 
-		$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Permission Denied!</strong> You do not have permissions for this action.</div>';
-
-	if ($flg=="yell") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Not Found!</strong> You have requested a user which does not exist.</div>';	
 					
 	return $msg;
 } 

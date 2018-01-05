@@ -34,7 +34,7 @@ class ezUsers extends ezCMS {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
 		
 		// Check if delete ID is set
-		if (isset($_GET['delid'])) $this->deleteUser ();
+		if (isset($_GET['delid'])) $this->deleteUser();
 		
 		if ($this->id <> 'new' ) {
 			$this->thisUser = $this->query('SELECT * FROM `users` WHERE `id` = '.$this->id.' LIMIT 1')
@@ -89,7 +89,7 @@ class ezUsers extends ezCMS {
 		foreach ($this->query("SELECT `id`, `username`, `active` FROM `users` ORDER BY id;") as $entry) {
 			$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
 			if ($entry["id"] == 1) {
-				$this->treehtml .= '<li class="open"><i class="icon-user"></i> <a href="?id='.
+				$this->treehtml .= '<li class="open"><i class="icon-globe"></i> <a href="?id='.
 					$entry['id'].'" class="'.$myclass.'">'.$entry["username"].'</a><ul>';
 			} else {
 				$active = ($entry["active"] != 1) ? ' <i class="icon-ban-circle" title="User is not active, cannot login"></i>' : '';
@@ -144,6 +144,10 @@ class ezUsers extends ezCMS {
 		// get the required post checkboxes 
 		$this->fetchPOSTCheck( array('active','editpage','delpage','edituser','deluser',
 			'editsettings','editcont','editlayout','editcss','editjs'), $data);
+			
+		// Common Validtions 
+		if (strlen(trim($data['username'])) < 2) die('Username must min 2 chars!');
+		if (strlen(trim($data['email'])) < 5) die('PUser email must min 5 chars!');
 		
 		if ($this->id == 'new') {
 			// add new
@@ -172,6 +176,48 @@ class ezUsers extends ezCMS {
 
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
+
+/*
+
+	if ($flg=="red") 
+		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Save Failed!</strong> An error occurred and the user was NOT saved.</div>';
+	if ($flg=="green")
+		$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Saved!</strong> You have successfully saved the page.</div>';	
+					
+	if ($flg=="pink") 
+		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Add Page Failed!</strong> An error occurred and the user was NOT added.</div>';
+	if ($flg=="added")
+		$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Added!</strong> You have successfully added the user.</div>';			
+
+	if ($flg=="delfailed") 
+		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Delete Failed!</strong> An error occurred and the user was NOT deleted.</div>';
+	if ($flg=="deleted")
+		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Deleted!</strong> You have successfully deleted the user.</div>';
+
+	if ($flg=="noname") 
+		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Invalid User Name!</strong> Please check the user name, lenght must be more that FOUR.</div>';
+	if ($flg=="noemail") 
+		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Invalid Email!</strong> Please check the email, lenght must be more that FOUR.</div>';					
+	if ($flg=="nopass") 
+		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Invalid Password!</strong> Please check the password, lenght must be more that FOUR.</div>';
+	if ($flg=="noperms") 
+		$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Permission Denied!</strong> You do not have permissions for this action.</div>';
+
+	if ($flg=="yell") 
+		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
+					<strong>Not Found!</strong> You have requested a user which does not exist.</div>';	
+
+*/
 
 		}
 
