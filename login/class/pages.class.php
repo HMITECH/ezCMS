@@ -46,7 +46,7 @@ class ezPages extends ezCMS {
 		}
 		
 		// Get the Revisions
-		$this->getRevisions();
+		if ($this->id != 'new') $this->getRevisions();
 		
 		//Build the Menu to show
 		$this->buildMenu();
@@ -86,14 +86,14 @@ class ezPages extends ezCMS {
 		$this->btns = '';
 		if ($this->id == 'new') { 
 			$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
-			return;
+			return ;
 		}
 		if ($_SESSION['EDITORTYPE'] == 3)
 			$this->btns .= '<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>';
 		$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">';
 		$myclass = ''; // 
 		if ( !$this->page['published'] ) $myclass = 'nopubmsg';
-		$this->btns .= '<a href="../'.$this->page['url'].'" target="_blank"  class="btn btn-success '.$myclass.' ">View</a>';
+		$this->btns .= '<a href="'.$this->page['url'].'" target="_blank"  class="btn btn-success '.$myclass.' ">View</a>';
 		$this->btns .= '<a href="?id=new" class="btn btn-info">New</a>';
 		$this->btns .= '<a href="?copyid='.$this->id.'" class="btn btn-warning">Copy</a>';
 		if ($this->id > 2)
@@ -187,7 +187,7 @@ class ezPages extends ezCMS {
 	private function update() {
 
 		// Check permissions
-		if (!$this->usr['editpages']) {
+		if (!$this->usr['editpage']) {
 			header("Location: ?flg=noperms&id=".$this->id);
 			exit;
 		}
@@ -255,15 +255,7 @@ class ezPages extends ezCMS {
 
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-			case "failed":
-				$this->setMsgHTML('error','Save Failed !','An error occurred and the controller was NOT saved.');
-				break;
-			case "saved":
-				$this->setMsgHTML('success','Controller Saved !','You have successfully saved the controller.');
-				break;
-			case "unwriteable":
-				$this->setMsgHTML('error','Not Writeable !','The controller file is NOT writeable.');
-				break;
+		
 		}
 
 	}
