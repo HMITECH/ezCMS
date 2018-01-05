@@ -62,6 +62,16 @@ class ezPages extends ezCMS {
 			'<select name="parentid" class="input-block-level">'.$this->ddOptions.'</select>';
 		else $this->ddOptions = '<div class="alert alert-info slRootMsg">Root</div>';
 		
+		// process variable for html display
+		$this->page['keywords'] = htmlspecialchars($this->page["keywords"]);
+		$this->page['description'] = htmlspecialchars($this->page["description"]);
+		$this->page['maincontent'] = htmlspecialchars($this->page["maincontent"]);		
+		$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
+		$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
+		$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
+		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
+		$this->page['head'] = htmlspecialchars($this->page["head"]);
+		
 		// Get the Message to display if any
 		//$this->getMessage();
 		$this->msg = str_replace('File','Page',$this->msg);
@@ -172,7 +182,7 @@ class ezPages extends ezCMS {
 				$this->treehtml .= '<li>'.$action.' <a href="pages.php?id='.$entry['id'].
 							'" class="'.$myclass.'">'.$entry["title"].'</a>'.$myPub;
 				$isSel = '';
-				if ( $entry['id'] != 2) {
+				if  ( ($entry['id'] != 2) && ($entry['id'] != $this->id) ){
 					if ($this->page['parentid'] == $entry['id']) $isSel = 'selected';
 					$this->ddOptions .= '<option value="' . $entry['id'] . '" '.$isSel.'>'.
 						str_repeat(' - ',$nestCount - 1) . $entry['title'].'</option>';				
@@ -203,8 +213,11 @@ class ezPages extends ezCMS {
 			'pagename', 'title', 'keywords', 'description', 			
 			'maincontent', 'headercontent', 'sidecontent', 
 			'sidercontent', 'sidercontent', 'footercontent',
-			'head', 'layout', 'parentid', 'url');
+			'head', 'layout' );
+		if ( ($this->id != 1) && ($this->id != 2) )
+			array_push($txtFlds, 'parentid', 'url');
 		$this->fetchPOSTData($txtFlds, $data);
+
 		// get the required post checkboxes 
 		$cksFlds = array(
 			'published', 'useheader', 'useside',
@@ -213,6 +226,9 @@ class ezPages extends ezCMS {
 		$data['createdby'] = $_SESSION['EZUSERID'];
 		
 		// Validate here ...
+		if (isset($data['parentid'])) 
+			if ($this->id == $data['parentid']) 
+				die('Parent cannot be same page');
 
 		if ($this->id == 'new') {
 			// add new
@@ -232,8 +248,21 @@ class ezPages extends ezCMS {
 				exit;
 			}			
 
-			// Create a revision
-			
+			// Create a revision			
+			if (!$this->query("INSERT INTO `git_pages` ( 
+				  `page_id`, `pagename`, `title`, `keywords`, `description`, `maincontent`,
+				  `useheader` , `headercontent` , `usefooter` , `footercontent` , `useside` ,
+				   `sidecontent` , `published` , `parentid` , `url` ,
+				   `sidercontent` , `usesider` ,`head` , `layout` , `nositemap` , `createdby` )
+				SELECT 
+				  `id` AS page_id, `pagename`, `title`, `keywords`, `description`, `maincontent`,
+				  `useheader` , `headercontent` , `usefooter` , `footercontent` ,
+				  `useside` , `sidecontent` , `published` , `parentid` , `url` ,
+				  `sidercontent` , `usesider` ,`head` , `layout` , `nositemap` , 
+				  '".$_SESSION['EZUSERID']."' as `createdby`  FROM `pages` WHERE `id` = ".$this->id)) {
+				header("Location: ?flg=revfailed&id=".$this->id);
+				exit;
+			}
 		
 			// update
 			if ($this->edit( 'pages' , $this->id , $data )) {

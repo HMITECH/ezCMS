@@ -160,10 +160,7 @@ $cms = new ezPages();
 						<div class="span4"><label class="checkbox">
 							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['useheaderCheck']; ?>>
 							Enable custom HEADER</label></div>
-						<div class="span4 text-center"><?php echo $cms->page['useheaderMsg']; ?></div>									
-						<div class="span4 text-right">
-							<a href="scripts/copy-block.php?headcopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
-						</div>
+						<div class="span8 text-right"><?php echo $cms->page['useheaderMsg']; ?></div>
 					</div>
 					<textarea id="txtHeader" name="headercontent"><?php echo $cms->page['headercontent']; ?></textarea>
 				  </div><!-- /d-header  -->
@@ -173,10 +170,7 @@ $cms = new ezPages();
 						<div class="span4"><label class="checkbox">
 							<input name="useside" type="checkbox" value="checkbox" <?php echo $cms->page['usesideCheck']; ?>>
 							Enable custom ASIDE 1</label></div>
-						<div class="span4 text-center"><?php echo $cms->page['usesideMsg']; ?></div>									
-						<div class="span4 text-right">
-							<a href="scripts/copy-block.php?sidecopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
-						</div>
+						<div class="span8 text-right"><?php echo $cms->page['usesideMsg']; ?></div>
 					</div>
 					<textarea id="txtSide" name="sidecontent"><?php echo $cms->page['sidecontent']; ?></textarea>
 				  </div><!-- /d-sidebar  -->
@@ -186,10 +180,7 @@ $cms = new ezPages();
 						<div class="span4"><label class="checkbox">
 							<input name="usesider" type="checkbox" value="checkbox" <?php echo $cms->page['usesiderCheck']; ?>>
 							Enable custom ASIDE 2</label></div>
-						<div class="span4 text-center"><?php echo $cms->page['usesiderMsg']; ?></div>									
-						<div class="span4 text-right">
-							<a href="scripts/copy-block.php?sidercopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
-						</div>
+						<div class="span8 text-right"><?php echo $cms->page['usesiderMsg']; ?></div>
 					</div>
 				  	<textarea id="txtrSide" name="sidercontent"><?php echo $cms->page['sidercontent']; ?></textarea>
 				  </div><!-- /d-siderbar  -->
@@ -199,10 +190,7 @@ $cms = new ezPages();
 						<div class="span4"><label class="checkbox">
 							<input name="usefooter" type="checkbox" value="checkbox" <?php echo $cms->page['usefooterCheck']; ?>>
 							Enable custom FOOTER</label></div>
-						<div class="span4 text-center"><?php echo $cms->page['usefooterMsg']; ?></div>									
-						<div class="span4 text-right">
-							<a href="scripts/copy-block.php?footcopyid=<?php echo $cms->id; ?>" class="btn btn-mini btn-primary">COPY DEFAULT</a>
-						</div>
+						<div class="span8 text-right"><?php echo $cms->page['usefooterMsg']; ?></div>
 					</div>
 					<textarea id="txtFooter" name="footercontent"><?php echo $cms->page['footercontent']; ?></textarea>
 				  </div><!-- /d-footer  -->
