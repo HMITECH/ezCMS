@@ -304,9 +304,6 @@ $cms = new ezPages();
 		$(this).tab('show');
 		window.location.hash = $(this).attr('href').replace('#d-','');
 	});
-	$('.conf-del').click( function () {
-		return confirm('Confirm Delete Action ?');
-	});
 	
 	$('.nopubmsg').click( function () {
 		return confirm('The page is Not published, its only visible to you.');

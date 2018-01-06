@@ -119,10 +119,7 @@ $cms = new ezLayouts();
 		$('#txtName').val('layout.'+saveasfile+'.php');		
 		$('#Submit').click();
 		return false;
-	});	
-	$('.conf-del').click( function () {
-		return confirm('Confirm Delete Action ?');
-	});	
+	});
 	
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 3) { ?>

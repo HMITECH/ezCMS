@@ -73,9 +73,6 @@ $cms = new ezController();
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(0)").addClass('active');
 	$("#top-bar li:eq(0) ul li:eq(1)").addClass('active');
-	$('.conf-del').click( function () {
-		return confirm('Confirm Delete Action ?');
-	});	
 </script>
 
 <?php if ($_SESSION['EDITORTYPE'] == 3) { ?>

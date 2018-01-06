@@ -135,9 +135,6 @@ $cms = new ezUsers();
 <script type="text/javascript">
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(10)").addClass('active');
-	$('.conf-del').click( function () {
-		return confirm('Confirm Delete Action ?');
-	});
 </script>
 </body>
 </html>

@@ -100,9 +100,6 @@ $cms = new ezSettings();
 		e.preventDefault();
 		$(this).tab('show');
 	});
-	$('.conf-del').click( function () {
-		return confirm('Confirm Delete Action ?');
-	});	
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 0) { ?>
 

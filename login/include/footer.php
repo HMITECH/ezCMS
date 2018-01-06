@@ -53,6 +53,9 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 		$('#revBlock').slideToggle();
 		return false;
 	});
+	$('.conf-del').click( function () {
+		return confirm('Confirm Delete Action ?');
+	});
 
 	$('#txtbgcolor').val(localStorage.getItem("cmsBgColor")).change(function () {
 		$('body').css('background-color','#'+$(this).val());
