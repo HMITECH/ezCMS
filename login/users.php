@@ -34,32 +34,33 @@ $cms = new ezUsers();
 				<div class="row">
 					<div class="span4">
 						<label for="inputName">User Name</label>
-						<input type="text" name="username"
+						<input type="text" name="username" id="username"
 							placeholder="Enter the full name"
 							title="Enter the full name of the user here."
 							data-toggle="tooltip"
 							value="<?php echo $cms->thisUser['username']; ?>"
-							data-placement="top"
-							class="input-block-level tooltipme2">
+							data-placement="top" minlength="2"
+							class="input-block-level tooltipme2" required>
 					</div>
 					<div class="span4">
 						<label for="inputEmail">Email Address</label>
-						<input type="text" name="email"
+						<input type="email" name="email" id="email"
 							placeholder="Enter the full email address"
 							title="Enter the full email address of the user here."
 							data-toggle="tooltip"
 							value="<?php echo $cms->thisUser['email']; ?>"
 							data-placement="top"
-							class="input-block-level tooltipme2">
+							class="input-block-level tooltipme2" required>
 					</div>
 					<div class="span4">
 						<label for="txtpsswd">Password</label>
-						<input type="password" name="passwd"
+						<input type="password" name="passwd" id="passwd"
 							placeholder="<?php echo ($cms->id=='new') ? 'Enter the password' : 'Leave blank to keep unchanged' ?>"
 							title="<?php echo ($cms->id=='new') ? 'Enter the password here' : 'Enter a new password or leave blank to keep unchanged' ?>"
 							data-toggle="tooltip"
-							data-placement="top"
-							class="input-block-level tooltipme2">
+							data-placement="top" minlength="8"
+							class="input-block-level tooltipme2" 
+							<?php  if ($cms->id=='new') echo 'required'; ?>>
 					</div>
 				</div>
 				
@@ -136,7 +137,7 @@ $cms = new ezUsers();
 	$("#top-bar li:eq(10)").addClass('active');
 	$('.conf-del').click( function () {
 		return confirm('Confirm Delete Action ?');
-	});	
+	});
 </script>
 </body>
 </html>

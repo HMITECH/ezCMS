@@ -68,8 +68,8 @@ $cms = new ezPages();
 										title="Enter the full title of the page here."
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['title']; ?>"
-										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><br>
+										data-placement="top" minlength="2"
+										class="input-block-level tooltipme2 countme2" required><br>
 										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
 										  <input name="published" type="checkbox" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
 										  Published on site
@@ -86,8 +86,8 @@ $cms = new ezPages();
 										title="Enter the full name of the page here."
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['pagename']; ?>"
-										data-placement="top"
-										class="input-block-level tooltipme2 countme2"><br>
+										data-placement="top" minlength="2"
+										class="input-block-level tooltipme2 countme2" required><br>
 									<?php echo $cms->page['publishedMsg']; ?>
 									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
 									  <input name="nositemap" type="checkbox" value="checkbox" <?php echo $cms->page['nositemapCheck']; ?>>
@@ -149,7 +149,7 @@ $cms = new ezPages();
 					<div class="row">
 						<div class="span1" style="margin-top:6px;">Page URL :</div>
 						<div class="span11">
-							<input type="text" name="url" value="<?php echo $cms->page['url']; ?>" class="input-block-level">
+							<input type="text" name="url" minlength="2" value="<?php echo $cms->page['url']; ?>" class="input-block-level">
 						</div>
 					</div>
 					<textarea id="txtMain" name="maincontent"><?php echo $cms->page['maincontent']; ?></textarea>
@@ -310,7 +310,7 @@ $cms = new ezPages();
 	
 	$('.nopubmsg').click( function () {
 		return confirm('The page is Not published, its only visible to you.');
-	});	
+	});
 
 </script>
 
