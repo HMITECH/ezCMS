@@ -42,6 +42,7 @@ class ezCMS extends db {
 		if ($loginRequired) { 
 			$this->usr = $this->query('SELECT * FROM `users` WHERE `id` = '.
 				$_SESSION['EZUSERID'].' LIMIT 1')->fetch(PDO::FETCH_ASSOC); // get the user details
+			$_SESSION['MANAGEFILES'] = $this->usr['editpage'];
 		}
 		
 		// init revision vars

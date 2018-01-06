@@ -22,40 +22,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-session_start();
-if (!isset($_SESSION['SESSION' ])) 
-	$_SESSION['SESSION' ] = true;
-if (!isset($_SESSION['LOGGEDIN'])) 
-	$_SESSION['LOGGEDIN'] = false;
-if ($_SESSION['LOGGEDIN'] != true) { 
-	echo '<div align="center"><h1 style="color: #3A87AD;font-family: Tahoma;text-align: center;text-shadow: 1px 1px #999999;">
-    Permission denied.<br>You must be logged in to<br>ezSite Builder to access this page</h1>
-	<p><img src="../../../img/noaccess.png" width="128" height="128"></p>
-	<h3 style="font-family: Tahoma;"><a href="../../../">Login Now</a></h3>
-	<h3 style="font-family: Tahoma;">Please emails <a href="mailto:support@hmi-tech.net">support@hmi-tech.net</a> for support.</h3></div>';
-	exit; }
-/*
-if (!$_SESSION['editpage']) { 
-	echo '<div align="center"><h1 style="color: #3A87AD;font-family: Tahoma;text-align: center;text-shadow: 1px 1px #999999;">
-    Permission denied.<br>You do not have<br> permission to access this page</h1>
-	<p><img src="../../../img/noaccess.png" width="128" height="128"></p>
-	<h3 style="font-family: Tahoma;">Please emails <a href="mailto:support@hmi-tech.net">support@hmi-tech.net</a> for support.</h3></div>';
-	exit; }		
-*/
-    include_once dirname(__FILE__) . '/php/init.php';
-    $PGRUploaderExtension = "";
-    if (PGRFileManagerConfig::$allowedExtensions == "") $PGRUploaderExtension = "*.*";
-    else
-    foreach(explode("|", PGRFileManagerConfig::$allowedExtensions) as $key => $extension) { 
-        if ($key > 0) $PGRUploaderExtension .= ";";
-        $PGRUploaderExtension .= "*." . $extension;   
-    }
+include_once dirname(__FILE__) . '/php/init.php';
+$PGRUploaderExtension = "";
+if (PGRFileManagerConfig::$allowedExtensions == "") $PGRUploaderExtension = "*.*";
+else
+foreach(explode("|", PGRFileManagerConfig::$allowedExtensions) as $key => $extension) { 
+	if ($key > 0) $PGRUploaderExtension .= ";";
+	$PGRUploaderExtension .= "*." . $extension;   
+}
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl" lang="pl">
+<!DOCTYPE html>
+<html>
   <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>ezCMS - File Manager</title>
+  <meta charset="utf-8">
+  <title>File Manager</title>
   <link rel="stylesheet" type="text/css" href="css/sunny2/jquery-ui-1.8.1.custom.css" />
   <link rel="stylesheet" type="text/css" href="css/jquery.treeview.css" />
   <link rel="stylesheet" type="text/css" href="css/fancybox/jquery.fancybox.css" />
@@ -82,7 +62,7 @@ if (!$_SESSION['editpage']) {
   <body>   
     <div id="container" class="ui-widget ui-widget-content">
       <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
-        <span id="ui-dialog-title-dialog" class="ui-dialog-title">ezCMS File Manager</span>
+        <span id="ui-dialog-title-dialog" class="ui-dialog-title">File Manager</span>
         <a class="ui-dialog-titlebar-close ui-corner-all" href="#"><span class="ui-icon ui-icon-closethick">close</span></a>
       </div>
       <div id="buttons">
