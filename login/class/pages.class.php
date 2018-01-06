@@ -145,7 +145,7 @@ class ezPages extends ezCMS {
 					`usesider`, `sidercontent`, `published`, `parentid`) 
 				SELECT `pagename` , `title`, `url`, `nositemap`, 
 					`keywords`, `description`, `maincontent`, `useheader`, `headercontent` , `head`, `layout`, `usefooter`, 
-					`footercontent`, `useside`, `sidecontent` , `usesider` , `sidercontent` ,`published` , IF(`parentid`=0 , 1 , `parentid`) 
+					`footercontent`, `useside`, `sidecontent` , `usesider` , `sidercontent` , 0, IF(`parentid`=0 , 1 , `parentid`) 
 					FROM `pages` WHERE id=$id")) {
 			$id = $this->lastInsertId();
 			// update name, url and title
@@ -176,9 +176,8 @@ class ezPages extends ezCMS {
 		
 		// Delete the Pge
 		if ( $this->delete('pages',$id) ) {
-			
 			// Re build the sitemap again
-		
+			$this->rebuildSitemap();
 			header("Location: ?flg=deleted");
 			exit;
 		}
@@ -305,38 +304,21 @@ class ezPages extends ezCMS {
 	// Function to rebuild the sitemap
 	private function rebuildSitemap() {	
 	
-		// TODO ... 
-		
-		// Create the XML Site Map
-		$sitemapXML  = '<?xml version="1.0" encoding="UTF-8"?>';
-		$sitemapXML  .= '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
-							<!-- generator="ezCMS" -->
-							<!-- sitemap-generator-url="http://www.hmi-tech.net" sitemap-generator-version="2.0" -->';
-		$sitemapXML  .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-		$sitemapXML  .= '<url><loc>http://' . $_SERVER['SERVER_NAME'] .  '/index.html</loc></url>';
-	
-		$sql = 'SELECT `id` , `pagename` , `parentid`, `published` FROM `pages` WHERE `id` > 2 AND `nositemap` < 1';
-		$rs = mysql_query($sql) or die("Unable to Execute  Select query");
-	
-		while ($row = mysql_fetch_assoc($rs)) {
-			$url = $row['pagename'] . '.html';
-			if ($row['parentid'] > 1) $url = getPagePath($row['parentid']) . $url;
-			//  XML Site Map
-			if ($row['published']==1) $sitemapXML  .= '<url><loc>http://' . $_SERVER['SERVER_NAME'] . '/' . $url . '</loc></url>';
-
-		}
+		$sitemapXML  = '<?xml version="1.0" encoding="UTF-8"?>
+			<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+			<!-- generator="ezCMS" -->
+			<!-- sitemap-generator-url="http://www.hmi-tech.net" sitemap-generator-version="2.0" -->
+			<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+			<url><loc>http://' . $_SERVER['SERVER_NAME'] .  '/</loc></url>';
+		foreach ($this->query(
+			"SELECT `url` FROM `pages` WHERE `id` > 2 AND `published` = 1 AND `nositemap` = 0") as $entry)
+				$sitemapXML  .= '<url><loc>http://'.$_SERVER['SERVER_NAME'].$entry['url'].'</loc></url>';
 		$sitemapXML  .= '</urlset>';
-	
 		// save XML Site Map
-		if (preg_match('/pages\.php$/', $_SERVER['SCRIPT_NAME'])) $filename = '../sitemap.xml';
-		else $filename = '../../sitemap.xml';
-		$handle = fopen($filename,"w");
-		fwrite($handle, $sitemapXML);
-		fclose($handle);	
+		file_put_contents('../sitemap.xml', $sitemapXML);
 
 	}
-	
-	
+
 	// Function to Update the Controller
 	private function update() {
 
@@ -385,6 +367,7 @@ class ezPages extends ezCMS {
 			
 			$newID = $this->add( 'pages' , $data);
 			if ($newID) {
+				$this->rebuildSitemap();
 				header("Location: ?id=".$newID."&flg=added");	// added
 				exit; 
 			} 
@@ -425,37 +408,13 @@ class ezPages extends ezCMS {
 		
 			// update
 			if ($this->edit( 'pages' , $this->id , $data )) {
+				$this->rebuildSitemap();
 				header("Location: ?id=".$this->id."&flg=saved");	// added
 				exit; 
 			}		
-		}
-
-		// Update sitemap 
-		
-		// reindex pages ...
-		
+		}		
 		
 	}
-	
-/*
-// the function will return the URI of the page
-function getPagePath($id) {
-	$path='';
-	$sql = 'SELECT `id` , `pagename` , `parentid` FROM `pages` WHERE `id` = ' . $id . '; ';
-	$rs = mysql_query($sql) or die("Unable to Execute  Select query");
-	$row = mysql_fetch_assoc($rs);
-	$path .= $row['pagename'] . '/';
-	if ($row['parentid'] > 2) $path = getPagePath($row['parentid']) . $path;
-	return $path;
-}
-
-// the function will resolve any page place error
-function resolveplace() {
-	$qry = 'UPDATE `pages` set `place` = `id` WHERE `place` = 0;';
-	mysql_query($qry);
-}
-
-*/
 	
 	// Function to Set the Display Message
 	private function getMessage() {
