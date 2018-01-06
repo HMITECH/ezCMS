@@ -131,33 +131,34 @@ class ezPages extends ezCMS {
 	// Function to Copy a Page 
 	private function copyPage() {
 	
-if (isset($_REQUEST['copyid'])) $id = $_REQUEST['copyid']; else die('xx'); 
-if (!$_SESSION['editpage']) {header("Location: ../pages.php?id=$id&flg=noperms");exit;}	// permission denied
+		// Get ID of the page to copy
+		$id = intval($_GET['copyid']);
 
-$qry = "INSERT INTO `pages` ( ";
-$qry .= "`pagename` , `title` , `url` , `keywords` , `description`, `maincontent` , ";
-$qry .= "`useheader` , `headercontent` , `head`, `layout`, ";
-$qry .= "`usefooter` , `footercontent` ,`useside` , `sidecontent` , `usesider` , `sidercontent` ,";
-$qry .= "`published` , `parentid` ) ";
-$qry .= "SELECT ";
-$qry .= "`pagename` , `title` , `url` ,`keywords` , `description`, `maincontent` , ";
-$qry .= "`useheader` , `headercontent` , `head`, `layout`, ";
-$qry .= "`usefooter` , `footercontent` ,`useside` , `sidecontent` ,  `usesider` , `sidercontent` ,";
-$qry .= "`published` , if(`parentid`=0,1,`parentid`)";
-$qry .= " FROM `pages` WHERE id=" . $id;
-//die($qry);
-if (mysql_query($qry)) {
-	$id = mysql_insert_id();
-	// update name and title
-	mysql_query('UPDATE `pages` SET `pagename` = concat( `pagename` , "-copy", `id` ) ,'.
-					'`title` = concat( `title` , "-copy", `id` ) WHERE id ='.$id.' LIMIT 1 ');	
-	resolveplace();
-	reIndexPages();
-	mysql_query('OPTIMIZE TABLE `pages`;');
-	header("Location: ../pages.php?id=".$id."&flg=copied");	// added
-} else
-	header("Location: ../pages.php?id=".$id."&flg=copyfailed");	// failed
-exit;
+		// Check permissions
+		if (!$this->usr['editpage']) {
+			header("Location: ?flg=noperms&id=$id");
+			exit;
+		}
+		
+		if ($this->query("INSERT INTO `pages` ( `pagename`, `title`, `url`, `nositemap`, `keywords`, `description`, `maincontent`, 
+					`useheader`, `headercontent`, `head`, `layout`, `usefooter`, `footercontent`, `useside`, `sidecontent`, 
+					`usesider`, `sidercontent`, `published`, `parentid`) 
+				SELECT `pagename` , `title`, `url`, `nositemap`, 
+					`keywords`, `description`, `maincontent`, `useheader`, `headercontent` , `head`, `layout`, `usefooter`, 
+					`footercontent`, `useside`, `sidecontent` , `usesider` , `sidercontent` ,`published` , IF(`parentid`=0 , 1 , `parentid`) 
+					FROM `pages` WHERE id=$id")) {
+			$id = $this->lastInsertId();
+			// update name, url and title
+			$this->query("UPDATE `pages` SET `place` = `id`,
+				`pagename` = concat( `pagename` , '-copy', `id` ),
+				`title` = concat( `title` , '-copy', `id` ), 
+				`url` = concat( `url` , '-copy', `id` ) WHERE id =$id");
+			header("Location: ?flg=copied&id=$id");
+			exit;
+		}
+
+		header("Location: ?id=$id&flg=copyfailed");	// failed
+		exit;
 	
 	}
 	
@@ -463,6 +464,12 @@ function resolveplace() {
 		switch ($this->flg) {
 			case "urlduplicate":
 				$this->setMsgHTML('error','SAVE FAILED','This URL is already in use by another page.');
+				break;
+			case "copied":
+				$this->setMsgHTML('success','PAGE COPIED','The page was successfully copied. CHANGE TITLE, NAME AND URL AS NEEDED');
+				break;
+			case "copyfailed":
+				$this->setMsgHTML('error','COPY FAILED','The page was not copied.');
 				break;
 		}
 
