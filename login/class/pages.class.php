@@ -43,6 +43,13 @@ class ezPages extends ezCMS {
 		if ($this->id <> 'new' ) {
 			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
 				 ->fetch(PDO::FETCH_ASSOC);
+				 
+			// check if user is present.
+			if (!isset($this->page['id'])) {
+				header("Location: ?flg=yell");
+				exit;
+			}		 
+				 
 			$this->setOptions('nositemap', '', '');
 			$this->setOptions('useheader', 'Page will display this custom HEADER', 'Page will display the default HEADER');
 			$this->setOptions('useside'  , 'Page will display this custom ASIDE1', 'Page will display the default ASIDE1');

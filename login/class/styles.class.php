@@ -42,8 +42,8 @@ class ezStyles extends ezCMS {
 		
 		// Check if layout file is present
 		if (!file_exists($this->filename)) {
-			header('HTTP/1.1 400 BAD REQUEST');
-			die('Stylesheet not Found !<br><a href="styles.php"> click here for styles</a>');
+			header("Location: ?flg=yell");
+			exit;
 		}
 		
 		// get the contents of the controller file (index.php)

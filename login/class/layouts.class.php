@@ -41,8 +41,8 @@ class ezLayouts extends ezCMS {
 		
 		// Check if layout file is present
 		if (!file_exists('../'.$this->filename)) {
-			header('HTTP/1.1 400 BAD REQUEST');
-			die('Layout not Found !<br><a href="layouts.php"> click here for layouts</a>');
+			header("Location: ?flg=yell");
+			exit;
 		}
 		
 		// get the contents of the layout file

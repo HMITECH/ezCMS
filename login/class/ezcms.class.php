@@ -132,31 +132,34 @@ class ezCMS extends db {
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
 			case "failed":
-				$this->setMsgHTML('error','Save Failed','An error occurred and the File was NOT saved.');
+				$this->setMsgHTML('error','SAVE FAILED','An error occurred and the File was NOT saved.');
 				break;
 			case "saved":
-				$this->setMsgHTML('success','Saved','You have successfully saved the File.');
+				$this->setMsgHTML('success','SAVED SUCCESSFULLY','You have successfully saved the File.');
 				break;
 			case "delfailed":
-				$this->setMsgHTML('error','Delete Failed','An error occurred and the File was NOT deleted.');
+				$this->setMsgHTML('error','DELETE FILED','An error occurred and the File was NOT deleted.');
 				break;
 			case "deleted":
-				$this->setMsgHTML('success','Deleted','You have successfully deleted the File.');
+				$this->setMsgHTML('success','DELETED','You have successfully deleted the File.');
 				break;
 			case "revdeleted":
-				$this->setMsgHTML('success','Revision Deleted','You have successfully deleted the Revision.');
+				$this->setMsgHTML('success','REVISION DELETED','You have successfully deleted the Revision.');
 				break;				
 			case "revdelfailed":
-				$this->setMsgHTML('error','Delete Failed','An error occurred and the Revision was NOT deleted.');
+				$this->setMsgHTML('error','DELETE FAILED','An error occurred and the Revision was NOT deleted.');
 				break;			
 			case "unwriteable":
-				$this->setMsgHTML('error','Not Writeable !','The File is NOT writeable.');
+				$this->setMsgHTML('error','NOT WRITEABLE','The File is NOT writeable.');
 				break;
+			case "yell":
+				$this->setMsgHTML('warn','NOT FOUND','The File does not exist.');
+				break;				
 			case "nochange":
-				$this->setMsgHTML('warn','No Change','Nothing has changed to save.');
+				$this->setMsgHTML('warn','NO CHANGE','Nothing has changed to save.');
 				break;
 			case "noperms":
-				$this->setMsgHTML('info','Permission Denied','You do not have permissions for this action.');
+				$this->setMsgHTML('info','PERMISSION DENIED','You do not have permissions for this action.');
 				break;
 		}
 	}

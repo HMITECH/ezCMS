@@ -42,8 +42,8 @@ class ezScripts extends ezCMS {
 
 		// Check if layout file is present
 		if (!file_exists($this->filename)) {
-			header('HTTP/1.1 400 BAD REQUEST');
-			die('Javascript not Found !<br><a href="scripts.php"> click here for scripts</a>');
+			header("Location: ?flg=yell");
+			exit;
 		}
 
 		// get the contents of the controller file (index.php)

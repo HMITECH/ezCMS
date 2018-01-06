@@ -40,6 +40,12 @@ class ezUsers extends ezCMS {
 			$this->thisUser = $this->query('SELECT * FROM `users` WHERE `id` = '.$this->id.' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
 			
+			// check if user is present.
+			if (!isset($this->thisUser['id'])) {
+				header("Location: ?flg=yell");
+				exit;
+			}
+			
 			$this->setOptions('active', 'User is Active.', 'Inactive user cannot login.');
 			$this->setOptions('editpage', 'Page management available.', 'Page management blocked.');
 			$this->setOptions('delpage', 'Page delete available.', 'Page delete blocked.');
@@ -59,17 +65,12 @@ class ezUsers extends ezCMS {
 				$this->barBtns .=  ' <a href="?delid=' . $this->id .'" class="btn btn-danger conf-del">Delete</a>';
 			}
 
-		} else {
-
-			$this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
-
-		}
+		} else $this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
 
 		//Build the HTML Treeview
 		$this->buildTree();
 		
 		// Get the Message to display if any
-		//$this->getMessage();
 		$this->msg = str_replace('File','User',$this->msg);
 
 	}
@@ -105,13 +106,13 @@ class ezUsers extends ezCMS {
 	
 		// Check permissions
 		if (!$this->usr['deluser']) {
-			header("Location: users.php?flg=noperms");
+			header("Location: ?flg=noperms");
 			exit;
 		}
 		
 		$id = $_GET['delid']; 
-		// cannot delete home page
-		if (($id==1) || ($id==2)) {header("Location: ../users.php");exit;}	
+		// cannot delete home page or 404 page
+		if (($id==1) || ($id==2)) die('Cannot delete root pages.');
 		
 		// Delete the User
 		if ( $this->delete('users',$id) ) {
@@ -209,13 +210,6 @@ class ezUsers extends ezCMS {
 	if ($flg=="nopass") 
 		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
 					<strong>Invalid Password!</strong> Please check the password, lenght must be more that FOUR.</div>';
-	if ($flg=="noperms") 
-		$msg = '<div class="alert alert-info"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Permission Denied!</strong> You do not have permissions for this action.</div>';
-
-	if ($flg=="yell") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Not Found!</strong> You have requested a user which does not exist.</div>';	
 
 */
 
