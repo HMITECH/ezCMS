@@ -49,13 +49,8 @@ class ezPages extends ezCMS {
 				header("Location: ?flg=yell");
 				exit;
 			}		 
-				 
-			$this->setOptions('nositemap', '', '');
-			$this->setOptions('useheader', 'Page will display this custom HEADER', 'Page will display the default HEADER');
-			$this->setOptions('useside'  , 'Page will display this custom ASIDE1', 'Page will display the default ASIDE1');
-			$this->setOptions('usesider' , 'Page will display this custom ASIDE2', 'Page will display the default ASIDE2');
-			$this->setOptions('usefooter', 'Page will display this custom FOOTER', 'Page will display the default FOOTER');
-			$this->setOptions('published','Page is published','Unpublished page is only visible when logged in');
+
+			$this->setupCheckboxes();
 		}
 		
 		// Update the Controller of Posted
@@ -79,21 +74,22 @@ class ezPages extends ezCMS {
 		else $this->ddOptions = '<div class="alert alert-info slRootMsg">Root</div>';
 		
 		// process variable for html display
-		if ($this->id != 'new') {
-			$this->page['keywords'] = htmlspecialchars($this->page["keywords"]);
-			$this->page['description'] = htmlspecialchars($this->page["description"]);
-			$this->page['maincontent'] = htmlspecialchars($this->page["maincontent"]);		
-			$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
-			$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
-			$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
-			$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
-			$this->page['head'] = htmlspecialchars($this->page["head"]);
-		}
+		if ($this->id != 'new') $this->setPageVariables();
 		
 		// Get the Message to display if any
-		//$this->getMessage();
+		$this->getMessage();
 		$this->msg = str_replace('File','Page',$this->msg);
 
+	}
+	
+	// Function to setup the checkboxes
+	private function setupCheckboxes() {
+		$this->setOptions('nositemap', '', '');
+		$this->setOptions('useheader', 'Page will display this custom HEADER', 'Page will display the default HEADER');
+		$this->setOptions('useside'  , 'Page will display this custom ASIDE1', 'Page will display the default ASIDE1');
+		$this->setOptions('usesider' , 'Page will display this custom ASIDE2', 'Page will display the default ASIDE2');
+		$this->setOptions('usefooter', 'Page will display this custom FOOTER', 'Page will display the default FOOTER');
+		$this->setOptions('published', 'Page is published','Unpublished page is only visible when logged in');
 	}
 
 	// Function to build the menu to display
@@ -242,15 +238,26 @@ exit;
 			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
 	}
 	
-	protected function setOptions($itm, $msgOn, $mgsOff) {
+	// Function to Setup page variable and checkboxes
+	private function setPageVariables() {
+		$this->page['keywords'] = htmlspecialchars($this->page["keywords"]);
+		$this->page['description'] = htmlspecialchars($this->page["description"]);
+		$this->page['maincontent'] = htmlspecialchars($this->page["maincontent"]);		
+		$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
+		$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
+		$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
+		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
+		$this->page['head'] = htmlspecialchars($this->page["head"]);
+	}
+	
+	private function setOptions($itm, $msgOn, $mgsOff) {
+		$this->page[$itm.'Check'] = '';
+		$this->page[$itm.'Msg'] = '<span class="label label-important">'.$mgsOff.'</span>';	
 		if ($this->page[$itm]) {
 			$this->page[$itm.'Check'] = 'checked';
 			$this->page[$itm.'Msg'] = '<span class="label label-info">'.$msgOn.'</span>';
-		} else {
-			$this->page[$itm.'Check'] = '';
-			$this->page[$itm.'Msg'] = '<span class="label label-important">'.$mgsOff.'</span>';
 		}
-	}		
+	}
 	
 	// Function to Build Treeview HTML
 	private function buildTree($parentid = 0) {
@@ -359,11 +366,22 @@ exit;
 		if (isset($data['parentid'])) 
 			if ($this->id == $data['parentid']) 
 				die('Parent cannot be same page');
-		
-
+		// check duplication of URL
+		$dupCheckID = $this->chkTableForVal('pages', 'url', 'id', $data['url']);
 
 		if ($this->id == 'new') {
 			// add new
+			
+			// TODO Set unique URL if blank .. 
+			
+			// Test for URL Duplicatoin
+			if ($dupCheckID) {
+				$this->flg = 'urlduplicate';
+				$this->page = $data;
+				$this->setupCheckboxes();
+				return;
+			}
+			
 			$newID = $this->add( 'pages' , $data);
 			if ($newID) {
 				header("Location: ?id=".$newID."&flg=added");	// added
@@ -378,7 +396,15 @@ exit;
 			if (!$isChanged) {
 				header("Location: ?flg=nochange&id=".$this->id);
 				exit;
-			}			
+			}
+			
+			// url address should not be duplicated.
+			if ($dupCheckID != $this->id) {
+				$this->flg = 'urlduplicate';
+				$this->page = $data;
+				$this->setupCheckboxes();
+				return;
+			}
 
 			// Create a revision			
 			if (!$this->query("INSERT INTO `git_pages` ( 
@@ -435,7 +461,9 @@ function resolveplace() {
 
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-		
+			case "urlduplicate":
+				$this->setMsgHTML('error','SAVE FAILED','This URL is already in use by another page.');
+				break;
 		}
 
 	}

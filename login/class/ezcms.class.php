@@ -100,7 +100,19 @@ class ezCMS extends db {
 			return true;
 		}
 		return false;
-	}	
+	}
+	
+	// Fetch a value from a table on single condition like id
+	protected function chkTableForVal($table, $chkFld, $retFld, $val) {
+		$r = new stdClass();	
+		$stmt = $this->prepare("SELECT `$retFld` FROM `$table` WHERE `$chkFld` = ? LIMIT 1");
+		if ($stmt->execute(array($val))) {
+			if ($stmt->rowCount()) {
+				$row = $stmt->fetch();
+				return $row[$retFld];
+			} else return false;
+		} else die('Error: SQL FAILED');
+	}
 	
 	// Fetch POST data and place into array
 	protected  function fetchPOSTData($f, &$d) { 

@@ -46,24 +46,12 @@ class ezUsers extends ezCMS {
 				exit;
 			}
 			
-			$this->setOptions('active', 'User is Active.', 'Inactive user cannot login.');
-			$this->setOptions('editpage', 'Page management available.', 'Page management blocked.');
-			$this->setOptions('delpage', 'Page delete available.', 'Page delete blocked.');
-			$this->setOptions('edituser', 'User can manage other users.', 'User cannot manage other users.');
-			$this->setOptions('deluser', 'User can delete other users.', 'User cannot delete other users.');
-			$this->setOptions('editsettings', 'Template Settings management available.', 'Template Settings management blocked.');
-			$this->setOptions('editcont', 'Template Controller management available.', 'Template Controller management blocked.');
-			$this->setOptions('editlayout', 'Template Layout management available.', 'Template Layout management blocked.');
-			$this->setOptions('editcss', 'Stylesheet management available.', 'Stylesheet management blocked.');
-			$this->setOptions('editjs', 'Javascript management available.', 'Javascript management blocked.');
-			
-			$this->barBtns = 
-				'<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">
+			$this->setupCheckboxes();
+			$this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">
 				 <a href="?id=new" class="btn btn-info">New User</a>';
 				
-			if ($this->id <> 1) {
-				$this->barBtns .=  ' <a href="?delid=' . $this->id .'" class="btn btn-danger conf-del">Delete</a>';
-			}
+			if ($this->id <> 1) $this->barBtns .=  
+				' <a href="?delid=' . $this->id .'" class="btn btn-danger conf-del">Delete</a>';
 
 		} else $this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
 
@@ -71,17 +59,33 @@ class ezUsers extends ezCMS {
 		$this->buildTree();
 		
 		// Get the Message to display if any
+		$this->getMessage();
 		$this->msg = str_replace('File','User',$this->msg);
 
 	}
-
-	protected function setOptions($itm, $msgOn, $mgsOff) {
+	
+	// this function will set the options to diaplay check boxes
+	private function setOptions($itm, $msgOn, $mgsOff) {
 		$this->thisUser[$itm.'Check'] = '';
 		$this->thisUser[$itm.'Msg'] = '<span class="label label-important">'.$mgsOff.'</span>';
 		if ($this->thisUser[$itm]) {
 			$this->thisUser[$itm.'Check'] = 'checked';
 			$this->thisUser[$itm.'Msg'] = '<span class="label label-info">'.$msgOn.'</span>';
 		}
+	}
+	
+	// Function to setup the checkboxes
+	private function setupCheckboxes() {
+		$this->setOptions('active', 'User is Active.', 'Inactive user cannot login.');
+		$this->setOptions('editpage', 'Page management available.', 'Page management blocked.');
+		$this->setOptions('delpage', 'Page delete available.', 'Page delete blocked.');
+		$this->setOptions('edituser', 'User can manage other users.', 'User cannot manage other users.');
+		$this->setOptions('deluser', 'User can delete other users.', 'User cannot delete other users.');
+		$this->setOptions('editsettings', 'Template Settings management available.', 'Template Settings management blocked.');
+		$this->setOptions('editcont', 'Template Controller management available.', 'Template Controller management blocked.');
+		$this->setOptions('editlayout', 'Template Layout management available.', 'Template Layout management blocked.');
+		$this->setOptions('editcss', 'Stylesheet management available.', 'Stylesheet management blocked.');
+		$this->setOptions('editjs', 'Javascript management available.', 'Javascript management blocked.');
 	}
 
 	// Function to Build Treeview HTML
@@ -151,13 +155,23 @@ class ezUsers extends ezCMS {
 		if (strlen(trim($data['email'])) < 5) die('User email must min 5 chars!');
 		if (isset($data['passwd'])) 
 			if (strlen(trim($data['passwd'])) < 8) 
-				die('New User password must be 8 in length.');		
+				die('New User password must be 8 in length.');
+		// email address should not be duplicated.
+		$dupCheckID = $this->chkTableForVal('users', 'email', 'id', $data['email']);
 		
 		if ($this->id == 'new') {
 			// add new
 			
 			// password must set for new users
 			if (!isset($data['passwd'])) die('New user password must be set.');
+			
+			// email address should not be duplicated.
+			if ($dupCheckID) {
+				$this->flg = 'emailduplicate';
+				$this->thisUser = $data;
+				$this->setupCheckboxes();
+				return;
+			}
 			
 			$newID = $this->add( 'users' , $data);
 			if ($newID) {
@@ -167,12 +181,23 @@ class ezUsers extends ezCMS {
 			
 		} else {
 			// update
+			
+			// email address should not be duplicated.
+			if ($dupCheckID != $this->id) {
+				$this->flg = 'emailduplicate';
+				$this->thisUser = $data;
+				$this->setupCheckboxes();
+				return;
+			}
+			
 			if ($this->edit( 'users' , $this->id , $data )) {
 				header("Location: ?id=".$this->id."&flg=saved");	// added
 				exit; 
 			}		
 		}
 		$this->flg = 'failed';
+		$this->thisUser = $data;
+		$this->setupCheckboxes();		
 	}
 	
 	// Function to Set the Display Message
@@ -180,42 +205,9 @@ class ezUsers extends ezCMS {
 
 		// Set the HTML to display for this flag
 		switch ($this->flg) {
-
-/*
-
-	if ($flg=="red") 
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Save Failed!</strong> An error occurred and the user was NOT saved.</div>';
-	if ($flg=="green")
-		$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Saved!</strong> You have successfully saved the page.</div>';	
-					
-	if ($flg=="pink") 
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Add Page Failed!</strong> An error occurred and the user was NOT added.</div>';
-	if ($flg=="added")
-		$msg = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Added!</strong> You have successfully added the user.</div>';			
-
-	if ($flg=="delfailed") 
-		$msg = '<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Delete Failed!</strong> An error occurred and the user was NOT deleted.</div>';
-	if ($flg=="deleted")
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Deleted!</strong> You have successfully deleted the user.</div>';
-
-	if ($flg=="noname") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Invalid User Name!</strong> Please check the user name, lenght must be more that FOUR.</div>';
-	if ($flg=="noemail") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Invalid Email!</strong> Please check the email, lenght must be more that FOUR.</div>';					
-	if ($flg=="nopass") 
-		$msg = '<div class="alert"><button type="button" class="close" data-dismiss="alert">x</button>
-					<strong>Invalid Password!</strong> Please check the password, lenght must be more that FOUR.</div>';
-
-*/
-
+			case "emailduplicate":
+				$this->setMsgHTML('error','SAVE FAILED','This email is already in use by another user.');
+				break;
 		}
 
 	}
