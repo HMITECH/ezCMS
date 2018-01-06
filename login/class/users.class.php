@@ -183,7 +183,7 @@ class ezUsers extends ezCMS {
 			// update
 			
 			// email address should not be duplicated.
-			if ($dupCheckID != $this->id) {
+			if (($dupCheckID) && ($dupCheckID != $this->id)) {
 				$this->flg = 'emailduplicate';
 				$this->thisUser = $data;
 				$this->setupCheckboxes();

@@ -400,7 +400,7 @@ class ezPages extends ezCMS {
 			}
 			
 			// url address should not be duplicated.
-			if ($dupCheckID != $this->id) {
+			if (($dupCheckID) && ($dupCheckID != $this->id)) {
 				$this->flg = 'urlduplicate';
 				$this->page = $data;
 				$this->setupCheckboxes();
