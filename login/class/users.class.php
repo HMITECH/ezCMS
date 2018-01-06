@@ -147,14 +147,17 @@ class ezUsers extends ezCMS {
 			'editsettings','editcont','editlayout','editcss','editjs'), $data);
 			
 		// Common Validtions 
-		if (strlen(trim($data['username'])) < 2) die('Username must min 2 chars!');
-		if (strlen(trim($data['email'])) < 5) die('PUser email must min 5 chars!');
+		if (strlen(trim($data['username'])) < 2) die('User Name must min 2 chars!');
+		if (strlen(trim($data['email'])) < 5) die('User email must min 5 chars!');
+		if (isset($data['passwd'])) 
+			if (strlen(trim($data['passwd'])) < 8) 
+				die('New User password must be 8 in length.');		
 		
 		if ($this->id == 'new') {
 			// add new
 			
-			// password cannot be empty
-			if (!isset($data['passwd'])) die('New user password cannot be blank');
+			// password must set for new users
+			if (!isset($data['passwd'])) die('New user password must be set.');
 			
 			$newID = $this->add( 'users' , $data);
 			if ($newID) {
