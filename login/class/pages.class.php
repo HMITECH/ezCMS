@@ -403,6 +403,26 @@ exit;
 		
 	}
 	
+/*
+// the function will return the URI of the page
+function getPagePath($id) {
+	$path='';
+	$sql = 'SELECT `id` , `pagename` , `parentid` FROM `pages` WHERE `id` = ' . $id . '; ';
+	$rs = mysql_query($sql) or die("Unable to Execute  Select query");
+	$row = mysql_fetch_assoc($rs);
+	$path .= $row['pagename'] . '/';
+	if ($row['parentid'] > 2) $path = getPagePath($row['parentid']) . $path;
+	return $path;
+}
+
+// the function will resolve any page place error
+function resolveplace() {
+	$qry = 'UPDATE `pages` set `place` = `id` WHERE `place` = 0;';
+	mysql_query($qry);
+}
+
+*/
+	
 	// Function to Set the Display Message
 	private function getMessage() {
 
