@@ -45,6 +45,12 @@ class ezCMS extends db {
 			$_SESSION['MANAGEFILES'] = $this->usr['editpage'];
 		}
 		
+		// Change editor type
+		if (isset($_GET['etype'])) $this->chgEditor();
+		
+		// CHange Code Mirror Theme
+		if (isset($_GET['theme'])) $this->chgEditorTheme();
+		
 		// init revision vars
 		$this->revs = array('log' => '', 'opt' => '', 'cnt' => 1, 'jsn' => array());
 		
@@ -130,7 +136,22 @@ class ezCMS extends db {
 	protected  function fetchPOSTCheck($f, &$d) { 
 		foreach($f as $k) $d[$k] = (isset($_POST[$k])) ? 1 : 0;
 	}
-	
+
+	// Change editor type
+	private function chgEditor() {
+		$editor  = intval($_GET['etype']);
+		if ( ($editor<0) || ($editor>3)  ) die('Invalid Editor');
+		$_SESSION['EDITORTYPE']=$editor;
+	}
+
+	// CHange Code Mirror Theme
+	private function chgEditorTheme() {
+		$theme = $_GET['theme'];
+		if ( ($theme!='default') && (!file_exists("codemirror/theme/$theme.css")) )
+			die('<h1>Missing theme, please install it first.</h1>');
+		$_SESSION['CMTHEME'] = $theme;
+	}
+
 	// Converts a php array into a PDO string (INTERNAL)
 	private function arrayToPDOstr($a) { 
 		$t = array(); 

@@ -112,10 +112,10 @@
 					<li><a href="profile.php"><i class="icon-comment"></i> Change Password</a></li>
 					<li class="divider"></li>
 					<li class="nav-header">Select Editor</li>
- 					<li><a href="scripts/chg-editor.php?etype=3"><i class="icon-edit"></i> Code Mirror</a></li> 
-					<li><a href="scripts/chg-editor.php?etype=0"><i class="icon-calendar"></i> CK Editor</a></li>
-					<li><a href="scripts/chg-editor.php?etype=1"><i class="icon-folder-close"></i> Edit Area</a></li>
-					<li><a href="scripts/chg-editor.php?etype=2"><i class="icon-hdd"></i> Text Area</a></li>
+ 					<li><a href="?etype=3"><i class="icon-edit"></i> Code Mirror</a></li> 
+					<li><a href="?etype=0"><i class="icon-calendar"></i> CK Editor</a></li>
+					<li><a href="?etype=1"><i class="icon-folder-close"></i> Edit Area</a></li>
+					<li><a href="?etype=2"><i class="icon-hdd"></i> Text Area</a></li>
 					<li class="divider"></li>
 					<li><a href="scripts/logout.php"><i class="icon-off"></i> Logout</a></li>
 				</ul>

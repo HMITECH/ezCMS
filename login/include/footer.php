@@ -47,7 +47,7 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 		e.stopPropagation();
 	});
 	$('#slCmTheme').val('<?php if (isset($_SESSION["CMTHEME"])) echo $_SESSION["CMTHEME"]; ?>').change(function (e) {
-		location.href = "scripts/chg-editor-theme.php?theme="+$(this).val();
+		location.href = "?theme="+$(this).val();
 	});
 	$('#showrevs').click(function () {
 		$('#revBlock').slideToggle();
