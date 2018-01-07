@@ -223,13 +223,13 @@ $cms = new ezPages();
 			  </td></tr>
 			</table>
 			<div class="tabbable tabs-top">
-				<ul class="nav nav-tabs" id="revTab">
-				  <li class="active"><a href="#rev-content">Content</a></li>
-				  <li><a href="#rev-header">Header</a></li>
-				  <li><a href="#rev-sidebar">Aside 1</a></li>
-				  <li><a href="#rev-siderbar">Aside 2</a></li>
-				  <li><a href="#rev-footers">Footer</a></li>
-				  <li><a href="#rev-head">Head</a></li>
+				<ul class="nav nav-tabs" id="revTab" data-open="content">
+				  <li class="active"><a href="#" data-block="content">Content</a></li>
+				  <li><a href="#" data-block="header">Header</a></li>
+				  <li><a href="#" data-block="sidebar">Aside 1</a></li>
+				  <li><a href="#" data-block="siderbar">Aside 2</a></li>
+				  <li><a href="#" data-block="footer">Footer</a></li>
+				  <li><a href="#" data-block="head">Head</a></li>
 				</ul>
 				<div id="diffviewer"></div>
 			</div><!-- /tabbable  -->
@@ -438,6 +438,50 @@ $cms = new ezPages();
 		});
 	}
 	
+	$('#revTab a').click(function (e) {
+		e.preventDefault();
+		
+		var block = $(this).data('block');
+		var openB = $('#revTab').data('open');
+		
+		// do nothing is same block is clicked
+		if (block==openB) return false;
+		
+		// now put the open back data back into the main editor
+		if (openB == 'content') myCodeMain.setValue(dv.editor().getValue());
+		if (openB == 'header') myCodeHeader.setValue(dv.editor().getValue());
+		if (openB == 'sidebar') myCodeSide1.setValue(dv.editor().getValue());
+		if (openB == 'siderbar') myCodeSide2.setValue(dv.editor().getValue());
+		if (openB == 'footer') myCodeFooter.setValue(dv.editor().getValue());	
+		if (openB == 'head') myCodeHead.setValue(dv.editor().getValue());
+
+		if (block == 'content') {
+			codeMain = myCodeMain.getValue();
+			codeRight = $("#txtMain").val(); }
+		if (block == 'header') {
+			codeMain = myCodeHeader.getValue();
+			codeRight = $("#txtHeader").val(); }
+		if (block == 'sidebar') {
+			codeMain = myCodeSide1.getValue();
+			codeRight = $("#txtSide").val(); }
+		if (block == 'siderbar') {
+			codeMain = myCodeSide2.getValue();
+			codeRight = $("#txtrSide").val(); }		
+		if (block == 'footer') {
+			codeMain = myCodeFooter.getValue();
+			codeRight = $("#txtFooter").val(); }
+		if (block == 'head') {
+			codeMain = myCodeHead.getValue();
+			codeRight = $("#txtHead").val(); }
+		
+		codeLeft = codeRight;
+		buildDiffUI();		
+		
+		$('#revTab').data('open', block)
+		$(this).tab('show');
+		
+	});
+	
 	// Change to DIff UI
 	$('#showdiff').click( function () {
 		$('#editBlock').slideUp('slow');
@@ -484,9 +528,25 @@ $cms = new ezPages();
 	
 	// Back to Main editor from DIFF UI
 	$('#backEditBTN').click( function () {
-		$('#editBlock').slideDown('slow');
-		$('#diffBlock').slideUp('slow');
+		var openB = $('#revTab').data('open');
+		// now put the open back data back into the main editor
+		if (openB == 'content') myCodeMain.setValue(dv.editor().getValue());
+		if (openB == 'header') myCodeHeader.setValue(dv.editor().getValue());
+		if (openB == 'sidebar') myCodeSide1.setValue(dv.editor().getValue());
+		if (openB == 'siderbar') myCodeSide2.setValue(dv.editor().getValue());
+		if (openB == 'footer') myCodeFooter.setValue(dv.editor().getValue());	
+		if (openB == 'head') myCodeHead.setValue(dv.editor().getValue());
 		myCodeMain.setValue(dv.editor().getValue());
+		$('#editBlock').slideDown('slow', function () {
+			myCodeMain.refresh();
+			myCodeHeader.refresh();
+			myCodeSide1.refresh();
+			myCodeSide2.refresh();
+			myCodeFooter.refresh();
+			myCodeHead.refresh();		
+		});
+		$('#diffBlock').slideUp('slow');
+	
 		return false;
 	});
 	

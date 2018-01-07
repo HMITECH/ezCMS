@@ -154,7 +154,7 @@ class ezCMS extends db {
 
 	// Converts a php array into a PDO string (INTERNAL)
 	private function arrayToPDOstr($a) { 
-		$t = array(); 
+		$t = array();
 		foreach (array_keys($a) as $n) $t[] = "`$n` = ?"; 
 		return implode(', ', $t); 
 	}
