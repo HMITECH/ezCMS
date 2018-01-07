@@ -10,11 +10,13 @@ class db extends PDO {
 	public function __construct() { 
 	
 		// read config file 
-		$config = include("config.php");
+		$config = @include("config.php");
 		
 		if (!$config) {
-			die('Config file is missing! GOTO INSTALLER');
-		} 
+			if (!file_exists('install.php')) die('FATAL : Config and installer missing.');
+			header("Location: install.php"); 
+			exit; 
+		}
 		
 		try {
 
