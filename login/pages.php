@@ -417,6 +417,24 @@ $cms = new ezPages();
 		codeRight = $("#txtMain").val(), 
 		codeLeft = codeRight,
 		panes = 2, collapse = false, dv;
+		
+	// Function to set diff viewer code
+	var getDiffCode = function (index, element, field) {
+		if (index != '0') {
+			$("#txtTemps").val(revJson[index][field]);
+			return $("#txtTemps").val();		
+		} else return $(element).val(); 
+	}
+	
+	// Refresh all the code mirrors
+	var myCodeRefresh = function () {
+		myCodeMain.refresh();
+		myCodeHeader.refresh();
+		myCodeSide1.refresh();
+		myCodeSide2.refresh();
+		myCodeFooter.refresh();
+		myCodeHead.refresh();	
+	}
 	
 	// function to build DIFF UI
 	var buildDiffUI = function () {
@@ -443,7 +461,9 @@ $cms = new ezPages();
 		
 		var block = $(this).data('block');
 		var openB = $('#revTab').data('open');
-		
+		var revIdxR = $('#diffviewerControld').find('select').eq(2).val();
+		var revIdxL = $('#diffviewerControld').find('select').eq(0).val();
+
 		// do nothing is same block is clicked
 		if (block==openB) return false;
 		
@@ -457,26 +477,31 @@ $cms = new ezPages();
 
 		if (block == 'content') {
 			codeMain = myCodeMain.getValue();
-			codeRight = $("#txtMain").val(); }
-		if (block == 'header') {
+			codeRight = getDiffCode(revIdxR, '#txtMain', 'maincontent');
+			codeLeft  = getDiffCode(revIdxL, '#txtMain', 'maincontent');
+		} else if (block == 'header') {
 			codeMain = myCodeHeader.getValue();
-			codeRight = $("#txtHeader").val(); }
-		if (block == 'sidebar') {
+			codeRight = getDiffCode(revIdxR, '#txtHeader', 'headercontent');
+			codeLeft  = getDiffCode(revIdxL, '#txtHeader', 'headercontent');
+		} else if (block == 'sidebar') {
 			codeMain = myCodeSide1.getValue();
-			codeRight = $("#txtSide").val(); }
-		if (block == 'siderbar') {
+			codeRight = getDiffCode(revIdxR, '#txtSide', 'sidecontent');
+			codeLeft  = getDiffCode(revIdxL, '#txtSide', 'sidecontent');
+		} else if (block == 'siderbar') {
 			codeMain = myCodeSide2.getValue();
-			codeRight = $("#txtrSide").val(); }		
-		if (block == 'footer') {
+			codeRight = getDiffCode(revIdxR, '#txtrSide', 'sidercontent');
+			codeLeft  = getDiffCode(revIdxL, '#txtrSide', 'sidercontent');
+		} else if (block == 'footer') {
 			codeMain = myCodeFooter.getValue();
-			codeRight = $("#txtFooter").val(); }
-		if (block == 'head') {
+			codeRight = getDiffCode(revIdxR, '#txtFooter', 'footercontent');
+			codeLeft  = getDiffCode(revIdxL, '#txtFooter', 'footercontent');
+		} else if (block == 'head') {
 			codeMain = myCodeHead.getValue();
-			codeRight = $("#txtHead").val(); }
+			codeRight = getDiffCode(revIdxR, '#txtHead', 'head');
+			codeLeft  = getDiffCode(revIdxL, '#txtHead', 'head');
+		} else return false;
 		
-		codeLeft = codeRight;
-		buildDiffUI();		
-		
+		buildDiffUI();
 		$('#revTab').data('open', block)
 		$(this).tab('show');
 		
@@ -486,7 +511,14 @@ $cms = new ezPages();
 	$('#showdiff').click( function () {
 		$('#editBlock').slideUp('slow');
 		$('#diffBlock').slideDown('slow', function () {
-			codeMain = myCodeMain.getValue(),
+			var openB = $('#revTab').data('open');
+			// only populate if codeMain is empty
+			if (openB == 'content') codeMain = myCodeMain.getValue();
+			if (openB == 'header') codeMain = myCodeHeader.getValue();
+			if (openB == 'sidebar') codeMain = myCodeSide1.getValue();
+			if (openB == 'siderbar') codeMain = myCodeSide2.getValue();
+			if (openB == 'footer') codeMain = myCodeFooter.getValue();
+			if (openB == 'head') codeMain = myCodeHead.getValue();
 			buildDiffUI();
 		});
 		return false;
@@ -514,18 +546,30 @@ $cms = new ezPages();
 	$('#revBlock a').click( function () {
 		var loadID = $(this).parent().data('rev-id');
 		if ($(this).text() == 'Fetch') {
+
+			// load all the values here 
+			
+			
 			myCodeMain.setValue(revJson[loadID]['maincontent']);
+			myCodeHeader.setValue(revJson[loadID]['headercontent']);
+			myCodeSide1.setValue(revJson[loadID]['sidecontent']);
+			myCodeSide2.setValue(revJson[loadID]['sidercontent']);
+			myCodeFooter.setValue(revJson[loadID]['footercontent']);
+			myCodeHead.setValue(revJson[loadID]['head']);			
 			return false;
 		} else if ($(this).text() == 'Diff') {
-			$("#txtTemps").val(revJson[loadID]['maincontent']);
-			codeRight= $("#txtTemps").val();
-			$('#diffviewerControld td:last-child select').val(loadID);
-			$('#showdiff').click();
+			
+
+$("#txtTemps").val(revJson[loadID]['maincontent']);
+codeRight= $("#txtTemps").val();
+$('#diffviewerControld td:last-child select').val(loadID);
+$('#showdiff').click();
+
+
 			return false;
 		}
 	});
 
-	
 	// Back to Main editor from DIFF UI
 	$('#backEditBTN').click( function () {
 		var openB = $('#revTab').data('open');
@@ -536,17 +580,8 @@ $cms = new ezPages();
 		if (openB == 'siderbar') myCodeSide2.setValue(dv.editor().getValue());
 		if (openB == 'footer') myCodeFooter.setValue(dv.editor().getValue());	
 		if (openB == 'head') myCodeHead.setValue(dv.editor().getValue());
-		myCodeMain.setValue(dv.editor().getValue());
-		$('#editBlock').slideDown('slow', function () {
-			myCodeMain.refresh();
-			myCodeHeader.refresh();
-			myCodeSide1.refresh();
-			myCodeSide2.refresh();
-			myCodeFooter.refresh();
-			myCodeHead.refresh();		
-		});
+		$('#editBlock').slideDown('slow', myCodeRefresh);
 		$('#diffBlock').slideUp('slow');
-	
 		return false;
 	});
 	
@@ -579,15 +614,9 @@ $cms = new ezPages();
 		buildDiffUI();
 	});	
 
-	
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
-		myCodeMain.refresh();
-		myCodeHeader.refresh();
-		myCodeSide1.refresh();
-		myCodeSide2.refresh();
-		myCodeFooter.refresh();
-		myCodeHead.refresh();
+		myCodeRefresh();
 	});	
 	myCodeMain = CodeMirror.fromTextArea(document.getElementById("txtMain"), codeMirrorJSON);
 	myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
