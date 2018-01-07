@@ -27,9 +27,18 @@ $cms = new ezUsers();
 		<div class="span3 white-boxed"><?php echo $cms->treehtml; ?></div>
 		<div class="span9 white-boxed">
 			<form id="frmUser" action="" method="post" enctype="multipart/form-data" class="form-horizontal"> 
-				<div class="navbar"><div class="navbar-inner"><?php echo $cms->barBtns; ?></div></div>
+				<div class="navbar"><div class="navbar-inner">
+					<?php echo $cms->barBtns; ?>
+					<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
+				</div></div>
 					
 				<?php echo $cms->msg; ?>
+				
+				<div id="revBlock">
+				  <table class="table table-striped"><thead>
+					<tr><th>#</th><th>Type</th><th>Changed</th><th>Date &amp; Time</th></tr>
+				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
+				</div>
 				
 				<div class="row">
 					<div class="span4">
