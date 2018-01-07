@@ -118,7 +118,7 @@ class ezStyles extends ezCMS {
 		$this->revs['cnt']--;
 		
 		if ($this->revs['log'] == '') 
-			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
+			$this->revs['log'] = '<tr><td colspan="4">There are no revisions.</td></tr>';	
 	}
 	
 	// Function to Build Treeview HTML

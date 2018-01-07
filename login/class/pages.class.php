@@ -41,7 +41,7 @@ class ezPages extends ezCMS {
 		if (isset($_GET['purgeRev'])) $this->delRevision();
 		
 		if ($this->id <> 'new' ) {
-			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.$this->id.' LIMIT 1')
+			$this->page = $this->query('SELECT * FROM `pages` WHERE `id` = '.intval($this->id).' LIMIT 1')
 				 ->fetch(PDO::FETCH_ASSOC);
 				 
 			// check if user is present.
@@ -213,7 +213,7 @@ class ezPages extends ezCMS {
 
 		$results = $this->query("SELECT git_pages.*,users.username
 				FROM git_pages LEFT JOIN users ON git_pages.createdby = users.id
-				WHERE git_pages.page_id = ".$this->id." ORDER BY git_pages.id DESC")->fetchAll(PDO::FETCH_ASSOC);
+				WHERE git_pages.page_id = ".intval($this->id)." ORDER BY git_pages.id DESC")->fetchAll(PDO::FETCH_ASSOC);
 		
 		foreach ($results as $entry) {
 
@@ -236,7 +236,7 @@ class ezPages extends ezCMS {
 		$this->revs['cnt']--;
 
 		if ($this->revs['log'] == '') 
-			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
+			$this->revs['log'] = '<tr><td colspan="4">There are no revisions.</td></tr>';	
 	}
 
 	// Function to Setup page variable and checkboxes

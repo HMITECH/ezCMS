@@ -37,7 +37,7 @@ class ezUsers extends ezCMS {
 		if (isset($_GET['delid'])) $this->deleteUser();
 		
 		if ($this->id <> 'new' ) {
-			$this->thisUser = $this->query('SELECT * FROM `users` WHERE `id` = '.$this->id.' LIMIT 1')
+			$this->thisUser = $this->query('SELECT * FROM `users` WHERE `id` = '.intval($this->id).' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
 			
 			// check if user is present.
@@ -58,10 +58,36 @@ class ezUsers extends ezCMS {
 		//Build the HTML Treeview
 		$this->buildTree();
 		
+		// Get the Revisions
+		if ($this->id != 'new') $this->getRevisions();
+		
 		// Get the Message to display if any
 		$this->getMessage();
 		$this->msg = str_replace('File','User',$this->msg);
 
+	}
+	
+	// Function to fetch the revisions
+	private function getRevisions() {
+	
+		$results = $this->query("SELECT `id`, `pagename`, `createdon` FROM `git_pages` 
+			WHERE `createdby` = ".intval($this->id)." ORDER BY `id` DESC")->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach ($results as $entry) {
+
+			$this->revs['log'] .= '<tr>
+				<td>'.$this->revs['cnt'].'</td>
+				<td>Page</td>
+				<td>'.$entry['pagename'].'</td>
+				<td>'.$entry['createdon'].'</td></tr>';
+
+			$this->revs['cnt']++;
+		}
+		$this->revs['cnt']--;
+
+		if ($this->revs['log'] == '') 
+			$this->revs['log'] = '<tr><td colspan="4">There are no revisions.</td></tr>';
+			
 	}
 	
 	// this function will set the options to diaplay check boxes
