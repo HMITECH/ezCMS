@@ -546,8 +546,7 @@ $cms = new ezPages();
 	$('#revBlock a').click( function () {
 		var loadID = $(this).parent().data('rev-id');
 		if ($(this).text() == 'Fetch') {
-
-			// load all the values here 
+			// load all the REMAINING values here 
 			
 			
 			myCodeMain.setValue(revJson[loadID]['maincontent']);
@@ -558,14 +557,17 @@ $cms = new ezPages();
 			myCodeHead.setValue(revJson[loadID]['head']);			
 			return false;
 		} else if ($(this).text() == 'Diff') {
-			
-
-$("#txtTemps").val(revJson[loadID]['maincontent']);
-codeRight= $("#txtTemps").val();
-$('#diffviewerControld td:last-child select').val(loadID);
-$('#showdiff').click();
-
-
+			var openB = $('#revTab').data('open');
+			// only populate if codeMain is empty
+			if (openB == 'content') $("#txtTemps").val(revJson[loadID]['maincontent']);
+			if (openB == 'header') $("#txtTemps").val(revJson[loadID]['headercontent']);
+			if (openB == 'sidebar') $("#txtTemps").val(revJson[loadID]['sidecontent']);
+			if (openB == 'siderbar') $("#txtTemps").val(revJson[loadID]['sidercontent']);
+			if (openB == 'footer') $("#txtTemps").val(revJson[loadID]['footercontent']);
+			if (openB == 'head') $("#txtTemps").val(revJson[loadID]['head']);
+			codeRight= $("#txtTemps").val();
+			$('#diffviewerControld td:last-child select').val(loadID);
+			$('#showdiff').click();
 			return false;
 		}
 	});
