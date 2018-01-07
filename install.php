@@ -4,9 +4,13 @@
  *
  * HMI Technologies Mumbai
  *
- * Class: ezCMS Users Class 
+ * INSTALLER : ezCMS Users Class 
  * 
  */
+
+// if (file_exists('config.php')) die('FATAL : config.php exists. Delete before running this installer.');
+
+ 
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>ezCMS Installer</title>
