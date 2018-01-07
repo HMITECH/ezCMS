@@ -38,14 +38,10 @@ $cms = new ezScripts();
 		  <form id="frm" action="scripts.php" method="post" enctype="multipart/form-data">
 			<div class="navbar">
 				<div class="navbar-inner">
-					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
-					<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
-					<?php } ?>
 					<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary" style="padding:5px 12px;"> 
 					<div class="btn-group">
 					  <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
 						Save As <span class="caret"></span></a>
-						
 					  <div id="SaveAsDDM" class="dropdown-menu" style="padding:10px;">
 						<blockquote>
 						  <div>Save Javascript file as</div>
@@ -58,11 +54,13 @@ $cms = new ezScripts();
 						</div><br>
 						<p><a id="btnsaveas" href="#" class="btn btn-large btn-info">Save Now</a></p>
 					  </div>
-					  
 					</div>
 					<?php echo $cms->deletebtn; ?>
 					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 					<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
+					<?php } ?>
+					<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
+					<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
 					<?php } ?>
 				</div>
 			</div>

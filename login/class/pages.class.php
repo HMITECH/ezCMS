@@ -113,8 +113,6 @@ class ezPages extends ezCMS {
 			$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
 			return ;
 		}
-		if ($_SESSION['EDITORTYPE'] == 3)
-			$this->btns .= '<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>';
 		$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">';
 		$myclass = ''; // 
 		if ( !$this->page['published'] ) $myclass = 'nopubmsg';
@@ -125,7 +123,8 @@ class ezPages extends ezCMS {
 			$this->btns .= '<a href="?delid='.$this->id.'" class="btn btn-danger conf-del">Delete</a>';
 		if ($_SESSION['EDITORTYPE'] == 3)
 			$this->btns .= '<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup>'.$this->revs['cnt'].'</sup></a>';
-	
+		if ($_SESSION['EDITORTYPE'] == 3)
+			$this->btns .= '<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>';	
 	}
 	
 	// Function to Copy a Page 
