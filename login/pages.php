@@ -304,6 +304,14 @@ $cms = new ezPages();
 		$(this).tab('show');
 		window.location.hash = $(this).attr('href').replace('#d-','');
 	});
+	/*
+	 function dragStart(event) {
+	 	console.log(event);
+		event.dataTransfer.effectAllowed='move';
+		event.dataTransfer.setData("Text", ev.target.getAttribute('id'));
+		event.dataTransfer.setDragImage(ev.target,0,0);
+		return true;
+	 }	*/
 	
 	$('.nopubmsg').click( function () {
 		return confirm('The page is Not published, its only visible to you.');
@@ -440,13 +448,77 @@ $cms = new ezPages();
 		return false;
 	});
 	
+	// Toggle 2 or 3 wya Diff
+	$("#waysDiffBTN").click( function () {
+		if (panes == 2) {
+			panes = 3;
+			$(this).text('Two Way (2)');
+			$('#diffviewerControld td').width('33.33%');
+			$('#diffviewerControld td:first-child').show();
+		} else {
+			panes = 2;
+			$(this).text('Three Way (3)');
+			$('#diffviewerControld td').width('50%');
+			$('#diffviewerControld td:first-child').hide();				
+		}
+		codeMain = dv.editor().getValue();
+		buildDiffUI();
+		return false;
+	}); 
+	
+	// Click on Fetch or DIFF in revision log
+	$('#revBlock a').click( function () {
+		var loadID = $(this).parent().data('rev-id');
+		if ($(this).text() == 'Fetch') {
+			myCodeMain.setValue(revJson[loadID]['maincontent']);
+			return false;
+		} else if ($(this).text() == 'Diff') {
+			$("#txtTemps").val(revJson[loadID]['maincontent']);
+			codeRight= $("#txtTemps").val();
+			$('#diffviewerControld td:last-child select').val(loadID);
+			$('#showdiff').click();
+			return false;
+		}
+	});
+
+	
 	// Back to Main editor from DIFF UI
 	$('#backEditBTN').click( function () {
 		$('#editBlock').slideDown('slow');
 		$('#diffBlock').slideUp('slow');
-		//myCode.setValue(dv.editor().getValue());
+		myCodeMain.setValue(dv.editor().getValue());
 		return false;
 	});
+	
+	// Toggle Collapse Unchanged sections
+	$("#collaspeBTN").click( function () {
+		if (collapse) {
+			collapse = false;
+			$(this).text('Collapase Unchanged');
+		} else {
+			collapse = true;
+			$(this).text('Expand Unchanged');
+		}
+		codeMain = dv.editor().getValue();
+		buildDiffUI();
+		return false;
+	});
+	
+	// Change Rev in Diff Viewer select dropdown
+	$('#diffviewerControld select').change( function () {
+		var revID2Load = $(this).val();
+		if (revID2Load == '0') {
+			var revContentLoad = $("#txtMain").val(); // shoe last saved 
+		} else {
+			$("#txtTemps").val(revJson[revID2Load]['maincontent']);
+			var revContentLoad = $("#txtTemps").val();
+		}
+		if ($(this).parent().index() == 0) codeLeft = revContentLoad;
+		else codeRight = revContentLoad;
+		codeMain = dv.editor().getValue();
+		buildDiffUI();
+	});	
+
 	
 	$('#myTab a').click(function (e) {
 		e.preventDefault();

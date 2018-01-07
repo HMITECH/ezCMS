@@ -197,28 +197,30 @@ class ezPages extends ezCMS {
 		
 		// Get the revision ID to delete
 		$revID = intval($_GET['purgeRev']);
-		
+
 		// Delete the revision
 		if ( $this->delete('git_pages',$revID) ) {
 			header("Location: ?flg=revdeleted&id=".$this->id);
 			exit;
 		}
-		
+
 		header("Location: ?flg=revdelfailed&id=".$this->id);
-		exit;		
-	
+		exit;
+
 	}
-	
+
 	// Function to fetch the revisions
 	private function getRevisions() {
-	
-		foreach ($this->query("SELECT git_pages.id,git_pages.page_id,users.username,git_pages.createdon
+
+		$results = $this->query("SELECT git_pages.*,users.username
 				FROM git_pages LEFT JOIN users ON git_pages.createdby = users.id
-				WHERE git_pages.page_id = ".$this->id." ORDER BY git_pages.id DESC") as $entry) {
-	
+				WHERE git_pages.page_id = ".$this->id." ORDER BY git_pages.id DESC")->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach ($results as $entry) {
+
 			$this->revs['opt'] .= '<option value="'.$entry['id'].'">#'.
 				$this->revs['cnt'].' '.$entry['createdon'].' ('.$entry['username'].')</option>';
-			
+
 			$this->revs['log'] .= '<tr>
 				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
@@ -233,11 +235,11 @@ class ezPages extends ezCMS {
 			$this->revs['cnt']++;
 		}
 		$this->revs['cnt']--;
-		
+
 		if ($this->revs['log'] == '') 
 			$this->revs['log'] = '<tr><td colspan="3">There are no revisions.</td></tr>';	
 	}
-	
+
 	// Function to Setup page variable and checkboxes
 	private function setPageVariables() {
 		$this->page['keywords'] = htmlspecialchars($this->page["keywords"]);
@@ -249,7 +251,7 @@ class ezPages extends ezCMS {
 		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
 		$this->page['head'] = htmlspecialchars($this->page["head"]);
 	}
-	
+
 	private function setOptions($itm, $msgOn, $mgsOff) {
 		$this->page[$itm.'Check'] = '';
 		$this->page[$itm.'Msg'] = '<span class="label label-important">'.$mgsOff.'</span>';	
@@ -261,9 +263,9 @@ class ezPages extends ezCMS {
 	
 	// Function to Build Treeview HTML
 	private function buildTree($parentid = 0) {
-		
+
 		static $nestCount;
-		
+
 		$treeSQL = $this->prepare(
 			"SELECT `id`, `title`, `url`, `published`, `description` 
 			FROM  `pages` WHERE `parentid` = ? order by place");
@@ -284,6 +286,7 @@ class ezPages extends ezCMS {
 				
 				$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
 				$myPub   = ($entry["published"]) ? '' : ' <i class="icon-ban-circle" title="Page is not published"></i>';
+				// '<li draggable="true"  ondragstart="return dragStart();">'
 				$this->treehtml .= '<li>'.$action.' <a href="pages.php?id='.$entry['id'].
 							'" class="'.$myclass.'">'.$entry["title"].'</a>'.$myPub;
 				$isSel = '';
@@ -310,13 +313,11 @@ class ezPages extends ezCMS {
 			<!-- sitemap-generator-url="http://www.hmi-tech.net" sitemap-generator-version="2.0" -->
 			<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 			<url><loc>http://' . $_SERVER['SERVER_NAME'] .  '/</loc></url>';
-		foreach ($this->query(
-			"SELECT `url` FROM `pages` WHERE `id` > 2 AND `published` = 1 AND `nositemap` = 0") as $entry)
+		foreach ($this->query("SELECT `url` FROM `pages` WHERE `id`>2 AND `published`=1 AND `nositemap`=0") as $entry)
 				$sitemapXML  .= '<url><loc>http://'.$_SERVER['SERVER_NAME'].$entry['url'].'</loc></url>';
 		$sitemapXML  .= '</urlset>';
 		// save XML Site Map
 		file_put_contents('../sitemap.xml', $sitemapXML);
-
 	}
 
 	// Function to Update the Controller
@@ -381,7 +382,7 @@ class ezPages extends ezCMS {
 				header("Location: ?flg=nochange&id=".$this->id);
 				exit;
 			}
-			
+
 			// url address should not be duplicated.
 			if (($dupCheckID) && ($dupCheckID != $this->id)) {
 				$this->flg = 'urlduplicate';
@@ -405,15 +406,15 @@ class ezPages extends ezCMS {
 				header("Location: ?flg=revfailed&id=".$this->id);
 				exit;
 			}
-		
+
 			// update
 			if ($this->edit( 'pages' , $this->id , $data )) {
 				$this->rebuildSitemap();
 				header("Location: ?id=".$this->id."&flg=saved");	// added
 				exit; 
-			}		
-		}		
-		
+			}
+		}
+
 	}
 	
 	// Function to Set the Display Message
