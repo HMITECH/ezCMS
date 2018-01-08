@@ -105,12 +105,19 @@ a.label.label-info {
 	-moz-border-radius: 4px 0 4px 0;
 	border-radius: 4px 0 4px 0;
 }
+#revBlock {
+    max-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+#revBlock .nomargin { margin-bottom:0; }
 #revBlock:after        {content: "Revision Log" ;}
 #difBlockHeader:after  {content: "Header Block" ;}
 #difBlockContent:after {content: "Content Block";}
 #difBlockSide1:after   {content: "Aside 1 Block";}
 #difBlockSide2:after   {content: "Aside 2 Block";}
 #difBlockFooter:after  {content: "Footer Block" ;}
+
 #push,#footer {height: 30px;}
 #footer { 
 	height: 30px; 
