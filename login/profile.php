@@ -29,10 +29,7 @@ $cms = new ezProfile();
 			
 			<div class="span4 white-boxed">
 			
-				<blockquote>
-				  <p>Change your password</p>
-				  <small>Remember to change your password often.</small>
-				</blockquote>
+				<blockquote><p>Change your password</p><small>Remember to change your password often.</small></blockquote>
 				
 				<?php echo $cms->msg; ?>
 				

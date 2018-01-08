@@ -19,30 +19,22 @@ if ($_SESSION['LOGGEDIN'] == true) {
 
 // Check if userid is set in the request
 $userid = ""; // Reset Login
-if (isset($_GET["userid"])) {
-	$userid = $_GET["userid"]; 
-}
+if (isset($_GET["userid"])) $userid = $_GET["userid"]; 
 
 // If userid is not set check session for it.
-if ( ($userid == '') && (isset($_SESSION['userid'])) ) { 
-	$userid = $_SESSION['userid']; 
-}
+if ( ($userid == '') && (isset($_SESSION['userid'])) ) $userid = $_SESSION['userid']; 
 
 // Set the HTML to display for this flag
 switch ($cms->flg) {
-
 	case "failed":
 		$cms->setMsgHTML('error','Login Failed !','Incorrect email or password');
 		break;
-
 	case "expired":
 		$cms->setMsgHTML('warning','Session Expired !','Your session has expired');
 		break;
-
 	case "logout":
 		$cms->setMsgHTML('success','Logged Out !','You have successfully logged out');
 		break;
-
 	case "inactive":
 		$cms->setMsgHTML('info','Account Inactive !','Your status is NOT Active');
 		break;
@@ -54,48 +46,37 @@ switch ($cms->flg) {
 	
 </head><body>
   
-	<div id="wrap">
-		<div class="navbar navbar-inverse navbar-fixed-top">
-		  <div class="navbar-inner">
-			  <a class="brand" href="/">ezCMS : <?php echo $_SERVER['HTTP_HOST']; ?></a>
-			  <div class="pull-right" style="color: #FFFFFF;margin: 10px 10px 2px 2px;">Your IP <strong>
-				<?php echo $_SERVER['REMOTE_ADDR']; ?></strong> is Logged</div>
-			  <div class="clearfix"></div>
-		  </div>
-		</div>
-		<div class="container">
-			<form id="frm-login" class="form-signin" method="post" action="scripts/login.php">
-				<h3 class="form-signin-heading"><img src="../site-assets/HMI-logo.png" ><br>Please sign in</h3>
-				<?php echo $cms->msg; ?>
-				<input type="text" id="txtemail" name="userid"
-					class="input-block-level tooltipme2" 
- 					data-toggle="tooltip" 
-					value="<?php echo $userid; ?>"
-					data-placement="top" 
-					title="Enter your full email address here."
-					placeholder="Email address">
-				<input type="password" id="txtpass" name="passwd"
-					class="input-block-level tooltipme2" 
- 					data-toggle="tooltip" 
-					data-placement="top" 
-					title="Enter your password here."					
-					placeholder="Password">				
-				<button class="btn btn-large btn-inverse" type="submit">Sign in</button>
-				<p class="pull-right">
-					<a id="lnk-restpass" href="#" class="tooltipme2"
-						data-toggle="tooltip" 
-						data-placement="top" 
-						style="display:none;"
-						title="Password Lost, recover your password here.">Lost your password?</a><br>
-					<a href="/" class="tooltipme2"
-						data-toggle="tooltip" 
-						data-placement="top" 
-						title="Are you lost? Go back to the main site."><< Back to Site</a>
-				</p>
-				<p class="clearfix"></p>
-			</form>
-		</div> 
-	</div>
+<div id="wrap">
+	<div class="navbar navbar-inverse navbar-fixed-top"><div class="navbar-inner">
+	  <a class="brand" href="/">ezCMS : <?php echo $_SERVER['HTTP_HOST']; ?></a>
+	  <div class="pull-right" style="color: #FFFFFF;margin: 10px 10px 2px 2px;">Your IP <strong>
+		<?php echo $_SERVER['REMOTE_ADDR']; ?></strong> is Logged</div>
+	  <div class="clearfix"></div>
+	</div></div>
+	<div class="container">
+		<form id="frm-login" class="form-signin" method="post" action="scripts/login.php">
+			<h3 class="form-signin-heading"><img src="../site-assets/HMI-logo.png" ><br>Please sign in</h3>
+			<?php echo $cms->msg; ?>
+			<input type="text" id="txtemail" name="userid" data-toggle="tooltip" 
+				class="input-block-level tooltipme2" data-placement="top" 
+				value="<?php echo $userid; ?>"
+				title="Enter your full email address here."
+				placeholder="Email address">
+			<input type="password" id="txtpass" name="passwd" data-toggle="tooltip" 
+				class="input-block-level tooltipme2" data-placement="top" 
+				title="Enter your password here." placeholder="Password">				
+			<button class="btn btn-large btn-inverse" type="submit">Sign in</button>
+			<p class="pull-right">
+				<a id="lnk-restpass" href="#" class="tooltipme2"
+					data-toggle="tooltip" data-placement="top" style="display:none;"
+					title="Password Lost, recover your password here.">Lost your password?</a><br>
+				<a href="/" class="tooltipme2" data-toggle="tooltip" data-placement="top" 
+					title="Are you lost? Go back to the main site."><< Back to Site</a>
+			</p>
+			<p class="clearfix"></p>
+		</form>
+	</div> 
+</div>
 <?php include('include/footer.php'); ?>
 
 </body></html>

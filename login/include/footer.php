@@ -28,42 +28,134 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 <script src="js/jquery.treeview/jquery.treeview.js"></script>
 <script src="js/pass-strength.js"></script>
 <script src="js/jscolor.min.js"></script>
-<script type="text/javascript">
+<style>
+/*	
+#left-tree li .over {
+  border: 2px dashed #000;
+}
+*/
+</style>
+<script type="text/javascript">(function($) {
 
-	var tSelc = $('#left-tree a.label-info').closest('li');
-	while ( tSelc.length ) {
-		tSelc.addClass('open');
-		tSelc = tSelc.parent().closest('li');
+"use strict";
+
+// Change CMS backgrund color	
+var updateBgColor = function (jscolor) {
+	 $('body').css('background-color','#' + jscolor );
+}
+
+
+// Open the treeview to selected item
+var tSelc = $('#left-tree a.label-info').closest('li');
+while ( tSelc.length ) {
+	tSelc.addClass('open');
+	tSelc = tSelc.parent().closest('li');
+}
+
+
+$('.tooltipme2').tooltip();
+
+// Confirm Delete Action
+$('.conf-del').click( function () {
+	return confirm('Confirm Delete Action ?');
+});
+
+// Create treeview out of Left side UL 
+$("#left-tree").treeview({
+	collapsed: true,
+	animated: "medium",
+	unique: true
+});
+
+// Change code mirror theme
+$('#divCmTheme, #divbgcolor').click(function (e) {
+	e.stopPropagation();
+});
+
+// Code Mirror Theme Change
+$('#slCmTheme')
+	.val('<?php if (isset($_SESSION["CMTHEME"])) echo $_SESSION["CMTHEME"]; ?>')
+	.change(function (e) {
+		location.href = "?theme="+$(this).val();
+});
+
+// Show or  the revisions block
+$('#showrevs').click(function () {
+	$('#revBlock').slideToggle();
+	return false;
+});
+
+// Stop propagation of drop down events
+$('#SaveAsDDM').click(function (e) {
+	e.stopPropagation();
+});	
+
+// CMS Background color
+$('#txtbgcolor').val(localStorage.getItem("cmsBgColor")).change(function () {
+	$('body').css('background-color','#'+$(this).val());
+	localStorage.setItem("cmsBgColor", $(this).val());
+});
+$('body').css('background-color','#'+localStorage.getItem("cmsBgColor"));
+
+/*	
+	// Drag and drop ... 
+	$('#left-tree li ul li').prop('draggable', true);
+	$('#left-tree li ul li a').prop('draggable', false);
+	
+	function handleDragStart(e) {
+	  this.style.opacity = '0.7';  // this / e.target is the source node.
 	}
 	
-	$('.tooltipme2').tooltip();
-
-	$("#left-tree").treeview({
-		collapsed: true,
-		animated: "medium",
-		unique: true
-	});	
-	$('#divCmTheme, #divbgcolor').click(function (e) {
-		e.stopPropagation();
+	[].forEach.call(document.querySelectorAll('#left-tree li ul li'), function(n) {
+	  n.addEventListener('dragstart', handleDragStart, false);
 	});
-	$('#slCmTheme').val('<?php if (isset($_SESSION["CMTHEME"])) echo $_SESSION["CMTHEME"]; ?>').change(function (e) {
-		location.href = "?theme="+$(this).val();
-	});
-	$('#showrevs').click(function () {
-		$('#revBlock').slideToggle();
-		return false;
-	});
-	$('.conf-del').click( function () {
-		return confirm('Confirm Delete Action ?');
-	});
-
-	$('#txtbgcolor').val(localStorage.getItem("cmsBgColor")).change(function () {
-		$('body').css('background-color','#'+$(this).val());
-		localStorage.setItem("cmsBgColor", $(this).val());
-	});
-	$('body').css('background-color','#'+localStorage.getItem("cmsBgColor"));
-
-	function updateBgColor(jscolor) {
-	    $('body').css('background-color','#' + jscolor );
+	
+	function handleDragOver(e) {
+	  if (e.preventDefault) {
+		e.preventDefault(); // Necessary. Allows us to drop.
+	  }
+	
+	  e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+	
+	  return false;
 	}
-</script>
+	
+	function handleDragEnter(e) {
+	  // this / e.target is the current hover target.
+	  this.classList.add('over');
+	}
+	
+	function handleDragLeave(e) {
+	  this.classList.remove('over');  // this / e.target is previous target element.
+	}
+	
+	function handleDrop(e) {
+	  // this / e.target is current target element.
+	
+	  if (e.stopPropagation) {
+		e.stopPropagation(); // stops the browser from redirecting.
+	  }
+	
+	  // See the section on the DataTransfer object.
+	
+	  return false;
+	}
+	
+	function handleDragEnd(e) {
+	  // this/e.target is the source node.
+	
+	  [].forEach.call(cols, function (col) {
+		col.classList.remove('over');
+	  });
+	}
+	
+	[].forEach.call(document.querySelectorAll('#left-tree li ul li'), function(n) {
+	  n.addEventListener('dragstart', handleDragStart, false);
+	  n.addEventListener('dragenter', handleDragEnter, false)
+	  n.addEventListener('dragover', handleDragOver, false);
+	  n.addEventListener('dragleave', handleDragLeave, false);
+	  n.addEventListener('drop', handleDrop, false);
+	  n.addEventListener('dragend', handleDragEnd, false);
+	});
+*/
+})(jQuery);</script>

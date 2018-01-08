@@ -304,14 +304,6 @@ $cms = new ezPages();
 		$(this).tab('show');
 		window.location.hash = $(this).attr('href').replace('#d-','');
 	});
-	/*
-	 function dragStart(event) {
-	 	console.log(event);
-		event.dataTransfer.effectAllowed='move';
-		event.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-		event.dataTransfer.setDragImage(ev.target,0,0);
-		return true;
-	 }	*/
 	
 	$('.nopubmsg').click( function () {
 		return confirm('The page is Not published, its only visible to you.');
