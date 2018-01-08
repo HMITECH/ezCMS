@@ -42,7 +42,7 @@
 				  <p><i class="icon-tint"></i> Background Color</p>
 				  <small>Change background color</small>
 				</blockquote>
-				<div><input class="jscolor {onFineChange:'updateBgColor(this)'}" id="txtbgcolor" type="text" /></div>
+				<div><input id="txtbgcolor" type="color"></div>
 				<hr>
 				<?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
 				<blockquote>

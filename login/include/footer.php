@@ -27,31 +27,9 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
 <script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.treeview/jquery.treeview.js"></script>
 <script src="js/pass-strength.js"></script>
-<script src="js/jscolor.min.js"></script>
-<style>
-/*	
-#left-tree li .over {
-  border: 2px dashed #000;
-}
-*/
-</style>
 <script type="text/javascript">(function($) {
 
 "use strict";
-
-// Change CMS backgrund color	
-var updateBgColor = function (jscolor) {
-	 $('body').css('background-color','#' + jscolor );
-}
-
-
-// Open the treeview to selected item
-var tSelc = $('#left-tree a.label-info').closest('li');
-while ( tSelc.length ) {
-	tSelc.addClass('open');
-	tSelc = tSelc.parent().closest('li');
-}
-
 
 $('.tooltipme2').tooltip();
 
@@ -60,6 +38,12 @@ $('.conf-del').click( function () {
 	return confirm('Confirm Delete Action ?');
 });
 
+// Open the treeview to selected item
+var tSelc = $('#left-tree a.label-info').closest('li');
+while ( tSelc.length ) {
+	tSelc.addClass('open');
+	tSelc = tSelc.parent().closest('li');
+}
 // Create treeview out of Left side UL 
 $("#left-tree").treeview({
 	collapsed: true,
@@ -91,11 +75,13 @@ $('#SaveAsDDM').click(function (e) {
 });	
 
 // CMS Background color
-$('#txtbgcolor').val(localStorage.getItem("cmsBgColor")).change(function () {
-	$('body').css('background-color','#'+$(this).val());
-	localStorage.setItem("cmsBgColor", $(this).val());
+$('#txtbgcolor')
+	.val(localStorage.getItem("cmsBgColor"))
+	.change(function () {
+		$('body').css('background-color', $(this).val());
+		localStorage.setItem("cmsBgColor", $(this).val());
 });
-$('body').css('background-color','#'+localStorage.getItem("cmsBgColor"));
+$('body').css('background-color',localStorage.getItem("cmsBgColor"));
 
 /*	
 	// Drag and drop ... 
