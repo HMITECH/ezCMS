@@ -70,15 +70,43 @@ class ezUsers extends ezCMS {
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		$results = $this->query("SELECT `id`, `pagename`, `createdon` FROM `git_pages` 
-			WHERE `createdby` = ".intval($this->id)." ORDER BY `id` DESC")->fetchAll(PDO::FETCH_ASSOC);
+		$results = $this->query("(SELECT `page_id` as `id`, 1 as `type`, `url` as `det`, `createdon` 
+									FROM `git_pages` WHERE `createdby` = ".intval($this->id)." )
+								UNION (SELECT `id`, 2 as `type`, `fullpath` as `det`,`createdon` 
+									FROM `git_files` WHERE `createdby` = ".intval($this->id).")
+								UNION (SELECT `id`, 3 as `type`, '' as `det`, `createdon` 
+									FROM `site` WHERE `createdby` = ".intval($this->id).")
+								ORDER BY `createdon` DESC")->fetchAll(PDO::FETCH_ASSOC);
 		
 		foreach ($results as $entry) {
+		
+			if ($entry['type']==1) {
+				$type = '<a href="pages.php?id='.$entry['id'].'"><i class="icon-file"></i> Page</a>';
+			} else if ($entry['type']==2) {
+				$ext = substr($entry['det'], -3);
+				if ($entry['det'] == 'index.php' ) {
+					$type = '<a href="controllers.php"><i class="icon-play"></i> URL Router</a>';
+				} else if ($ext == '.js' ) {
+					if ($entry['det']=='../main.js') $type = '<a href="scripts.php">';
+					else $type = '<a href="scripts.php?show='.substr($entry['det'], 18 , strlen($entry['det'])-18).'">';
+					$type .= '<i class="icon-align-left"></i> JS Javascripts</a>';
+				} else if ($ext == 'css' ) {
+					if ($entry['det']=='../style.css') $type = '<a href="styles.php">';
+					else $type = '<a href="styles.php?show='.substr($entry['det'], 19 , strlen($entry['det'])-19).'">';
+					$type .= '<i class="icon-pencil"></i> CSS Stylesheets</a>';
+				} else if ($ext == 'php' ) {
+					if ($entry['det']=='layouts.php') $type = '<a href="layouts.php">';
+					else $type = '<a href="layouts.php?show='.substr($entry['det'], 7 , strlen($entry['det'])-7).'">';
+					$type .= '<i class="icon-list-alt"></i> PHP Layouts</a>';
+				}
+			} else if ($entry['type']==3) {
+				$type = '<a href="setting.php"><i class="icon-th-list"></i> Defaults Settings</a>';
+			}
 
 			$this->revs['log'] .= '<tr>
 				<td>'.$this->revs['cnt'].'</td>
-				<td>Page</td>
-				<td>'.$entry['pagename'].'</td>
+				<td>'.$type.'</td>
+				<td>'.$entry['det'].'</td>
 				<td>'.$entry['createdon'].'</td></tr>';
 
 			$this->revs['cnt']++;
