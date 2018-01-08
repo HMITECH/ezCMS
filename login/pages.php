@@ -71,8 +71,8 @@ $cms = new ezPages();
 										data-placement="top" minlength="2"
 										class="input-block-level tooltipme2 countme2" required><br>
 										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-										  <input name="published" type="checkbox" value="checkbox" <?php echo $cms->page['publishedCheck']; ?>>
-										  Published on site
+										  <input id="ckpublished" name="published" type="checkbox" 
+										  	<?php echo $cms->page['publishedCheck']; ?>>Published on site
 										</label>
 								</div>
 							  </div>
@@ -90,8 +90,9 @@ $cms = new ezPages();
 										class="input-block-level tooltipme2 countme2" required><br>
 									<?php echo $cms->page['publishedMsg']; ?>
 									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-									  <input name="nositemap" type="checkbox" value="checkbox" <?php echo $cms->page['nositemapCheck']; ?>>
-									  Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
+									  <input id="cknositemap" name="nositemap" type="checkbox" 
+									  	<?php echo $cms->page['nositemapCheck']; ?>>
+										Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
 									</label>
 								</div>
 							  </div>								
@@ -108,7 +109,7 @@ $cms = new ezPages();
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label" for="inputName">Layout</label>
-								<div class="controls"><select name="layout" class="input-block-level">
+								<div class="controls"><select id="sllayouts" name="layout" class="input-block-level">
 									<?php echo $cms->slOptions; ?></select></div>
 							  </div>
 							</div>
@@ -149,7 +150,8 @@ $cms = new ezPages();
 					<div class="row">
 						<div class="span1" style="margin-top:6px;">Page URL :</div>
 						<div class="span11">
-							<input type="text" name="url" minlength="2" value="<?php echo $cms->page['url']; ?>" class="input-block-level">
+							<input type="text" id="txtURL" name="url" minlength="2" 
+								value="<?php echo $cms->page['url']; ?>" class="input-block-level">
 						</div>
 					</div>
 					<textarea id="txtMain" name="maincontent"><?php echo $cms->page['maincontent']; ?></textarea>
@@ -158,8 +160,8 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-header">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="useheader" type="checkbox" value="checkbox" <?php echo $cms->page['useheaderCheck']; ?>>
-							Enable custom HEADER</label></div>
+							<input id="ckuseheader" name="useheader" type="checkbox" value="checkbox" 
+								<?php echo $cms->page['useheaderCheck']; ?>>Enable custom HEADER</label></div>
 						<div class="span8 text-right"><?php echo $cms->page['useheaderMsg']; ?></div>
 					</div>
 					<textarea id="txtHeader" name="headercontent"><?php echo $cms->page['headercontent']; ?></textarea>
@@ -168,8 +170,8 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-sidebar">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="useside" type="checkbox" value="checkbox" <?php echo $cms->page['usesideCheck']; ?>>
-							Enable custom ASIDE 1</label></div>
+							<input id="ckuseside" name="useside" type="checkbox" value="checkbox" 
+								<?php echo $cms->page['usesideCheck']; ?>>Enable custom ASIDE 1</label></div>
 						<div class="span8 text-right"><?php echo $cms->page['usesideMsg']; ?></div>
 					</div>
 					<textarea id="txtSide" name="sidecontent"><?php echo $cms->page['sidecontent']; ?></textarea>
@@ -178,8 +180,8 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-siderbar">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="usesider" type="checkbox" value="checkbox" <?php echo $cms->page['usesiderCheck']; ?>>
-							Enable custom ASIDE 2</label></div>
+							<input id="ckusesider" name="usesider" type="checkbox" value="checkbox" 
+								<?php echo $cms->page['usesiderCheck']; ?>>Enable custom ASIDE 2</label></div>
 						<div class="span8 text-right"><?php echo $cms->page['usesiderMsg']; ?></div>
 					</div>
 				  	<textarea id="txtrSide" name="sidercontent"><?php echo $cms->page['sidercontent']; ?></textarea>
@@ -188,8 +190,8 @@ $cms = new ezPages();
 				  <div class="tab-pane" id="d-footers">
 					<div class="row">
 						<div class="span4"><label class="checkbox">
-							<input name="usefooter" type="checkbox" value="checkbox" <?php echo $cms->page['usefooterCheck']; ?>>
-							Enable custom FOOTER</label></div>
+							<input id="ckusefooter" name="usefooter" type="checkbox" value="checkbox" 
+								<?php echo $cms->page['usefooterCheck']; ?>>Enable custom FOOTER</label></div>
 						<div class="span8 text-right"><?php echo $cms->page['usefooterMsg']; ?></div>
 					</div>
 					<textarea id="txtFooter" name="footercontent"><?php echo $cms->page['footercontent']; ?></textarea>
@@ -539,7 +541,20 @@ $cms = new ezPages();
 		var loadID = $(this).parent().data('rev-id');
 		if ($(this).text() == 'Fetch') {
 			// load all the REMAINING values here 
+			$('#txtTitle').val(revJson[loadID]['title']);
+			$('#txtName').val(revJson[loadID]['pagename']);
+			$('#slparentid').val(revJson[loadID]['parentid']);  // Parent
+			$('#sllayouts').val(revJson[loadID]['layout']);  // Layout 
+			$('#txtDesc').val(revJson[loadID]['description']);
+			$('#txtKeywords').val(revJson[loadID]['keywords']);
+			$('#txtURL').val(revJson[loadID]['url']);
 			
+			$('#ckpublished').prop('checked', revJson[loadID]['published']*1);
+			$('#cknositemap').prop('checked', revJson[loadID]['nositemap']*1);
+			$('#ckuseheader').prop('checked', revJson[loadID]['useheader']*1);
+			$('#ckuseside').prop('checked', revJson[loadID]['useside']*1);
+			$('#ckusesider').prop('checked', revJson[loadID]['usesider']*1);
+			$('#ckusefooter').prop('checked', revJson[loadID]['usefooter']*1);
 			
 			myCodeMain.setValue(revJson[loadID]['maincontent']);
 			myCodeHeader.setValue(revJson[loadID]['headercontent']);

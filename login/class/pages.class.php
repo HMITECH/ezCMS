@@ -70,7 +70,7 @@ class ezPages extends ezCMS {
 
 		//Disable parent page drop down
 		if ( ($this->id > 2) || ($this->id == 'new') ) $this->ddOptions = 
-			'<select name="parentid" class="input-block-level">'.$this->ddOptions.'</select>';
+			'<select id="slparentid" name="parentid" class="input-block-level">'.$this->ddOptions.'</select>';
 		else $this->ddOptions = '<div class="alert alert-info slRootMsg">Root</div>';
 		
 		// process variable for html display
