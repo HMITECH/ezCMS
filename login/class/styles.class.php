@@ -180,7 +180,7 @@ class ezStyles extends ezCMS {
 		$filename = $_POST["txtName"];
 		$contents = $_POST["txtContents"];
 		$show = '';
-		if ($filename != "../main.js") $show = '&show='.substr($filename, 19 , strlen($filename)-19);
+		if ($filename != "../style.css") $show = '&show='.substr($filename, 19 , strlen($filename)-19);
 
 		// Check permissions
 		if (!$this->usr['editcss']) {

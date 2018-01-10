@@ -170,7 +170,7 @@ class ezUsers extends ezCMS {
 		
 		$id = $_GET['delid']; 
 		// cannot delete home page or 404 page
-		if (($id==1) || ($id==2)) die('Cannot delete root pages.');
+		if ($id==1) die('Cannot delete root user.');
 		
 		// Delete the User
 		if ( $this->delete('users',$id) ) {
