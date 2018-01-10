@@ -4,11 +4,9 @@
  *
  * HMI Technologies Mumbai
  *
- * View: Default Front end layout - layout.php
- * 
- * The layout is a basic structure of the page to be rendered
- * you can copy his layout and create your own custom layouts 
- * and then use then in the pages of the site.
+ * The layout is an example to show full width pages 
+ * without the aside content. 
+ * Change the layout of any page to this for full width content.
  */
 
 ?><!DOCTYPE html>
@@ -35,9 +33,7 @@
 	
 	<table>
 		<tr>
-			<td class="asidebar"><aside><?php echo $sidebar;?></aside></td>
 			<td><main><?php echo $maincontent;?></main></td>
-			<td class="asidebar"><aside><?php echo $siderbar;?></aside></td>
 		</tr>
 	</table>
 	
