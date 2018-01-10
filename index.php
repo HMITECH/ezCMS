@@ -5,6 +5,7 @@
  * HMI Technologies Mumbai
  *
  * Controller: Front-end Router - index.php
+ * 
  * Renders all the pages in the CMS.
  */
 
@@ -70,11 +71,6 @@ if (!file_exists($page['layout'])) {
 $page['canonical'] = $protocol.$_SERVER['HTTP_HOST'].$page["url"];
 
 // Setup CMS Template variable to be used in the layouts
-$head        = $page["head"];
-$title       = $page["title"];
-$canonical   = $page["canonical"];
-$keywords    = $page["keywords"];
-$description = $page["description"];
 $maincontent = $page["maincontent"];
 $header      = ($page["useheader"] == 1) ? $page["headercontent"] : $site["headercontent"];
 $sidebar     = ($page["useside"]   == 1) ? $page["sidecontent"]   : $site["sidecontent"];
