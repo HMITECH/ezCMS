@@ -66,7 +66,7 @@ $cms = new ezSettings();
 			  <li class="active"><a href="#d-header">Header</a></li>
 			  <li><a href="#d-sidebar">Aside 1</a></li>
 			  <li><a href="#d-siderbar">Aside 2</a></li>
-			  <li><a href="#d-footer">Footer</a></li>
+			  <li><a href="#d-footers">Footer</a></li>
 			</ul>
 			 
 			<div class="tab-content">
@@ -79,7 +79,7 @@ $cms = new ezSettings();
 				<div class="tab-pane" id="d-siderbar">
 					<textarea name="sidercontent" id="txtrSide"><?php echo $cms->site['sidercontent']; ?></textarea>
 				</div>
-				<div class="tab-pane" id="d-footer">
+				<div class="tab-pane" id="d-footers">
 					<textarea name="footercontent" id="txtFooter"><?php echo $cms->site['footercontent']; ?></textarea>
 				</div>
 			</div>
@@ -99,6 +99,7 @@ $cms = new ezSettings();
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
 		$(this).tab('show');
+		window.location.hash = $(this).attr('href').replace('#d-','');
 	});
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 0) { ?>
@@ -430,4 +431,7 @@ $cms = new ezSettings();
 	</script>
 
 <?php } ?>
+<script language="javascript" type="text/javascript">
+	if(window.location.hash) $('a[href="'+window.location.hash.replace('#','#d-')+'"]').click(); 
+</script>
 </body></html>
