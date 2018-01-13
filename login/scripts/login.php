@@ -65,7 +65,13 @@ if ($stmt->rowCount()) {
 	$_SESSION["CMTHEME"]    = 'default'; // Default Code Mirror theme
 	
 	// Redirect to logged in page
-	header("Location: ../pages.php");	
+	if ( isset( $_SESSION['AFTERLOGINPAGE'] )) {
+		$goto = $_SESSION['AFTERLOGINPAGE'];
+		unset($_SESSION['AFTERLOGINPAGE']);
+		header("Location: $goto");
+	} else {
+		header("Location: ../pages.php");
+	}
 	exit;
 	
 }

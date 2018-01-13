@@ -34,6 +34,7 @@ class ezCMS extends db {
 		
 		// Redirect the user if NOT logged in
 		if ((!$_SESSION['LOGGEDIN']) && ($loginRequired) ) { 
+			$_SESSION['AFTERLOGINPAGE'] = $_SERVER['REQUEST_URI'];
 			header("Location: index.php?flg=expired"); 
 			exit; 
 		}
