@@ -17,6 +17,18 @@ $cms = new ezPages();
 
 	<title>Pages : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
+	<style>
+		[draggable] {
+			user-select: none;
+		}	
+		#left-tree li ul li {
+			border-top: 2px dashed #fff;
+		}
+		#left-tree .over {
+		  border-top: 2px dashed #000;
+		}
+	</style>
+
 	
 </head><body>
   
@@ -241,6 +253,66 @@ $cms = new ezPages();
 	</div><!-- /container  -->
 	<br><br>
 </div><!-- /wrap  -->
+
+<script type="text/javascript">(function($) {
+
+"use strict";
+
+	var dragSrcEl = null;
+
+	// Drag and drop ... 
+	$('#left-tree li ul li').prop('draggable', true);
+	$('#left-tree li ul li a').prop('draggable', false);
+	
+	function handleDragStart(e) {
+	  // this / e.target is the source node.
+	  $(this).css('opacity', '0.4');
+	  dragSrcEl = this;
+	  e.stopPropagation();
+	}
+	
+	function handleDragOver(e) {
+		e.preventDefault();
+		if ( $(this).parent().closest('li').is( $(dragSrcEl).parent().closest('li')  )) {
+			 e.originalEvent.dataTransfer.dropEffect = 'move';
+			 $(this).addClass('over');
+		} else { 
+			e.originalEvent.dataTransfer.dropEffect = 'none';
+			$(this).removeClass('over');
+		}
+		return false;
+	}
+	
+	function handleDragLeave(e) {
+		// this / e.target is previous target element.
+		$(this).removeClass('over');  
+	}
+	
+	function handleDrop(e) {
+		// this / e.target is current target element.
+		e.stopPropagation();
+		$('#left-tree li').removeClass('over');
+		$(dragSrcEl).css('opacity', '1');
+		$(this).before(dragSrcEl);
+		dragSrcEl = null;
+		// update the last class in this group 
+		
+		
+		//make ajax call and update ...
+		
+		
+		return false;
+	}
+	
+	$('#left-tree li ul li').on({
+		dragstart: handleDragStart,
+		dragover: handleDragOver,
+		dragleave: handleDragLeave,
+		drop: handleDrop
+	});
+
+})(jQuery);</script>
+
 
 <?php include('include/footer.php'); ?>
 
