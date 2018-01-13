@@ -142,7 +142,7 @@ class ezPages extends ezCMS {
 		if ($this->query("INSERT INTO `pages` ( `pagename`, `title`, `url`, `nositemap`, `keywords`, `description`, `maincontent`, 
 					`useheader`, `headercontent`, `head`, `layout`, `usefooter`, `footercontent`, `useside`, `sidecontent`, 
 					`usesider`, `sidercontent`, `published`, `parentid`) 
-				SELECT `pagename` , `title`, `url`, `nositemap`, 
+				SELECT `pagename` , `title`, CONCAT(`url`,'-', UNIX_TIMESTAMP()), `nositemap`, 
 					`keywords`, `description`, `maincontent`, `useheader`, `headercontent` , `head`, `layout`, `usefooter`, 
 					`footercontent`, `useside`, `sidecontent` , `usesider` , `sidercontent` , 0, IF(`parentid`=0 , 1 , `parentid`) 
 					FROM `pages` WHERE id=$id")) {
@@ -150,8 +150,7 @@ class ezPages extends ezCMS {
 			// update name, url and title
 			$this->query("UPDATE `pages` SET `place` = `id`,
 				`pagename` = concat( `pagename` , '-copy', `id` ),
-				`title` = concat( `title` , '-copy', `id` ), 
-				`url` = concat( `url` , '-copy', `id` ) WHERE id =$id");
+				`title` = concat( `title` , '-copy', `id` ) WHERE id =$id");
 			header("Location: ?flg=copied&id=$id");
 			exit;
 		}
@@ -172,6 +171,19 @@ class ezPages extends ezCMS {
 			header("Location: ?flg=noperms&id=".$id);
 			exit;
 		}
+		
+		// TODO - DELETE REVISIONS
+		if (!$this->query("DELETE FROM `git_pages` WHERE `page_id` = $id")) {
+			$this->flg = 'revdelfailed';
+			return;
+		} 		
+		
+		// Set all choldern of deleted page to its parent
+		$parent = $this->query("SELECT `parentid` FROM `pages` WHERE `id` = $id")->fetch(PDO::FETCH_ASSOC);
+		if (!$this->query("Update `pages` SET `parentid` = ".$parent['parentid']." WHERE `parentid` = $id")) {
+			$this->flg = 'failed';
+			return;
+		} 
 		
 		// Delete the Pge
 		if ( $this->delete('pages',$id) ) {
