@@ -321,23 +321,22 @@ $cms = new ezPages();
 		$(this).before(dragSrcEl);
 		dragSrcEl = null;
 		
-		// update the last class in this group 
-		var papa = $(this).parent().closest('li');
-		//$(papa).find('> ul > li').removeClass('last lastExpandable');
-		
-		/*var lastLI = $(papa).find('> ul > li:last-child');
-		if ( $(lastLI).hasClass('expandable') )
-			 $(lastLI).addClass('lastExpandable');
-		else $(lastLI).addClass('last');*/
+		// update the last class in this group and collect orderedIDS
 		var orderedIDS = [];
-		$(papa).find('> ul > li').each(function () {
+		var isLast;
+		$(this).parent().closest('li').find('> ul > li').each(function () {
 			orderedIDS.push( $(this).data('id') );
-			
-			//console.log($(this).find('> a').text());
+			isLast = !$(this).next('li').length;
+			if ($(this).find('ul').length) {
+				if (isLast) $(this).addClass('lastExpandable');
+				else $(this).removeClass('lastExpandable');			
+			} else {
+				if (isLast) $(this).addClass('last');
+				else $(this).removeClass('last');
+			}
 		});
 		
-		console.log(orderedIDS.join(','));
-		//make ajax call and update ...
+		//make ajax call and update the databasse
 		$.get( 'pages.php', {'redorderids':orderedIDS.join(',')} , function(data) {
 			if (data != '0') alert('Reorder Failed: '+data);
 		}).fail( function() { alert('Reorder Request Failed!'); });	
