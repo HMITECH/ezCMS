@@ -329,14 +329,18 @@ $cms = new ezPages();
 		if ( $(lastLI).hasClass('expandable') )
 			 $(lastLI).addClass('lastExpandable');
 		else $(lastLI).addClass('last');*/
-		
+		var orderedIDS = [];
 		$(papa).find('> ul > li').each(function () {
-			console.log($(this).find('> a').text());
+			orderedIDS.push( $(this).data('id') );
+			
+			//console.log($(this).find('> a').text());
 		});
 		
-		
+		console.log(orderedIDS.join(','));
 		//make ajax call and update ...
-		
+		$.get( 'pages.php', {'redorderids':orderedIDS.join(',')} , function(data) {
+			if (data != '0') alert('Reorder Failed: '+data);
+		}).fail( function() { alert('Reorder Request Failed!'); });	
 		
 		return false;
 	}

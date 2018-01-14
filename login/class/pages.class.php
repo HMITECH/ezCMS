@@ -87,9 +87,13 @@ class ezPages extends ezCMS {
 	
 	// Function to reorder pages
 	private function reorderPages() {
-	
-		// change the place in the database
-	
+		$place = 1;
+		$stmt = $this->prepare("UPDATE `pages` SET `place` = ? WHERE `id` = ?");
+		foreach (explode(',',$_GET['redorderids']) as $id) {
+			if (!$stmt->execute(array($place,$id))) die('Reorder SQL Failed!');
+			$place++;
+		}
+		die('0');
 	}
 	
 	// Function to setup the checkboxes
@@ -309,7 +313,7 @@ class ezPages extends ezCMS {
 				$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
 				$myPub   = ($entry["published"]) ? '' : ' <i class="icon-ban-circle" title="Page is not published"></i>';
 				// '<li draggable="true"  ondragstart="return dragStart();">'
-				$this->treehtml .= '<li>'.$action.' <a href="pages.php?id='.$entry['id'].
+				$this->treehtml .= '<li data-id="'.$entry['id'].'">'.$action.' <a href="pages.php?id='.$entry['id'].
 							'" class="'.$myclass.'">'.$entry["title"].'</a>'.$myPub;
 				$isSel = '';
 				if  ( ($entry['id'] != 2) && ($entry['id'] != $this->id) ){
