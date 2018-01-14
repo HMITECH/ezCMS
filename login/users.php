@@ -36,7 +36,7 @@ $cms = new ezUsers();
 				
 				<div id="revBlock">
 				  <table class="table table-striped"><thead>
-					<tr><th>#</th><th>Revised</th><th>Resource</th><th>Date &amp; Time</th></tr>
+					<tr><th>#</th><th>Revised</th><th>Resource</th><th>Revision Message</th><th>Date &amp; Time</th></tr>
 				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 				</div>
 				

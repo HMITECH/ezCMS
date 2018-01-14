@@ -192,7 +192,7 @@ class ezPages extends ezCMS {
 			return;
 		} 		
 		
-		// Set all choldern of deleted page to its parent
+		// Set all childern of deleted page to its parent
 		$parent = $this->query("SELECT `parentid` FROM `pages` WHERE `id` = $id")->fetch(PDO::FETCH_ASSOC);
 		if (!$this->query("Update `pages` SET `parentid` = ".$parent['parentid']." WHERE `parentid` = $id")) {
 			$this->flg = 'failed';
