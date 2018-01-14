@@ -13,10 +13,17 @@
 
 // Create the tables
 function createTables($host, $user, $pass, $base) {
-
 	
-
-
+	try {
+		$db = new PDO("mysql:host=$host;dbname=$base", $user, $pass);
+	} catch(PDOException $e) {
+		return 'dbfailed';
+	}
+	
+	if ($db->exec(file_get_contents('login/_sql/ezcms.5.sql'))) 
+		return 'done';
+	return 'sqlFailed';
+	
 }
 
  
@@ -31,6 +38,11 @@ function createTables($host, $user, $pass, $base) {
 	<link href="login/css/bootstrap.min.css" rel="stylesheet">
 	<link href="login/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link href="login/css/custom.css" rel="stylesheet">
+	<style>
+	.form-horizontal .control-label { width: 130px; }
+	input[type="text"], input[type="password"] {
+		width: 100%; max-width:200px;}
+	</style>
 
 </head><body>
   
@@ -40,104 +52,70 @@ function createTables($host, $user, $pass, $base) {
 	  <div class="navbar-inner"><a class="brand" href="#" style="width:100%; cursor:default;">ezCMS : INSTALLER</a></div>
 	</div>
 	
-	<div class="container row-fluid">
-	
-		<div id="infoBox" class="white-boxed">
-			<h3>ezCMS PREINSTALL NOTICE</h3>
-			<p>Welcome to ezCMS installer.</p>
-			<p>Please note that this installer is only for new sites.<br>
-				It will install a fresh database and connect it to ezCMS.</p>
-			<p>Close this window if you do not want to proceed.</p>
-			<div class="control-group">
-				<div class="controls">
-				  <button type="submit" class="btn btn-primary">Proceed to Installer</button>
+	<div class="container row">
+		<div class="text-center">
+			<h2>Welcome to ezCMS Installer.</h2>
+			<p>Please note this installer is only for new sites. It will install a fresh database.</p>
+			<p class="label label-important">CLOSE THIS WINDOW IF YOU DONNOT WANT TO PROCEED</p>
+		</div>
+		
+		<div class="white-boxed"><form class="form-horizontal" method="post">
+			<div class="row-fluid">
+				<div class="span6 well">
+					<h4>DATABASE DETAILS</h4>
+					<p>Please enter your database information:</p>
+					<div class="control-group">
+						<label class="control-label">Database host</label>
+						<div class="controls"><input type="text" name="db_host" placeholder="db host" /></div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Database name</label>
+						<div class="controls"><input type="text" name="db_name" placeholder="db name" /></div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Database user</label>
+						<div class="controls"><input type="text" name="db_user" placeholder="db user" /></div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Database password</label>
+						<div class="controls">
+							<input type="password" name="db_pass" placeholder="db password" />
+							&nbsp;<a href="#" class="btn">VERIFY</a>
+						</div>
+					</div>
+				</div>
+				<div class="span6 well">
+					<h4>ADMINISTRATOR DETAILS</h4>
+					<p>Please enter your administrator information:</p>
+					<div class="control-group">
+						<label class="control-label">User name</label>
+						<div class="controls"><input type="text" name="user_name" placeholder="user name" /></div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">User email</label>
+						<div class="controls"><input type="text" name="user_name" placeholder="user email" /></div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">User password</label>
+						<div class="controls"><input type="password" name="user_pass" placeholder="user password" /></div>
+					</div>			
+					<div class="control-group">
+						<label class="control-label">Confirm password</label>
+						<div class="controls"><input type="password" name="user_pass1" placeholder="user password" /></div>
+					</div>					
+					
 				</div>
 			</div>
-			
-		</div>
-		
-		<div id="dbCredsBox" class="white-boxed">
-			<h3>DATABASE CREDS</h3>
-			<form id="db_config" class="form-horizontal" method="post">
-			  <p>Please enter your database info:</p>
-			  <div class="control-group">
-				<label class="control-label" for="host">Database host</label>
-				<div class="controls">
-				  <input type="text" name="db_host" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<label class="control-label" for="name">Database name</label>
-				<div class="controls">
-				  <input type="text" name="db_name" placeholder="db name" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<label class="control-label" for="user">Database user</label>
-				<div class="controls">
-				  <input type="text" name="db_user" placeholder="db user" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<label class="control-label" for="pass">Database password</label>
-				<div class="controls">
-				  <input type="password" name="db_pass" placeholder="db password" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<div class="controls">
-				  <button type="submit" class="btn btn-primary">Save configuration</button>
-				</div>
-			  </div>
-			</form>
-		</div>
-		
-		<div id="adminUsrBox" class="white-boxed">
-			<h3>ADMIN USER DETAILS</h3>
-			<form id="usr_config" class="form-horizontal" method="post">
-			  <p>Please enter the admin user info:</p>
-			  <div class="control-group">
-				<label class="control-label" for="name">User Name</label>
-				<div class="controls">
-				  <input type="text" name="db_name" placeholder="db name" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<label class="control-label" for="user">User Email</label>
-				<div class="controls">
-				  <input type="text" name="db_user" placeholder="db user" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<label class="control-label" for="pass">Password</label>
-				<div class="controls">
-				  <input type="password" name="db_pass" placeholder="db password" />
-				</div>
-			  </div>
-			  <div class="control-group">
-				<div class="controls">
-				  <button type="submit" class="btn btn-primary">Save configuration</button>
-				</div>
-			  </div>
-			</form>
-		</div>
-		
-		<div id="doneBox" class="white-boxed">
-			<h3>INSTALL RESULTS</h3>
-			ezCMS has been installed .. or error show messages.
-		</div>
+			<p class="text-center"><button type="submit" class="btn btn-primary">INSTALL ezCMS NOW</button></p>
+		</form></div>
 	
-	</div> 
-	
-	<br><br>
+	</div><br><br>
 	
 </div>
 	
-<div id="footer">
-  <div class="row">
-      <div class="span6"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> </div>
-      <div class="span6 text-right"> ezCMS Installer Version:<strong>1.0</strong> </div>
-  </div>
-</div>
+<div id="footer"><div class="row">
+  <div class="span6"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> </div>
+  <div class="span6 text-right"> ezCMS Installer Version:<strong>1.0</strong> </div>
+</div></div>
 
 </body></html>
