@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS `git_files` (
   `id` int(16) NOT NULL AUTO_INCREMENT COMMENT 'id of revision',
   `content` longtext COMMENT 'contents of the file',
