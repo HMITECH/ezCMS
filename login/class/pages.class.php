@@ -245,7 +245,7 @@ class ezPages extends ezCMS {
 			$this->revs['log'] .= '<tr>
 				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
-				<td>'.$entry['revmsg'].'</td>				
+				<td>'.$entry['revmsg'].'</td>
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 

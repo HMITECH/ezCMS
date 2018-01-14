@@ -64,6 +64,7 @@ ALTER TABLE `site`
 
 ALTER TABLE `git_pages` ADD `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message' AFTER `nositemap`;
 ALTER TABLE `git_files` ADD `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message' AFTER `fullpath`;
+ALTER TABLE `site` ADD `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message' AFTER `sidercontent`;
 
 UPDATE `users` SET `passwd` = SHA2 (`passwd`, 512);
 

@@ -137,6 +137,7 @@ CREATE TABLE IF NOT EXISTS `site` (
   `footercontent` longtext COMMENT 'footer content of page',
   `sidecontent` longtext COMMENT 'side content of page',
   `sidercontent` longtext COMMENT 'right side-bar content',
+  `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message',
   `createdby` int(16) NOT NULL DEFAULT '1' COMMENT 'User who changed the settings',
   `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Revision date and time',
   PRIMARY KEY (`id`)

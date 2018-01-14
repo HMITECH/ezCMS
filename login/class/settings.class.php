@@ -81,6 +81,7 @@ class ezSettings extends ezCMS {
 			$this->revs['log'] .= '<tr>
 				<td>'.$entry['id'].'</td>
 				<td>'.$entry['username'].'</td>
+				<td>'.$entry['revmsg'].'</td>
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
@@ -133,6 +134,8 @@ class ezSettings extends ezCMS {
 		
 		// Save to database
 		if ( $this->add('site',$data) ) {
+			// Save the rev message to the last records
+			$this->edit('site', $this->site['id'], array('revmsg' => $_POST['revmsg']));
 			header("Location: ?flg=saved");
 			exit;
 		}
