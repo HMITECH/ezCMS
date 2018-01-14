@@ -51,7 +51,7 @@ $cms = new ezPages();
 				
 				<div id="revBlock">
 				  <table class="table table-striped"><thead>
-					<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+					<tr><th>#</th><th>User Name</th><th>Message</th><th>Date &amp; Time</th><th>Action</th></tr>
 				  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 				</div>
 				
@@ -69,11 +69,43 @@ $cms = new ezPages();
 				<div class="tab-content">
 
 				  <div class="tab-pane active" id="d-main">
+				  
+						<div class="row">
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="txtURL">Page URL</label>
+								<div class="controls">
+									<input type="text" id="txtURL" name="url"
+										placeholder="Enter the URL of the page"
+										title="Enter the URL of the page here."
+										data-toggle="tooltip" 
+										value="<?php echo $cms->page['url']; ?>"
+										data-placement="top" minlength="2"
+										class="input-block-level tooltipme2">
+								</div>
+							  </div>
+							</div>
+							<div class="span6">
+							  <div class="control-group">
+								<label class="control-label" for="txtGitMsg">Revision Message</label>
+								<div class="controls">
+									<input type="text" id="txtGitMsg" name="revmsg"
+										placeholder="Enter a description for this revision"
+										title="Enter a message to describe this revision."
+										data-toggle="tooltip" 
+										value=""
+										data-placement="top" minlength="2"
+										class="input-block-level tooltipme2">
+								</div>
+							  </div>
+							</div>
+						</div>
+
 
 						<div class="row">
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputTitle">Title Tag</label>
+								<label class="control-label" for="txtTitle">Title Tag</label>
 								<div class="controls">
 									<input type="text" id="txtTitle" name="title"
 										placeholder="Enter the title of the page"
@@ -91,7 +123,7 @@ $cms = new ezPages();
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputName">Name</label>
+								<label class="control-label" for="txtName">Name</label>
 								<div class="controls">
 									<input type="text" id="txtName" name="pagename"
 										placeholder="Enter the name of the page"
@@ -114,13 +146,13 @@ $cms = new ezPages();
 						<div class="row">
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputName">Parent Page</label>
+								<label class="control-label">Parent Page</label>
 								<div class="controls"><?php echo $cms->ddOptions; ?></div>
 							  </div>
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputName">Layout</label>
+								<label class="control-label">Layout</label>
 								<div class="controls"><select id="sllayouts" name="layout" class="input-block-level">
 									<?php echo $cms->slOptions; ?></select></div>
 							  </div>
@@ -130,7 +162,7 @@ $cms = new ezPages();
 						<div class="row">
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputDescription">Meta Description</label>
+								<label class="control-label">Meta Description</label>
 								<div class="controls">
 									<textarea name="description" rows="5" id="txtDesc" 
 										placeholder="Enter the description of the page"
@@ -143,7 +175,7 @@ $cms = new ezPages();
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="inputKeywords">Meta Keywords</label>
+								<label class="control-label">Meta Keywords</label>
 								<div class="controls">
 									<textarea name="keywords" rows="5" id="txtKeywords" 
 										placeholder="Enter the Keywords of the page"
@@ -159,13 +191,6 @@ $cms = new ezPages();
 				  </div><!-- /d-main  -->
 
 				  <div class="tab-pane" id="d-content">
-					<div class="row">
-						<div class="span1" style="margin-top:6px;">Page URL :</div>
-						<div class="span11">
-							<input type="text" id="txtURL" name="url" minlength="2" 
-								value="<?php echo $cms->page['url']; ?>" class="input-block-level">
-						</div>
-					</div>
 					<textarea id="txtMain" name="maincontent"><?php echo $cms->page['maincontent']; ?></textarea>
 				  </div><!-- /d-content  -->
 				    
@@ -295,7 +320,19 @@ $cms = new ezPages();
 		$(dragSrcEl).css('opacity', '1');
 		$(this).before(dragSrcEl);
 		dragSrcEl = null;
+		
 		// update the last class in this group 
+		var papa = $(this).parent().closest('li');
+		//$(papa).find('> ul > li').removeClass('last lastExpandable');
+		
+		/*var lastLI = $(papa).find('> ul > li:last-child');
+		if ( $(lastLI).hasClass('expandable') )
+			 $(lastLI).addClass('lastExpandable');
+		else $(lastLI).addClass('last');*/
+		
+		$(papa).find('> ul > li').each(function () {
+			console.log($(this).find('> a').text());
+		});
 		
 		
 		//make ajax call and update ...

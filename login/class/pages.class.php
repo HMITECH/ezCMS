@@ -31,10 +31,13 @@ class ezPages extends ezCMS {
 		// Check if file to display is set
 		if (isset($_GET['id'])) $this->id = $_GET['id'];
 		
-		// Check if delete ID is set
+		// Re order the pages
+		if (isset($_GET['redorderids'])) $this->reorderPages();		
+		
+		// Delete Page
 		if (isset($_GET['delid'])) $this->deletePage();
 		
-		// Check if delete ID is set
+		// Copy page
 		if (isset($_GET['copyid'])) $this->copyPage();
 		
 		// Purge Revision
@@ -80,6 +83,13 @@ class ezPages extends ezCMS {
 		$this->getMessage();
 		$this->msg = str_replace('File','Page',$this->msg);
 
+	}
+	
+	// Function to reorder pages
+	private function reorderPages() {
+	
+		// change the place in the database
+	
 	}
 	
 	// Function to setup the checkboxes
@@ -235,6 +245,7 @@ class ezPages extends ezCMS {
 			$this->revs['log'] .= '<tr>
 				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$entry['username'].'</td>
+				<td>'.$entry['revmsg'].'</td>				
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
@@ -406,12 +417,12 @@ class ezPages extends ezCMS {
 			if (!$this->query("INSERT INTO `git_pages` ( 
 				  `page_id`, `pagename`, `title`, `keywords`, `description`, `maincontent`,
 				  `useheader` , `headercontent` , `usefooter` , `footercontent` , `useside` ,
-				   `sidecontent` , `published` , `parentid` , `url` ,
+				   `sidecontent` , `published` , `parentid` , `url` , `revmsg`,
 				   `sidercontent` , `usesider` ,`head` , `layout` , `nositemap` , `createdby` )
 				SELECT 
 				  `id` AS page_id, `pagename`, `title`, `keywords`, `description`, `maincontent`,
 				  `useheader` , `headercontent` , `usefooter` , `footercontent` ,
-				  `useside` , `sidecontent` , `published` , `parentid` , `url` ,
+				  `useside` , `sidecontent` , `published` , `parentid` , `url` , ".$this->quote($_POST['revmsg']).",
 				  `sidercontent` , `usesider` ,`head` , `layout` , `nositemap` , 
 				  '".$_SESSION['EZUSERID']."' as `createdby`  FROM `pages` WHERE `id` = ".$this->id)) {
 				header("Location: ?flg=revfailed&id=".$this->id);
