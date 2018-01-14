@@ -173,11 +173,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `editlayout` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'edit layout',
   `editcss` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'edit css',
   `editjs` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'edit js',
+  `editor` TINYINT(1) NOT NULL DEFAULT '3' COMMENT 'cms editor type', 
+  `cmtheme` VARCHAR(32) NOT NULL DEFAULT 'default' COMMENT 'code mirror theme', 
+  `cmscolor` VARCHAR(8) NOT NULL DEFAULT '#FFFFFF' COMMENT 'cms background color',
   `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Revision date and time',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   KEY `passwd` (`passwd`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='the users of this site';
+
+
 
 --
 -- Dumping data for table `users`

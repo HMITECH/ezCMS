@@ -45,23 +45,10 @@ while ( tSelc.length ) {
 	tSelc = tSelc.parent().closest('li');
 }
 // Create treeview out of Left side UL 
-/**/
 $("#left-tree").treeview({
 	collapsed: true,
 	animated: "medium",
 	unique: true
-});
-
-// Change code mirror theme
-$('#divCmTheme, #divbgcolor').click(function (e) {
-	e.stopPropagation();
-});
-
-// Code Mirror Theme Change
-$('#slCmTheme')
-	.val('<?php if (isset($_SESSION["CMTHEME"])) echo $_SESSION["CMTHEME"]; ?>')
-	.change(function (e) {
-		location.href = "?theme="+$(this).val();
 });
 
 // Show or  the revisions block
@@ -75,13 +62,33 @@ $('#SaveAsDDM').click(function (e) {
 	e.stopPropagation();
 });	
 
+// Change code mirror theme
+$('#divCmTheme, #divbgcolor').click(function (e) {
+	e.stopPropagation();
+});
+
+// Code Mirror Theme Change
+$('#slCmTheme')
+	.val('<?php if (isset($_SESSION["CMTHEME"])) echo $_SESSION["CMTHEME"]; ?>')
+	.change(function (e) {
+		location.href = "?theme="+$(this).val();
+});
+
 // CMS Background color
 $('#txtbgcolor')
 	.val(localStorage.getItem("cmsBgColor"))
 	.change(function () {
 		$('body').css('background-color', $(this).val());
 		localStorage.setItem("cmsBgColor", $(this).val());
+		$.get( '', {cmsBgColor: $(this).val()});	
 });
-$('body').css('background-color',localStorage.getItem("cmsBgColor"));
-
+if ( localStorage.getItem("cmsBgColor") )
+	$('body').css('background-color',localStorage.getItem("cmsBgColor"));
+else {
+	// fetch bg color from ajax
+	$.get( '?getCMScolor', function (data) {
+		localStorage.setItem("cmsBgColor", data);
+		$('body').css('background-color',localStorage.getItem("cmsBgColor"));
+	});
+}
 })(jQuery);</script>
