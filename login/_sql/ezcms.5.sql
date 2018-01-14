@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `git_files` (
   `id` int(16) NOT NULL AUTO_INCREMENT COMMENT 'id of revision',
   `content` longtext COMMENT 'contents of the file',
   `fullpath` varchar(1000) NOT NULL COMMENT 'Full Path and Name of file',
+  `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message',
   `createdby` int(16) NOT NULL DEFAULT '1' COMMENT 'Id of the user who created this Revision',
   `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Revision date and time',
   PRIMARY KEY (`id`),
