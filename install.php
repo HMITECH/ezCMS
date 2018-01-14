@@ -38,10 +38,12 @@ function createTables($host, $user, $pass, $base) {
 	<link href="login/css/bootstrap.min.css" rel="stylesheet">
 	<link href="login/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link href="login/css/custom.css" rel="stylesheet">
+	<script src="login/js/jquery-1.9.1.min.js"></script>
 	<style>
 	.form-horizontal .control-label { width: 130px; }
-	input[type="text"], input[type="password"] {
+	input[type="text"], input[type="password"], input[type="email"] {
 		width: 100%; max-width:200px;}
+	.navbar-inner .brand {width:100%; cursor:default;}
 	</style>
 
 </head><body>
@@ -49,7 +51,7 @@ function createTables($host, $user, $pass, $base) {
 <div id="wrap">
 	
 	<div class="navbar navbar-inverse navbar-fixed-top text-center">
-	  <div class="navbar-inner"><a class="brand" href="#" style="width:100%; cursor:default;">ezCMS : INSTALLER</a></div>
+	  <div class="navbar-inner"><a class="brand" href="#">ezCMS : INSTALLER</a></div>
 	</div>
 	
 	<div class="container row">
@@ -66,42 +68,45 @@ function createTables($host, $user, $pass, $base) {
 					<p>Please enter your database information:</p>
 					<div class="control-group">
 						<label class="control-label">Database host</label>
-						<div class="controls"><input type="text" name="db_host" placeholder="db host" /></div>
+						<div class="controls"><input type="text" name="db_host" placeholder="db host" minlength="4" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database name</label>
-						<div class="controls"><input type="text" name="db_name" placeholder="db name" /></div>
+						<div class="controls"><input type="text" name="db_name" placeholder="db name" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database user</label>
-						<div class="controls"><input type="text" name="db_user" placeholder="db user" /></div>
+						<div class="controls"><input type="text" name="db_user" placeholder="db user" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database password</label>
 						<div class="controls">
-							<input type="password" name="db_pass" placeholder="db password" />
-							&nbsp;<a href="#" class="btn">VERIFY</a>
+							<input type="password" name="db_pass" placeholder="db password"/>
+							&nbsp;<a href="#" id="verifynow" class="btn">VERIFY</a>
 						</div>
 					</div>
 				</div>
 				<div class="span6 well">
 					<h4>ADMINISTRATOR DETAILS</h4>
-					<p>Please enter your administrator information:</p>
+					<p>Please enter the administrator information:</p>
 					<div class="control-group">
 						<label class="control-label">User name</label>
-						<div class="controls"><input type="text" name="user_name" placeholder="user name" /></div>
+						<div class="controls"><input type="text" name="user_name" placeholder="user name" minlength="2" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">User email</label>
-						<div class="controls"><input type="text" name="user_name" placeholder="user email" /></div>
+						<div class="controls"><input type="email" name="user_name" placeholder="user email" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">User password</label>
-						<div class="controls"><input type="password" name="user_pass" placeholder="user password" /></div>
+						<div class="controls"><input type="password" name="user_pass" placeholder="user password" minlength="8" required/></div>
 					</div>			
 					<div class="control-group">
 						<label class="control-label">Confirm password</label>
-						<div class="controls"><input type="password" name="user_pass1" placeholder="user password" /></div>
+						<div class="controls">
+							<input type="password" name="user_pass1" placeholder="user password" minlength="8" required/>
+							&nbsp;<a href="#" id="checknow" class="btn">CHECK</a>
+						</div>
 					</div>					
 					
 				</div>
@@ -117,5 +122,21 @@ function createTables($host, $user, $pass, $base) {
   <div class="span6"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> </div>
   <div class="span6 text-right"> ezCMS Installer Version:<strong>1.0</strong> </div>
 </div></div>
+<script>(function($) {
 
+	"use strict";
+
+	$('#verifynow').click(function () {
+		alert('Verify db creds!');
+		return false;
+	});
+	
+	$('form').submit(function () {
+		alert('Install Now!');
+		return false;
+	});	
+	
+	
+
+})(jQuery);</script>
 </body></html>
