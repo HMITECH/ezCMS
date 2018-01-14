@@ -43,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// pass cannot be less than 8
 	$s = strlen($user_pass); if ( ($s < 8) || ($s > 255) ) die('Invalid Request - Password Length Failed');
 	if ($user_pass != $user_pass1) die('Confirm password does not match.');
+	// encrypt the password
+	$user_pass = hash('sha512',$user_pass); 
 	
 	// Create the tables 
 	if (!$db->exec(file_get_contents('login/_sql/ezcms.5.sql'))) die('Failed to create tables. Run SQL');
@@ -178,9 +180,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				return false;
 			}
 		
-			if (data != 'ezCMS Installed!') alert('Errors: '+data);
-			else alert(data);
-			$('form').find('.btn-primary').show().next().hide();
+			if (data != 'ezCMS Installed!') {
+				alert('Errors: '+data);
+				$('form').find('.btn-primary').show().next().hide();
+				return false;
+			}
+			
+			$('p.label').text(data).removeClass('label-important').addClass('label-success');
+			$('form').html('ALL DONE');
 		
 		}).fail( function() { 
 			alert('Request Failed!');
