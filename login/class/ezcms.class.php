@@ -171,8 +171,11 @@ class ezCMS extends db {
 			case "saved":
 				$this->setMsgHTML('success','SAVED SUCCESSFULLY','You have successfully saved the File.');
 				break;
+			case "revfailed":
+				$this->setMsgHTML('error','REVISION FAILED','An error occurred and the REVISION was NOT created.');
+				break;
 			case "delfailed":
-				$this->setMsgHTML('error','DELETE FILED','An error occurred and the File was NOT deleted.');
+				$this->setMsgHTML('error','DELETE FAILED','An error occurred and the File was NOT deleted.');
 				break;
 			case "deleted":
 				$this->setMsgHTML('success','DELETED','You have successfully deleted the File.');
