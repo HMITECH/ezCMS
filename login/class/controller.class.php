@@ -73,6 +73,7 @@ class ezController extends ezCMS {
 			$this->revs['log'] .= '<tr>
 				<td>'.$entry['id'].'</td>
 				<td>'.$entry['username'].'</td>
+				<td>'.$entry['revmsg'].'</td>
 				<td>'.$entry['createdon'].'</td>
 			  	<td data-rev-id="'.$entry['id'].'">
 				<a href="#">Fetch</a> &nbsp;|&nbsp; 
@@ -125,6 +126,7 @@ class ezController extends ezCMS {
 		// Create a revision
 		$data = array (	'content' => $original, 
 						'fullpath' => 'index.php', 
+						'revmsg' => $_POST['revmsg'],
 						'createdby' => $this->usr['id']);
 		if ( !$this->add('git_files', $data) ) {
 			header("Location: ?flg=revfailed");

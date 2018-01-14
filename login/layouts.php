@@ -67,10 +67,22 @@ $cms = new ezLayouts();
 					<?php echo $cms->msg; ?>
 					<div id="revBlock">
 					  <table class="table table-striped"><thead>
-						<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+						<tr><th>#</th><th>User Name</th><th>Message</th><th>Date &amp; Time</th><th>Action</th></tr>
 					  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 					</div>
 					<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
+					<div class="control-group">
+						<label class="control-label" for="txtGitMsg">Revision Message</label>
+						<div class="controls">
+							<input type="text" id="txtGitMsg" name="revmsg"
+								placeholder="Enter a description for this revision"
+								title="Enter a message to describe this revision."
+								data-toggle="tooltip" 
+								value=""
+								data-placement="top" minlength="2"
+								class="input-block-level tooltipme2">
+						</div>
+					</div>
 					<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $cms->content; ?></textarea>
 				</form>
 			</div>

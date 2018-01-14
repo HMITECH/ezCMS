@@ -69,9 +69,21 @@ $cms = new ezStyles();
 			<?php echo $cms->msg; ?>
 			<div id="revBlock">
 			  <table class="table table-striped"><thead>
-				<tr><th>#</th><th>User Name</th><th>Date &amp; Time</th><th>Action</th></tr>
+				<tr><th>#</th><th>User Name</th><th>Message</th><th>Date &amp; Time</th><th>Action</th></tr>
 			  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 			</div>
+			<div class="control-group">
+				<label class="control-label" for="txtGitMsg">Revision Message</label>
+				<div class="controls">
+					<input type="text" id="txtGitMsg" name="revmsg"
+						placeholder="Enter a description for this revision"
+						title="Enter a message to describe this revision."
+						data-toggle="tooltip" 
+						value=""
+						data-placement="top" minlength="2"
+						class="input-block-level tooltipme2">
+				</div>
+			</div>			
 			<input border="0" class="input-block-level" name="txtlnk" onFocus="this.select();" 
 				style="cursor: pointer;" onClick="this.select();"  type="text" title="include this link in layouts or page head"
 				value="&lt;link href=&quot;<?php echo substr($cms->filename, 2); ?>&quot; rel=&quot;stylesheet&quot;&gt;" readonly/>					
