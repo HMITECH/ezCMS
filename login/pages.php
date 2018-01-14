@@ -73,21 +73,25 @@ $cms = new ezPages();
 						<div class="row">
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="txtURL">Page URL</label>
+								<label class="control-label" for="txtURL">Page URL (Empty to Auto Generate)</label>
 								<div class="controls">
 									<input type="text" id="txtURL" name="url"
 										placeholder="Enter the URL of the page"
-										title="Enter the URL of the page here."
+										title="Enter the URL of the page here. Empty to auto generate."
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['url']; ?>"
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2">
+										class="input-block-level tooltipme2"><br>
+										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
+										  <input id="ckpublished" name="published" type="checkbox" 
+										  	<?php echo $cms->page['publishedCheck']; ?>>Published on site
+										</label>
 								</div>
 							  </div>
 							</div>
 							<div class="span6">
 							  <div class="control-group">
-								<label class="control-label" for="txtGitMsg">Revision Message</label>
+								<label class="control-label" for="txtGitMsg">Revision Message (Optional)</label>
 								<div class="controls">
 									<input type="text" id="txtGitMsg" name="revmsg"
 										placeholder="Enter a description for this revision"
@@ -95,7 +99,13 @@ $cms = new ezPages();
 										data-toggle="tooltip" 
 										value=""
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2">
+										class="input-block-level tooltipme2"><br>
+									<?php echo $cms->page['publishedMsg']; ?>
+									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
+									  <input id="cknositemap" name="nositemap" type="checkbox" 
+									  	<?php echo $cms->page['nositemapCheck']; ?>>
+										Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
+									</label>
 								</div>
 							  </div>
 							</div>
@@ -113,11 +123,7 @@ $cms = new ezPages();
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['title']; ?>"
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2 countme2" required><br>
-										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-										  <input id="ckpublished" name="published" type="checkbox" 
-										  	<?php echo $cms->page['publishedCheck']; ?>>Published on site
-										</label>
+										class="input-block-level tooltipme2 countme2" required>
 								</div>
 							  </div>
 							</div>
@@ -131,13 +137,7 @@ $cms = new ezPages();
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['pagename']; ?>"
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2 countme2" required><br>
-									<?php echo $cms->page['publishedMsg']; ?>
-									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-									  <input id="cknositemap" name="nositemap" type="checkbox" 
-									  	<?php echo $cms->page['nositemapCheck']; ?>>
-										Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
-									</label>
+										class="input-block-level tooltipme2 countme2" required>
 								</div>
 							  </div>								
 							</div>
@@ -153,8 +153,10 @@ $cms = new ezPages();
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label">Layout</label>
-								<div class="controls"><select id="sllayouts" name="layout" class="input-block-level">
-									<?php echo $cms->slOptions; ?></select></div>
+								<div class="controls"><select id="sllayouts" name="layout" 
+									title="Choose a Layout to render the content of this Page." 
+									class="input-block-level tooltipme2">
+										<?php echo $cms->slOptions; ?></select></div>
 							  </div>
 							</div>
 						</div>

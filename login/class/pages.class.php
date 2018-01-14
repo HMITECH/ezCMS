@@ -376,6 +376,12 @@ class ezPages extends ezCMS {
 		if (isset($data['parentid'])) 
 			if ($this->id == $data['parentid']) 
 				die('Parent cannot be same page');
+				
+		// if URL is empty ... auto generate it from path.
+		if (trim($data['url'])=='')	{
+			die('URL is blank .. auto gen it.');
+		}
+				
 		// check duplication of URL
 		$dupCheckID = $this->chkTableForVal('pages', 'url', 'id', $data['url']);
 
