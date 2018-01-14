@@ -26,6 +26,12 @@ function createTables($host, $user, $pass, $base) {
 	
 }
 
+// INTSALL WHEN POSTED 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
+}
+
  
 ?><!DOCTYPE html><html lang="en"><head>
 
@@ -40,10 +46,10 @@ function createTables($host, $user, $pass, $base) {
 	<link href="login/css/custom.css" rel="stylesheet">
 	<script src="login/js/jquery-1.9.1.min.js"></script>
 	<style>
-	.form-horizontal .control-label { width: 130px; }
-	input[type="text"], input[type="password"], input[type="email"] {
-		width: 100%; max-width:200px;}
-	.navbar-inner .brand {width:100%; cursor:default;}
+	input {width: 100%; max-width:200px;}
+	div.white-boxed {max-width: 1000px; margin: 0 auto; padding:20px;}
+	.label {font-size: 1em; padding: 6px 20px;}
+	.brand {width:100%; cursor:default;}
 	</style>
 
 </head><body>
@@ -58,7 +64,7 @@ function createTables($host, $user, $pass, $base) {
 		<div class="text-center">
 			<h2>Welcome to ezCMS Installer.</h2>
 			<p>Please note this installer is only for new sites. It will install a fresh database.</p>
-			<p class="label label-important">CLOSE THIS WINDOW IF YOU DONNOT WANT TO PROCEED</p>
+			<p class="label label-important">CLOSE THIS WINDOW IF YOU DO NOT WANT TO PROCEED</p>
 		</div>
 		
 		<div class="white-boxed"><form class="form-horizontal" method="post">
@@ -80,10 +86,7 @@ function createTables($host, $user, $pass, $base) {
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database password</label>
-						<div class="controls">
-							<input type="password" name="db_pass" placeholder="db password"/>
-							&nbsp;<a href="#" id="verifynow" class="btn">VERIFY</a>
-						</div>
+						<div class="controls"><input type="password" name="db_pass" placeholder="db password"/></div>
 					</div>
 				</div>
 				<div class="span6 well">
@@ -99,14 +102,13 @@ function createTables($host, $user, $pass, $base) {
 					</div>
 					<div class="control-group">
 						<label class="control-label">User password</label>
-						<div class="controls"><input type="password" name="user_pass" placeholder="user password" minlength="8" required/></div>
+						<div class="controls"><input type="password" id="user_pass" name="user_pass" 
+							placeholder="user password" minlength="8" required/></div>
 					</div>			
 					<div class="control-group">
 						<label class="control-label">Confirm password</label>
-						<div class="controls">
-							<input type="password" name="user_pass1" placeholder="user password" minlength="8" required/>
-							&nbsp;<a href="#" id="checknow" class="btn">CHECK</a>
-						</div>
+						<div class="controls"><input type="password" id="user_pass1" name="user_pass1" 
+							placeholder="user password" minlength="8" required/></div>
 					</div>					
 					
 				</div>
@@ -125,13 +127,18 @@ function createTables($host, $user, $pass, $base) {
 <script>(function($) {
 
 	"use strict";
-
-	$('#verifynow').click(function () {
-		alert('Verify db creds!');
-		return false;
-	});
 	
 	$('form').submit(function () {
+		
+		if ($('#user_pass').val() != $('#user_pass1').val()) {
+			alert('The administrator confirm password does not match.');
+			$('#user_pass1').focus();
+			return false;
+		}
+		
+		// Submit the form via ajax.
+		$.post();
+	
 		alert('Install Now!');
 		return false;
 	});	
