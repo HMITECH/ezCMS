@@ -9,30 +9,57 @@
  */
 
 // Do not run the installer if the config file is present.
-// if (file_exists('config.php')) die('FATAL : config.php exists. Delete before running this installer.');
-
-// Create the tables
-function createTables($host, $user, $pass, $base) {
+if (file_exists('config.php')) 
+	die('FATAL : config.php exists. Delete before running this installer.');
 	
-	try {
-		$db = new PDO("mysql:host=$host;dbname=$base", $user, $pass);
-	} catch(PDOException $e) {
-		return 'dbfailed';
-	}
-	
-	if ($db->exec(file_get_contents('login/_sql/ezcms.5.sql'))) 
-		return 'done';
-	return 'sqlFailed';
-	
-}
-
+// The SQL must exisit.
+if (!file_exists('login/_sql/ezcms.5.sql'))
+	 die('FATAL : login/_sql/ezcms.5.sql missing. Check repo for this file.');
+	 
 // INTSALL WHEN POSTED 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+	// Get all the posted variables...
+	if (isset($_POST['db_host'])) $db_host = $_POST['db_host']; else die('Invalid Request');
+	if (isset($_POST['db_name'])) $db_name = $_POST['db_name']; else die('Invalid Request');
+	if (isset($_POST['db_user'])) $db_user = $_POST['db_user']; else die('Invalid Request');
+	if (isset($_POST['db_pass'])) $db_pass = $_POST['db_pass']; else die('Invalid Request');
+	if (isset($_POST['user_name'])) $user_name = $_POST['user_name']; else die('Invalid Request');
+	if (isset($_POST['user_email'])) $user_email = $_POST['user_email']; else die('Invalid Request');
+	if (isset($_POST['user_pass'])) $user_pass = $_POST['user_pass']; else die('Invalid Request');
+	if (isset($_POST['user_pass1'])) $user_pass1 = $_POST['user_pass1']; else die('Invalid Request');
 
+	// TEST db conn
+	try {
+		$db = @new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_pass);
+	} catch(PDOException $e) {
+		die('dbfailed');
+	}
+	
+	// User Name: must be 2 to 255 chars
+	$s = strlen($user_name); if ( ($s < 2) || ($s > 255) ) die('User Name is too short');
+	// email must be valid
+	if(!filter_var($user_email, FILTER_VALIDATE_EMAIL)) die('Invalid Request - Email Check Failed');
+	// pass cannot be less than 8
+	$s = strlen($user_pass); if ( ($s < 8) || ($s > 255) ) die('Invalid Request - Password Length Failed');
+	if ($user_pass != $user_pass1) die('Confirm password does not match.');
+	
+	// Create the tables 
+	if (!$db->exec(file_get_contents('login/_sql/ezcms.5.sql'))) die('Failed to create tables. Run SQL');
+	
+	// Update the admin info ...
+	$stmt = $db->prepare("UPDATE `users` SET `username` = ?, `email` = ?, `passwd` = ? WHERE id = 1");
+	if (!$stmt->execute(array($user_name, $user_email, $user_pass))) die('updatefailed');
+	
+	// Create a config file 
+	$conf = "<?php return array('dbHost'=>'$db_host', 'dbUser'=>'$db_user', 'dbPass'=>'$db_pass', 'dbName'=>'$db_name');?>";
+	if (file_put_contents("config.php", $conf ) === false) die('configfailed');
+	
+	
+	// say all done !
+	die('ezCMS Installed!');
 }
 
- 
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>ezCMS Installer</title>
@@ -74,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<p>Please enter your database information:</p>
 					<div class="control-group">
 						<label class="control-label">Database host</label>
-						<div class="controls"><input type="text" name="db_host" placeholder="db host" minlength="4" required/></div>
+						<div class="controls"><input type="text" id="db_host" name="db_host" placeholder="db host" minlength="4" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database name</label>
@@ -98,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					</div>
 					<div class="control-group">
 						<label class="control-label">User email</label>
-						<div class="controls"><input type="email" name="user_name" placeholder="user email" required/></div>
+						<div class="controls"><input type="email" name="user_email" placeholder="user email" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">User password</label>
@@ -113,7 +140,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					
 				</div>
 			</div>
-			<p class="text-center"><button type="submit" class="btn btn-primary">INSTALL ezCMS NOW</button></p>
+			<p class="text-center">
+				<button type="submit" class="btn btn-primary">INSTALL ezCMS NOW</button>
+				<img src="login/img/ajax-loader.gif" style="display:none;"></p>
 		</form></div>
 	
 	</div><br><br>
@@ -128,7 +157,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	"use strict";
 	
-	$('form').submit(function () {
+	$('form').submit(function (e) {
+	
+		e.preventDefault();
 		
 		if ($('#user_pass').val() != $('#user_pass1').val()) {
 			alert('The administrator confirm password does not match.');
@@ -137,9 +168,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		
 		// Submit the form via ajax.
-		$.post();
+		$('form').find('.btn-primary').hide().next().show();
+		$.post( 'install.php', $(this).serialize() , function(data) {
+		
+			if (data == 'dbfailed') {
+				alert('Errors:\nConnection to database failed.\nPlease check the database details');
+				$('#db_host').focus();
+				$('form').find('.btn-primary').show().next().hide();
+				return false;
+			}
+		
+			if (data != 'ezCMS Installed!') alert('Errors: '+data);
+			else alert(data);
+			$('form').find('.btn-primary').show().next().hide();
+		
+		}).fail( function() { 
+			alert('Request Failed!');
+			$('form').find('.btn-primary').show().next().hide();
+		});	
 	
-		alert('Install Now!');
 		return false;
 	});	
 	
