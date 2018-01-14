@@ -345,6 +345,38 @@ class ezPages extends ezCMS {
 		// save XML Site Map
 		file_put_contents('../sitemap.xml', $sitemapXML);
 	}
+	
+	// Function to get valid URL Stub
+	private function Slug($string) {
+    	return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', 
+			html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', 
+			htmlentities($string, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '-'));
+	}
+	
+	// Function to auto generate URL 
+	private function getAutoURL($parentid, $pagename) {
+	
+		$url = '';
+		$papa['parentid'] = intval($parentid);
+		while ($papa['parentid'] > 2) {
+			$papa = $this
+				->query("SELECT `parentid`, `pagename` FROM `pages` WHERE id = ".$papa['parentid'])
+				->fetch(PDO::FETCH_ASSOC);
+			$url = $this->Slug($papa['pagename']).'/'.$url;
+		}
+		$url = '/'.$url.$this->Slug($pagename);
+		
+		// make sure this URL is unique
+		$dupCheckID = $this->chkTableForVal('pages', 'url', 'id', $url);
+		if ($this->id == 'new') {
+			if ($dupCheckID) $url = $url.'-'.time();
+		} else {
+			if (($dupCheckID) && ($dupCheckID != $this->id))  $url = $url.'-'.time();
+		}
+	
+		return $url;
+
+	}
 
 	// Function to Update the Controller
 	private function update() {
@@ -378,17 +410,16 @@ class ezPages extends ezCMS {
 				die('Parent cannot be same page');
 				
 		// if URL is empty ... auto generate it from path.
-		if (trim($data['url'])=='')	{
-			die('URL is blank .. auto gen it.');
-		}
-				
-		// check duplication of URL
-		$dupCheckID = $this->chkTableForVal('pages', 'url', 'id', $data['url']);
+		if (isset($data['url'])) {
+			if (trim($data['url'])=='')
+				$data['url'] = $this->getAutoURL($data['parentid'], $data['pagename']);
+			// check duplication of URL
+			$dupCheckID = $this->chkTableForVal('pages', 'url', 'id', $data['url']);
+		} else $dupCheckID = false;
+						
 
 		if ($this->id == 'new') {
 			// add new
-			
-			// TODO Set unique URL if blank .. 
 			
 			// Test for URL Duplicatoin
 			if ($dupCheckID) {

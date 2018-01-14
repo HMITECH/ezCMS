@@ -72,13 +72,13 @@ $cms = new ezPages();
 				  
 						<div class="row">
 							<div class="span6">
-							  <div class="control-group">
+							  <div class="control-group <?php if ( ($cms->id == 1) || ($cms->id == 2) ) echo 'muted';?>">
 								<label class="control-label" for="txtURL">Page URL (Empty to Auto Generate)</label>
 								<div class="controls">
 									<input type="text" id="txtURL" name="url"
 										placeholder="Enter the URL of the page"
 										title="Enter the URL of the page here. Empty to auto generate."
-										data-toggle="tooltip" 
+										data-toggle="tooltip" <?php if ( ($cms->id == 1) || ($cms->id == 2) ) echo 'readonly';?>
 										value="<?php echo $cms->page['url']; ?>"
 										data-placement="top" minlength="2"
 										class="input-block-level tooltipme2"><br>
@@ -90,14 +90,14 @@ $cms = new ezPages();
 							  </div>
 							</div>
 							<div class="span6">
-							  <div class="control-group">
+							  <div class="control-group <?php if ($cms->id == 'new') echo 'muted';?>">
 								<label class="control-label" for="txtGitMsg">Revision Message (Optional)</label>
 								<div class="controls">
 									<input type="text" id="txtGitMsg" name="revmsg"
 										placeholder="Enter a description for this revision"
 										title="Enter a message to describe this revision."
 										data-toggle="tooltip" 
-										value=""
+										value="" <?php if ($cms->id == 'new') echo 'readonly';?>
 										data-placement="top" minlength="2"
 										class="input-block-level tooltipme2"><br>
 									<?php echo $cms->page['publishedMsg']; ?>
