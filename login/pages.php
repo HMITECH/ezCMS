@@ -104,7 +104,7 @@ $cms = new ezPages();
 									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
 									  <input id="cknositemap" name="nositemap" type="checkbox" 
 									  	<?php echo $cms->page['nositemapCheck']; ?>>
-										Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
+										Skip from <a href="../sitemap.xml" target="_blank">sitemap.xml</a>										
 									</label>
 								</div>
 							  </div>

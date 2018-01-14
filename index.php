@@ -22,6 +22,8 @@ $site = $dbh->query('SELECT * FROM `site` ORDER BY `id` DESC LIMIT 1')
 
 // **************** REQUESTED URI ****************
 $uri = strtok($_SERVER["REQUEST_URI"],'?'); // get the requested URI
+$siteFolder =  substr(htmlspecialchars($_SERVER["PHP_SELF"]), 0, -10);
+if ($siteFolder) $uri = substr( $uri , strlen($siteFolder) );
 
 // **************** PAGE DETAILS ****************
 $stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `url` = ? ORDER BY `id` DESC LIMIT 1');
@@ -50,14 +52,15 @@ if ($stmt->rowCount()) {
 		 // unpublished pages are visible to ADMIN.
 		if (!$_SESSION['LOGGEDIN']) {
 			// If ADMIN is NOT logged in then serve 404 page as it is unpublished
-			$stmt->execute( array('/Page-Not-Found.html') );
+			$stmt->execute( array('/.') );
 			$page = $stmt->fetch(PDO::FETCH_ASSOC);
 		}
 
 	}
 } else { 
 	// Page is NOT found, server 404 page
-	$stmt->execute( array('/Page-Not-Found.html') );
+	$stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `id` = 2 LIMIT 1');
+	$stmt->execute();
 	$page = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 

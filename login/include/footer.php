@@ -1,10 +1,10 @@
 <?php
 /*
- * Code written by mo.ahmed@hmi-tech.net
- * * Version 2.010413 Dated 20/March/2013 
- * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
+ * ezCMS Code written by mo.ahmed@hmi-tech.net & mosh.ahmed@gmail.com
  *
- *Include: Displays the footer
+ * HMI Technologies Mumbai
+ *
+ * Include: Displays the footer
  * 
  */
 // Fetch the site stats
@@ -17,9 +17,9 @@ $stats = $cms->query('SELECT COUNT(DISTINCT `url`) as `ispublished` from `pages`
       <div class="span3"><a target="_blank" href="http://www.hmi-tech.net/">&copy; HMI Technologies</a> 
 	  </div>
       <div class="span6"> 
-  	    <a href="../sitemap.xml"><strong><?php echo $stats['ispublished']; ?></strong> published page(s)</a>		  
+  	    <a href="../sitemap.xml" target="_blank"><strong><?php echo $stats['ispublished']; ?></strong> published page(s)</a>		  
 	  </div>
-      <div class="span3"> ezCMS Ver:<strong>5.171201</strong> </div>
+      <div class="span3"> ezCMS Version:<strong>5.0</strong> </div>
     </div>
   </div>
 </div>

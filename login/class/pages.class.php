@@ -130,7 +130,9 @@ class ezPages extends ezCMS {
 		$this->btns .= '<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">';
 		$myclass = ''; // 
 		if ( !$this->page['published'] ) $myclass = 'nopubmsg';
-		$this->btns .= '<a href="'.$this->page['url'].'" target="_blank"  class="btn btn-success '.$myclass.' ">View</a>';
+		$viewURL = $this->page['url'];
+		if ( $this->page['id']==2 ) $viewURL = '/'.time().time().time();
+		$this->btns .= '<a href="..'.$viewURL.'" target="_blank"  class="btn btn-success '.$myclass.' ">View</a>';
 		$this->btns .= '<a href="?id=new" class="btn btn-info">New</a>';
 		$this->btns .= '<a href="?copyid='.$this->id.'" class="btn btn-warning">Copy</a>';
 		if ($this->id > 2)
@@ -334,7 +336,7 @@ class ezPages extends ezCMS {
 	private function rebuildSitemap() {	
 	
 		$sitemapXML  = '<?xml version="1.0" encoding="UTF-8"?>
-			<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+			<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>
 			<!-- generator="ezCMS" -->
 			<!-- sitemap-generator-url="http://www.hmi-tech.net" sitemap-generator-version="2.0" -->
 			<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
