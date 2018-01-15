@@ -46,10 +46,22 @@ class ezCMS extends db {
 			$_SESSION['MANAGEFILES'] = $this->usr['editpage'];
 		}
 		
+		// Check if user is requesting bgColor
+		if (isset($_GET['getCMScolor'])) 
+			if (isset($this->usr['cmscolor']))
+				 die($this->usr['cmscolor']);
+			else die('');
+			
+		// Check if user is savng BG Color
+		if (isset($_GET['cmsBgColor'])) 
+			if (isset($this->usr['id']))
+				 die( $this->edit( 'users', $this->usr['id'], array('cmscolor' => $_GET['cmsBgColor']) ) );
+			else die('usr not set');			
+		
 		// Change editor type
 		if (isset($_GET['etype'])) $this->chgEditor();
 		
-		// CHange Code Mirror Theme
+		// Change Code Mirror Theme
 		if (isset($_GET['theme'])) $this->chgEditorTheme();
 		
 		// init revision vars
@@ -143,6 +155,8 @@ class ezCMS extends db {
 		$editor  = intval($_GET['etype']);
 		if ( ($editor<0) || ($editor>3)  ) die('Invalid Editor');
 		$_SESSION['EDITORTYPE']=$editor;
+		// Save to database
+		$this->query("UPDATE `users` SET `editor` = '$editor' WHERE id = ".$this->usr['id']);
 	}
 
 	// CHange Code Mirror Theme
@@ -151,6 +165,8 @@ class ezCMS extends db {
 		if ( ($theme!='default') && (!file_exists("codemirror/theme/$theme.css")) )
 			die('<h1>Missing theme, please install it first.</h1>');
 		$_SESSION['CMTHEME'] = $theme;
+		// Save to database
+		$this->query("UPDATE `users` SET `cmtheme` = '$theme' WHERE id = ".$this->usr['id']);
 	}
 
 	// Converts a php array into a PDO string (INTERNAL)

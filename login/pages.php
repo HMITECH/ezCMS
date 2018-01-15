@@ -72,30 +72,40 @@ $cms = new ezPages();
 				  
 						<div class="row">
 							<div class="span6">
-							  <div class="control-group">
-								<label class="control-label" for="txtURL">Page URL</label>
+							  <div class="control-group <?php if ( ($cms->id == 1) || ($cms->id == 2) ) echo 'muted';?>">
+								<label class="control-label" for="txtURL">Page URL (Empty to Auto Generate)</label>
 								<div class="controls">
 									<input type="text" id="txtURL" name="url"
 										placeholder="Enter the URL of the page"
-										title="Enter the URL of the page here."
-										data-toggle="tooltip" 
+										title="Enter the URL of the page here. Empty to auto generate."
+										data-toggle="tooltip" <?php if ( ($cms->id == 1) || ($cms->id == 2) ) echo 'readonly';?>
 										value="<?php echo $cms->page['url']; ?>"
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2">
+										class="input-block-level tooltipme2"><br>
+										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
+										  <input id="ckpublished" name="published" type="checkbox" 
+										  	<?php echo $cms->page['publishedCheck']; ?>>Published on site
+										</label>
 								</div>
 							  </div>
 							</div>
 							<div class="span6">
-							  <div class="control-group">
-								<label class="control-label" for="txtGitMsg">Revision Message</label>
+							  <div class="control-group <?php if ($cms->id == 'new') echo 'muted';?>">
+								<label class="control-label" for="txtGitMsg">Revision Message (Optional)</label>
 								<div class="controls">
 									<input type="text" id="txtGitMsg" name="revmsg"
 										placeholder="Enter a description for this revision"
 										title="Enter a message to describe this revision."
 										data-toggle="tooltip" 
-										value=""
+										value="" <?php if ($cms->id == 'new') echo 'readonly';?>
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2">
+										class="input-block-level tooltipme2"><br>
+									<?php echo $cms->page['publishedMsg']; ?>
+									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
+									  <input id="cknositemap" name="nositemap" type="checkbox" 
+									  	<?php echo $cms->page['nositemapCheck']; ?>>
+										Skip from <a href="../sitemap.xml" target="_blank">sitemap.xml</a>										
+									</label>
 								</div>
 							  </div>
 							</div>
@@ -113,11 +123,7 @@ $cms = new ezPages();
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['title']; ?>"
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2 countme2" required><br>
-										<label class="checkbox" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-										  <input id="ckpublished" name="published" type="checkbox" 
-										  	<?php echo $cms->page['publishedCheck']; ?>>Published on site
-										</label>
+										class="input-block-level tooltipme2 countme2" required>
 								</div>
 							  </div>
 							</div>
@@ -131,13 +137,7 @@ $cms = new ezPages();
 										data-toggle="tooltip" 
 										value="<?php echo $cms->page['pagename']; ?>"
 										data-placement="top" minlength="2"
-										class="input-block-level tooltipme2 countme2" required><br>
-									<?php echo $cms->page['publishedMsg']; ?>
-									<label class="checkbox checkRight" <?php if ($cms->id < 3) echo 'style="display:none"';?>>
-									  <input id="cknositemap" name="nositemap" type="checkbox" 
-									  	<?php echo $cms->page['nositemapCheck']; ?>>
-										Skip from <a href="/sitemap.xml" target="_blank">sitemap.xml</a>										
-									</label>
+										class="input-block-level tooltipme2 countme2" required>
 								</div>
 							  </div>								
 							</div>
@@ -153,8 +153,10 @@ $cms = new ezPages();
 							<div class="span6">
 							  <div class="control-group">
 								<label class="control-label">Layout</label>
-								<div class="controls"><select id="sllayouts" name="layout" class="input-block-level">
-									<?php echo $cms->slOptions; ?></select></div>
+								<div class="controls"><select id="sllayouts" name="layout" 
+									title="Choose a Layout to render the content of this Page." 
+									class="input-block-level tooltipme2">
+										<?php echo $cms->slOptions; ?></select></div>
 							  </div>
 							</div>
 						</div>
@@ -321,23 +323,22 @@ $cms = new ezPages();
 		$(this).before(dragSrcEl);
 		dragSrcEl = null;
 		
-		// update the last class in this group 
-		var papa = $(this).parent().closest('li');
-		//$(papa).find('> ul > li').removeClass('last lastExpandable');
-		
-		/*var lastLI = $(papa).find('> ul > li:last-child');
-		if ( $(lastLI).hasClass('expandable') )
-			 $(lastLI).addClass('lastExpandable');
-		else $(lastLI).addClass('last');*/
+		// update the last class in this group and collect orderedIDS
 		var orderedIDS = [];
-		$(papa).find('> ul > li').each(function () {
+		var isLast;
+		$(this).parent().closest('li').find('> ul > li').each(function () {
 			orderedIDS.push( $(this).data('id') );
-			
-			//console.log($(this).find('> a').text());
+			isLast = !$(this).next('li').length;
+			if ($(this).find('ul').length) {
+				if (isLast) $(this).addClass('lastExpandable');
+				else $(this).removeClass('lastExpandable');			
+			} else {
+				if (isLast) $(this).addClass('last');
+				else $(this).removeClass('last');
+			}
 		});
 		
-		console.log(orderedIDS.join(','));
-		//make ajax call and update ...
+		//make ajax call and update the databasse
 		$.get( 'pages.php', {'redorderids':orderedIDS.join(',')} , function(data) {
 			if (data != '0') alert('Reorder Failed: '+data);
 		}).fail( function() { alert('Reorder Request Failed!'); });	

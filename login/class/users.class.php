@@ -70,13 +70,13 @@ class ezUsers extends ezCMS {
 	// Function to fetch the revisions
 	private function getRevisions() {
 	
-		$results = $this->query("(SELECT `page_id` as `id`, 1 as `type`, `url` as `det`, `createdon` 
-									FROM `git_pages` WHERE `createdby` = ".intval($this->id)." )
-								UNION (SELECT `id`, 2 as `type`, `fullpath` as `det`,`createdon` 
-									FROM `git_files` WHERE `createdby` = ".intval($this->id).")
-								UNION (SELECT `id`, 3 as `type`, '' as `det`, `createdon` 
-									FROM `site` WHERE `createdby` = ".intval($this->id).")
-								ORDER BY `createdon` DESC")->fetchAll(PDO::FETCH_ASSOC);
+		$results = $this->query(" (SELECT `page_id` as `id`, 1 as `type`, `url` as `det`, `revmsg`, `createdon` 
+								FROM `git_pages` WHERE `createdby` = ".intval($this->id)." )
+							UNION (SELECT `id`, 2 as `type`, `fullpath` as `det`, `revmsg`,`createdon` 
+								FROM `git_files` WHERE `createdby` = ".intval($this->id).")
+							UNION (SELECT `id`, 3 as `type`, '' as `det`, `revmsg`, `createdon` 
+								FROM `site` WHERE `createdby` = ".intval($this->id).")
+							ORDER BY `createdon` DESC")->fetchAll(PDO::FETCH_ASSOC);
 		
 		foreach ($results as $entry) {
 		
@@ -107,6 +107,7 @@ class ezUsers extends ezCMS {
 				<td>'.$this->revs['cnt'].'</td>
 				<td>'.$type.'</td>
 				<td>'.$entry['det'].'</td>
+				<td>'.$entry['revmsg'].'</td>
 				<td>'.$entry['createdon'].'</td></tr>';
 
 			$this->revs['cnt']++;

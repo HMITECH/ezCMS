@@ -42,11 +42,6 @@ textarea {
 	margin: 0 auto; 
 	width:98%;
 }
-div.white-boxed {
-	background: rgba(0,0,0,0.75);
-	padding: 10px;
-	margin-bottom: 10px;
-}
 .countDisplay {float: right;}
 .checkRight { float: right; }
 .row {

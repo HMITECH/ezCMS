@@ -77,6 +77,12 @@ ALTER TABLE `users` CHANGE `email` `email` VARCHAR(512) CHARACTER SET latin1 COL
 ALTER TABLE `users` CHANGE `passwd` `passwd` VARCHAR( 512 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'password has for the user'
 ALTER TABLE `users` ADD INDEX ( `email` , `passwd` ) ;
 
+
+ALTER TABLE `users` 
+	ADD `editor` TINYINT(1) NOT NULL DEFAULT '3' COMMENT 'cms editor type' AFTER `editjs`, 
+	ADD `cmtheme` VARCHAR(32) NOT NULL DEFAULT 'default' COMMENT 'code mirror theme' AFTER `editor`, 
+	ADD `cmscolor` VARCHAR(8) NOT NULL DEFAULT '#FFFFFF' COMMENT 'cms background color' AFTER `cmtheme`;
+
 ALTER TABLE `pages` CHANGE `pagename` `pagename` VARCHAR(512) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'name of page';
 ALTER TABLE `pages` CHANGE `title` `title` VARCHAR(1024) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'title of page';
 ALTER TABLE `pages` CHANGE `keywords` `keywords` VARCHAR(1024) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL COMMENT 'keywords for page';

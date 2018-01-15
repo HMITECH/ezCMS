@@ -29,7 +29,7 @@ class db extends PDO {
 			$this->exec("SET names utf8");
 
 			/* SET TIME ZONE IF Defined*/
-			if ($config['dbTime']) {
+			if (isset($config['dbTime'])) {
 				date_default_timezone_set(); // 'Europe/Stockholm'
 				$dt = new DateTime($config['dbTime']);
 				$offset = $dt->format("P");	

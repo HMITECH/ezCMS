@@ -2,6 +2,8 @@ sitemap.xml
 logs/*
 login/ckeditor/plugins/pgrfilemanager/PGRThumb/*
 
+config.php
+
 
 #############
 ## Windows detritus
