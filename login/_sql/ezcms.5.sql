@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `head` text NOT NULL COMMENT 'contents of custom head',
   `layout` text COMMENT 'name of the layout file to use with this page',
   `nositemap` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True to skip in sitemap',
+  `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message',
   `createdby` int(16) NOT NULL DEFAULT '1' COMMENT 'Id of the user who created this page',
   `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation date and time',
   PRIMARY KEY (`id`),
