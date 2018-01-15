@@ -55,7 +55,7 @@ switch ($cms->flg) {
 	</div></div>
 	<div class="container">
 		<form id="frm-login" class="form-signin" method="post" action="scripts/login.php">
-			<h3 class="form-signin-heading"><img src="../site-assets/HMI-logo.png" ><br>Please sign in</h3>
+			<h3 class="form-signin-heading"><img src="../site-assets/hmi-logo.png" ><br>Please sign in</h3>
 			<?php echo $cms->msg; ?>
 			<input type="text" id="txtemail" name="userid" data-toggle="tooltip" 
 				class="input-block-level tooltipme2" data-placement="top" 
