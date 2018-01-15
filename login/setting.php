@@ -1,29 +1,29 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
- * Version 2.010413 Dated 20/March/2013 
+ * Version 2.010413 Dated 20/March/2013
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
- * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/setting.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
+ * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/setting.php,v 1.2 2017-12-02 09:33:28 a Exp $
  * View: Displays the default setting of the site
 */
- 
+
 // **************** ezCMS SETTINGS CLASS ****************
-require_once ("class/settings.class.php"); 
+require_once ("class/settings.class.php");
 
 // **************** ezCMS SETTINGS HANDLE ****************
 $cms = new ezSettings();
-	
+
 ?><!DOCTYPE html><html lang="en"><head>
 
 	<title>Default Settings : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
-	
+
 </head><body>
-  
+
 <div id="wrap">
-	<?php include('include/nav.php'); ?>  
+	<?php include('include/nav.php'); ?>
 	<div class="container">
-	
+
 		<div id="diffBlock" class="white-boxed">
 			<div class="navbar"><div class="navbar-inner">
 				<a id="backEditBTN" href="#" class="btn btn-inverted btn-info">Back to Main Editor</a>
@@ -67,7 +67,7 @@ $cms = new ezSettings();
 					<input type="text" id="txtGitMsg" name="revmsg"
 						placeholder="Enter a description for this revision"
 						title="Enter a message to describe this revision."
-						data-toggle="tooltip" 
+						data-toggle="tooltip"
 						value=""
 						data-placement="top" minlength="2"
 						class="input-block-level tooltipme2">
@@ -80,7 +80,7 @@ $cms = new ezSettings();
 			  <li><a href="#d-siderbar">Aside 2</a></li>
 			  <li><a href="#d-footers">Footer</a></li>
 			</ul>
-			 
+
 			<div class="tab-content">
 				<div class="tab-pane active" id="d-header">
 					<textarea name="headercontent" id="txtHeader"><?php echo $cms->site['headercontent']; ?></textarea>
@@ -98,8 +98,8 @@ $cms = new ezSettings();
 			</div>
 		  </form>
 		</div>
-		<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>			
-		
+		<textarea name="txtTemps" id="txtTemps" class="input-block-level"></textarea>
+
 	</div>
 	<br><br>
 </div><!-- /wrap  -->
@@ -118,10 +118,10 @@ $cms = new ezSettings();
 
 	<script type="text/javascript" src="ckeditor/ckeditor.js"></script>
 	<script type="text/javascript">
-	  CKEDITOR.replace( 'txtHeader', { uiColor : '#59ACFF' }); 
-	  CKEDITOR.replace( 'txtrSide' , { uiColor : '#FFD5AA' });    
-	  CKEDITOR.replace( 'txtSide'  , { uiColor : '#FFAAAA' }); 
-	  CKEDITOR.replace( 'txtFooter', { uiColor : '#CCCCCC' });	
+	  CKEDITOR.replace( 'txtHeader', { uiColor : '#59ACFF' });
+	  CKEDITOR.replace( 'txtrSide' , { uiColor : '#FFD5AA' });
+	  CKEDITOR.replace( 'txtSide'  , { uiColor : '#FFAAAA' });
+	  CKEDITOR.replace( 'txtFooter', { uiColor : '#CCCCCC' });
 	</script>
 
 <?php } else if ($_SESSION['EDITORTYPE'] == 1) { ?>
@@ -134,13 +134,13 @@ $cms = new ezSettings();
 	var txtSider_loaded = false;
 	var getEditAreaJSON = function (strID) {
 		return {
-			id: strID, 
+			id: strID,
 			syntax: "html",
 			allow_toggle: false,
 			start_highlight: true,
 			toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
 		}
-	}	
+	}
 	$('#myTab a').click(function (e) {
 		e.preventDefault();
 		if ((!txtFooter_loaded)&&($(this).attr('href')=='#d-footer')) {
@@ -178,17 +178,17 @@ $cms = new ezSettings();
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script language="javascript" type="text/javascript">
-	
+
 	var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
-	
+
 	var myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter;
 
 	// DIFF Viewer Options
-	var panes = 2, collapse = false, 
+	var panes = 2, collapse = false,
 		codeMainHeader, codeRightHeader, codeLeftHeader,
 		codeMainSide1, codeRightSide1, codeLeftSide1,
 		codeMainSide2, codeRightSide2, codeLeftSide2,
-		codeMainFooter, codeRightFooter, codeLeftFooter,	
+		codeMainFooter, codeRightFooter, codeLeftFooter,
 		dvHeader, dvSide1, dvSide2, dvFooter;
 	var codeMirrorJSON = {
 		lineNumbers: true,
@@ -202,11 +202,11 @@ $cms = new ezSettings();
 		foldGutter: true,
 		gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
 	}
-	
+
 	// function to build DIFF UI
 	var buildDiffUI = function () {
 		var target;
-		
+
 		target = document.getElementById("diffviewerHeader");
 		target.innerHTML = "";
 		dvHeader = CodeMirror.MergeView(target, {
@@ -223,7 +223,7 @@ $cms = new ezSettings();
 			connect: null,
 			collapseIdentical: collapse
 		});
-		
+
 		target = document.getElementById("diffviewerSide1");
 		target.innerHTML = "";
 		dvSide1 = CodeMirror.MergeView(target, {
@@ -257,7 +257,7 @@ $cms = new ezSettings();
 			connect: null,
 			collapseIdentical: collapse
 		});
-		
+
 		target = document.getElementById("diffviewerFooter");
 		target.innerHTML = "";
 		dvFooter = CodeMirror.MergeView(target, {
@@ -281,33 +281,33 @@ $cms = new ezSettings();
 	$('#showdiff').click( function () {
 		$('#editBlock').slideUp('slow');
 		$('#diffBlock').slideDown('slow', function () {
-			
+
 			codeMainHeader = myCodeHeader.getValue();
 			if (!codeLeftHeader) codeLeftHeader = $('#txtHeader').val();
 			if (!codeRightHeader) codeRightHeader = $('#txtHeader').val();
-	
+
 			codeMainSide1 = myCodeSide1.getValue();
 			if (!codeLeftSide1) codeLeftSide1 = $('#txtSide').val();
 			if (!codeRightSide1) codeRightSide1 = $('#txtSide').val();
-			
+
 			codeMainSide2 = myCodeSide2.getValue();
 			if (!codeLeftSide2) codeLeftSide2 = $('#txtrSide').val();
-			if (!codeRightSide2) codeRightSide2 = $('#txtrSide').val();		
-			
+			if (!codeRightSide2) codeRightSide2 = $('#txtrSide').val();
+
 			codeMainFooter = myCodeFooter.getValue();
 			if (!codeLeftFooter) codeLeftFooter = $('#txtFooter').val();
-			if (!codeRightFooter) codeRightFooter = $('#txtFooter').val();		
-			
+			if (!codeRightFooter) codeRightFooter = $('#txtFooter').val();
+
 			buildDiffUI();
 		});
 		return false;
 	});
-	
+
 	// Click on Fetch or DIFF in revision log
 	$('#revBlock a').click( function () {
-	
+
 		var loadID = $(this).parent().data('rev-id');
-		
+
 		if ($(this).text() == 'Fetch') {
 
 			myCodeHeader.setValue(revJson[loadID].header);
@@ -333,7 +333,7 @@ $cms = new ezSettings();
 			return false;
 
 		}
-		
+
 	});
 
 	// Toggle Collapse Unchanged sections
@@ -364,7 +364,7 @@ $cms = new ezSettings();
 			panes = 2;
 			$(this).text('Three Way (3)');
 			$('#diffviewerControld td').width('50%');
-			$('#diffviewerControld td:first-child').hide();				
+			$('#diffviewerControld td:first-child').hide();
 		}
 		codeMainHeader = dvHeader.editor().getValue();
 		codeMainSide1 = dvSide1.editor().getValue();
@@ -372,13 +372,13 @@ $cms = new ezSettings();
 		codeMainFooter = dvFooter.editor().getValue();
 		buildDiffUI();
 		return false;
-	}); 
+	});
 
 	// Change Rev in Diff Viewer select dropdown
 	$('#diffviewerControld select').change( function () {
 		var revID2Load = $(this).val();
 		var revHeaderLoad, revSide1Load, revSide2Load, revFooterLoad;
-			
+
 		if (revID2Load == '0') {
 			revHeaderLoad = $("#txtHeader").val();
 			revSide1Load = $("#txtSide1").val();
@@ -403,7 +403,7 @@ $cms = new ezSettings();
 			codeLeftSide1 = revSide1Load;
 			codeLeftSide2 = revSide2Load;
 			codeLeftFooter = revFooterLoad;
-		} else { 
+		} else {
 			dvHeader.right.orig.setValue(revHeaderLoad);
 			dvSide1.right.orig.setValue(revSide1Load);
 			dvSide2.right.orig.setValue(revSide2Load);
@@ -413,8 +413,8 @@ $cms = new ezSettings();
 			codeRightSide2 = revSide2Load;
 			codeRightFooter = revFooterLoad;
 		}
-	});	
-	
+	});
+
 	// Back to Main editor from DIFF UI
 	$('#backEditBTN').click( function () {
 		$('#editBlock').slideDown();
@@ -432,18 +432,18 @@ $cms = new ezSettings();
 		myCodeSide1.refresh();
 		myCodeSide2.refresh();
 		myCodeFooter.refresh();
-	});	
+	});
 	$(window).load( function () {
 		myCodeHeader = CodeMirror.fromTextArea(document.getElementById("txtHeader"), codeMirrorJSON);
 		myCodeFooter = CodeMirror.fromTextArea(document.getElementById("txtFooter"), codeMirrorJSON);
 		myCodeSide1 = CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
 		myCodeSide2 = CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
 	});
-	
+
 	</script>
 
 <?php } ?>
 <script language="javascript" type="text/javascript">
-	if(window.location.hash) $('a[href="'+window.location.hash.replace('#','#d-')+'"]').click(); 
+	if(window.location.hash) $('a[href="'+window.location.hash.replace('#','#d-')+'"]').click();
 </script>
 </body></html>

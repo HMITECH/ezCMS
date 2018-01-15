@@ -1,13 +1,13 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
- * * Version 2.010413 Dated 20/March/2013 
+ * * Version 2.010413 Dated 20/March/2013
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
- * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/controllers.php,v 1.1 2017-12-02 09:31:43 a Exp $ 
+ * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/controllers.php,v 1.1 2017-12-02 09:31:43 a Exp $
  * View: Displays the php controller of the site
  * /index.php
  */
- 
+
 // **************** ezCMS CONTROLLER CLASS ****************
 require_once ("class/controller.class.php");
 
@@ -22,7 +22,7 @@ $cms = new ezController();
 </head><body>
 
 <div id="wrap">
-	<?php include('include/nav.php'); ?>  
+	<?php include('include/nav.php'); ?>
 	<div class="container">
 
 		<div id="editBlock" class="white-boxed">
@@ -50,7 +50,7 @@ $cms = new ezController();
 					<input type="text" id="txtGitMsg" name="revmsg"
 						placeholder="Enter a description for this revision"
 						title="Enter a message to describe this revision."
-						data-toggle="tooltip" 
+						data-toggle="tooltip"
 						value=""
 						data-placement="top" minlength="2"
 						class="input-block-level tooltipme2">

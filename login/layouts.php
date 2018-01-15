@@ -1,18 +1,18 @@
 <?php
 /*
  * Code written by mo.ahmed@hmi-tech.net
- * Version 2.010413 Dated 20/March/2013 
+ * Version 2.010413 Dated 20/March/2013
  * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
- * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/layouts.php,v 1.2 2017-12-02 09:33:28 a Exp $ 
+ * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/layouts.php,v 1.2 2017-12-02 09:33:28 a Exp $
  * View: Displays the layouts in the site
- * 
+ *
  */
 
 // **************** ezCMS LAYOUTS CLASS ****************
-require_once ("class/layouts.class.php"); 
+require_once ("class/layouts.class.php");
 
 // **************** ezCMS LAYOUTS HANDLE ****************
-$cms = new ezLayouts(); 
+$cms = new ezLayouts();
 
 ?><!DOCTYPE html><html lang="en"><head>
 
@@ -20,24 +20,24 @@ $cms = new ezLayouts();
 	<?php include('include/head.php'); ?>
 
 </head><body>
-  
+
 <div id="wrap">
-	<?php include('include/nav.php'); ?>  
+	<?php include('include/nav.php'); ?>
 	<div class="container">
 		  <div id="editBlock" class="row-fluid">
 			<div class="span3 white-boxed">
 				<ul id="left-tree">
-				  <li><i class="icon-list-alt"></i> 
+				  <li><i class="icon-list-alt"></i>
 					<a class="<?php echo $cms->homeclass; ?>" href="layouts.php">layout.php</a>
 					<?php echo $cms->treehtml; ?>
-				  </li>					
+				  </li>
 				</ul>
 			</div>
 			<div class="span9 white-boxed">
 				<form id="frmlayout" action="layouts.php" method="post" enctype="multipart/form-data">
 					<div class="navbar">
 						<div class="navbar-inner">
-							<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary" style="padding:5px 12px;"> 
+							<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary" style="padding:5px 12px;">
 							<div class="btn-group">
 							  <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
 								Save As <span class="caret"></span></a>
@@ -53,7 +53,7 @@ $cms = new ezLayouts();
 								</div><br>
 								<p><a id="btnsaveas" href="#" class="btn btn-large btn-info">Save Now</a></p>
 							  </div>
-							  
+
 							</div>
 							<?php echo $cms->deletebtn; ?>
 							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
@@ -77,7 +77,7 @@ $cms = new ezLayouts();
 							<input type="text" id="txtGitMsg" name="revmsg"
 								placeholder="Enter a description for this revision"
 								title="Enter a message to describe this revision."
-								data-toggle="tooltip" 
+								data-toggle="tooltip"
 								value=""
 								data-placement="top" minlength="2"
 								class="input-block-level tooltipme2">
@@ -123,13 +123,13 @@ $cms = new ezLayouts();
 		if (!saveasfile.match(/^[a-z0-9]+$/ig)) {
 			alert('Enter a valid filename with lower case alphabets and numbers only.');
 			$('#txtSaveAs').focus();
-			return false;		
+			return false;
 		}
-		$('#txtName').val('layout.'+saveasfile+'.php');		
+		$('#txtName').val('layout.'+saveasfile+'.php');
 		$('#Submit').click();
 		return false;
 	});
-	
+
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
 
@@ -161,12 +161,12 @@ $cms = new ezLayouts();
 	<script language="javascript" type="text/javascript" src="js/edit_area/edit_area_full.js"></script>
 	<script type="text/javascript">
 		editAreaLoader.init({
-			id:"txtContents", 
+			id:"txtContents",
 			syntax: "html",
 			allow_toggle: true,
 			start_highlight: true,
 			toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight"
-		});	
+		});
 	</script>
 
 <?php } ?>
