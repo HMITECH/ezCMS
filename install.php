@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$user_pass = hash('sha512',$user_pass); 
 	
 	// Create the tables 
-	if (!$db->exec(file_get_contents('login/_sql/ezcms.5.sql'))) die('Failed to create tables. Run SQL');
+	$db->exec(file_get_contents('login/_sql/ezcms.5.sql'));
 	
 	// Update the admin info ...
 	$stmt = $db->prepare("UPDATE `users` SET `username` = ?, `email` = ?, `passwd` = ? WHERE id = 1");
@@ -76,9 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<script src="login/js/jquery-1.9.1.min.js"></script>
 	<style>
 	input {width: 100%; max-width:200px;}
+	ol li {margin: 10px;}
 	div.white-boxed {max-width: 1000px; margin: 0 auto; padding:20px;}
 	.label {font-size: 1em; padding: 6px 20px;}
 	.brand {width:100%; cursor:default;}
+	#manualinstall {display:none}
 	</style>
 
 </head><body>
@@ -145,7 +147,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			<p class="text-center">
 				<button type="submit" class="btn btn-primary">INSTALL ezCMS NOW</button>
 				<img src="login/img/ajax-loader.gif" style="display:none;"></p>
-		</form></div>
+		</form>
+		<p class="text-center"><a id="toggleman" href="#">MANUAL INSTALL INSTRUCTIONS</a></p>
+		<div id="manualinstall" class="well">
+			<h3>Manually Install ezCMS</h3>
+			<p><em>You can follow these steps to manually install ezCMS in case you have issues with this installer.</em></p>
+			<ol>
+				<li>Copy All the files to your target folder where you want to install ezCMS</li>
+				<li>Create an empty database and import the SQL 
+					<a href="login/_sql/ezcms.5.sql" target="_blank">[<strong>login/_sql/ezcms.5.sql</strong>]</a></li>
+				<li>Create a database user and add the credentials to  
+					[<strong>config.sample.php</strong>] file and rename it [<strong>config.php</strong>]</li>
+				<li>Login to the backend using the details below and update the admin users details from the users pages in ezCMS.
+					<ul>
+						<li>Login = '<strong>admin</strong>'</li>
+						<li>Password = '<strong>adminadmin</strong>'</li>						
+					</ul>
+				</li>
+				<li>ezCMS Installation is now complete.</li>
+			</ol>
+		</div>
+		
+		</div>
+		
+		<div id="doneBlock" class="hidden">
+			<div class="row-fluid">
+				<div class="span6 well">
+					<h4>FRONT END</h4>
+					<p>The front end has been installed in the root of this folder.</p>
+					<p>You can remove the <strong>install.php</strong> and <strong>config.sample.php</strong> files.</p>
+					<br><br>
+					<p class="text-center">
+						<a href="./" target="_blank" class="btn btn-warning">FRONT END</a></p>
+				</div>
+				<div class="span6 well">
+					<h4>BACK END</h4>
+					<p>The back end has been installed in the <strong>login</strong> folder.</p>
+					<p>You can rename the <strong>login</strong> folder to anything you like for added security.</p>
+					<br><br>
+					<p class="text-center">
+						<a href="login/" target="_blank" class="btn btn-danger">BACK END</a></p>
+					
+				</div>
+			</div>
+		</div>
 	
 	</div><br><br>
 	
@@ -159,6 +204,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	"use strict";
 	
+	// Show / Hide Manual Instructions
+	$('#toggleman').click(function (e) {
+		e.preventDefault();
+		$('#manualinstall').slideToggle();
+	});
+	
+	// Handle form submission
 	$('form').submit(function (e) {
 	
 		e.preventDefault();
@@ -181,13 +233,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 		
 			if (data != 'ezCMS Installed!') {
-				alert('Errors: '+data);
+				alert('Errors: '+data+'\nTry the manual installaions.');
 				$('form').find('.btn-primary').show().next().hide();
 				return false;
 			}
 			
 			$('p.label').text(data).removeClass('label-important').addClass('label-success');
-			$('form').html('ALL DONE');
+			$('form').html( $('#doneBlock').html() );
 		
 		}).fail( function() { 
 			alert('Request Failed!');
@@ -196,8 +248,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 		return false;
 	});	
-	
-	
 
 })(jQuery);</script>
 </body></html>
