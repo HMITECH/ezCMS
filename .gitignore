@@ -24,4 +24,5 @@ $RECYCLE.BIN/
 .DS_Store
 
 readme.txt
-
+Makefile
+tags
