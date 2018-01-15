@@ -15,7 +15,7 @@ ezSite Builder is website content management system for coders, providing access
 * Copy all the files to your public_html or www folder
 * Create a database and import the sql file locates in the login/_sql folder
 * Edit the config.php to include the database creds created above.
-* Open your site in the browser and visit /login folder 
+* Open your site in the browser and visit /login folder
 * Update the site using the ezSite Builder.
 
 ### Contribution guidelines ###

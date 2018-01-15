@@ -1,7 +1,7 @@
 /*
  * HMI Technologies Mumbai
- ** Javascript ** 
+ ** Javascript **
  *
- * This is the default js file. 
+ * This is the default js file.
  *
 */

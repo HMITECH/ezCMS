@@ -5,13 +5,13 @@
  * HMI Technologies Mumbai
  *
  * Controller: Front-end Router - index.php
- * 
+ *
  * Renders all the pages in the CMS.
  */
 
 // **************** Page Protocol ****************
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? "https://" : "http://";
- 
+
 // **************** DATABASE ****************
 require_once ("cms.class.php"); // PDO Class for database access
 $dbh = new db; // database handle available in layouts
@@ -30,17 +30,17 @@ $stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `url` = ? ORDER BY `id` DESC 
 $stmt->execute( array($uri) );
 
 // Check if page is found in database.
-if ($stmt->rowCount()) { 
+if ($stmt->rowCount()) {
 
 	// Page is found in Database
 	$page = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	// Check if page is published or not.
-	if (!$page["published"]) { 
+	if (!$page["published"]) {
 
 		// Start session if not started to check ADMIN login status
 		if (session_status() !== PHP_SESSION_ACTIVE) {
-			session_start(); 
+			session_start();
 		}
 
 		// Set SESSION ADMIN Login Flag to false if not set
@@ -48,7 +48,7 @@ if ($stmt->rowCount()) {
 			$_SESSION['LOGGEDIN'] = false;
 		}
 
-		 // Check if Admin is logged in - 
+		 // Check if Admin is logged in -
 		 // unpublished pages are visible to ADMIN.
 		if (!$_SESSION['LOGGEDIN']) {
 			// If ADMIN is NOT logged in then serve 404 page as it is unpublished
@@ -57,14 +57,14 @@ if ($stmt->rowCount()) {
 		}
 
 	}
-} else { 
+} else {
 	// Page is NOT found, server 404 page
 	$stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `id` = 2 LIMIT 1');
 	$stmt->execute();
 	$page = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Verify the layout files to be used, 
+// Verify the layout files to be used,
 // fall back to default if not found
 if (!file_exists($page['layout'])) {
 	$page['layout'] = 'layout.php';
@@ -90,6 +90,6 @@ if ($page['url']=='/Page-Not-Found.html') {
 
 // Serve the selected layout file
 include($page['layout']);
-die(); 
+die();
 
 ?>

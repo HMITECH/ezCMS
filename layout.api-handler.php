@@ -2,12 +2,12 @@
 /*
  * Code written by mo.ahmed@hmi-tech.net
  *
- * HMI Technologies Mumbai 
+ * HMI Technologies Mumbai
  *
- * API Service: Client end point. 
- * 
+ * API Service: Client end point.
+ *
  */
 
-// Add your code to handle any API requests ... 
+// Add your code to handle any API requests ...
 
  ?>
