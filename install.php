@@ -36,14 +36,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		die('dbfailed');
 	}
 
-	// User Name: must be 2 to 255 chars
-	$s = strlen($user_name); if ( ($s < 2) || ($s > 255) ) die('User Name is too short');
-	// email must be valid
-	if(!filter_var($user_email, FILTER_VALIDATE_EMAIL)) die('Invalid Request - Email Check Failed');
-	// pass cannot be less than 8
-	$s = strlen($user_pass); if ( ($s < 8) || ($s > 255) ) die('Invalid Request - Password Length Failed');
-	if ($user_pass != $user_pass1) die('Confirm password does not match.');
-	// encrypt the password
+  // check user_name
+	$s = strlen($user_name); if ( ($s < 2) || ($s > 255) ) die('user name must be 2 to 255 chars');
+  if( !ctype_alnum($user_name)) {
+    die("user_name must be alphanumeric");
+  }
+
+  // check email
+	if(!filter_var($user_email, FILTER_VALIDATE_EMAIL)) die('Invalid Email address');
+
+  // Hash a valid password
+	$s = strlen($user_pass); if ( ($s < 2) || ($s > 255) ) die('password must be 2 to 255 chars');
+	if ($user_pass != $user_pass1) die('password do not match.');
 	$user_pass = hash('sha512',$user_pass);
 
 	// Create the tables
