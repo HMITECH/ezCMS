@@ -138,12 +138,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<div class="control-group">
 						<label class="control-label">User password</label>
 						<div class="controls"><input type="password" id="user_pass" name="user_pass"
-							placeholder="user password" minlength="8" required/></div>
+							placeholder="user password" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Confirm password</label>
 						<div class="controls"><input type="password" id="user_pass1" name="user_pass1"
-							placeholder="user password" minlength="8" required/></div>
+							placeholder="user password" minlength="1" required/></div>
 					</div>
 
 				</div>
