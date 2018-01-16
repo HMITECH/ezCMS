@@ -14,7 +14,7 @@ class db extends PDO {
 		
 		if (!$config) {
 			if (!file_exists('install.php')) die('FATAL : Config and installer missing.');
-			header("Location: install.php"); 
+			header("Location: install.php", true, 307); // Make Temp redirect
 			exit; 
 		}
 

@@ -178,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<p>You can remove the <strong>install.php</strong> and <strong>config.sample.php</strong> files.</p>
 					<br><br>
 					<p class="text-center">
-						<a href="./" target="_blank" class="btn btn-warning">FRONT END</a></p>
+						<a href="./?installed=true" target="_blank" class="btn btn-warning">FRONT END</a></p>
 				</div>
 				<div class="span6 well">
 					<h4>BACK END</h4>
