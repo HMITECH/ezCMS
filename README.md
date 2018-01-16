@@ -32,8 +32,9 @@ It has a graphical editor but is mainly intended for use by coders.
 * Rename the file [*config.sample.php*] to [*config.php*] and enter database creds in it.
 * Rename the admin login folder for more security.
 * Login to the backend using the details below and update the admin users details from the users pages in ezCMS.
-	** Login = '*admin*'
-	** Password = '*adminadmin*'
+	
+** Login = '*admin*'.
+** Password = '*adminadmin*'
 
 
 ### Contribution guidelines ###
