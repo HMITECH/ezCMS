@@ -30,7 +30,7 @@ $directory = realpath(PGRFileManagerConfig::$rootDir);
 $relativePath = ''; 
 
 //check if dir exist
-if (!is_dir($directory)) PGRFileManagerUtils::sendError("Can't find root directory");
+if (!is_dir($directory)) PGRFileManagerUtils::sendError("Can't find root directory.\nDIR: [$directory]");
 
 //check for extra function to do
 if (isset($_POST['fun']) && PGRFileManagerConfig::$allowEdit) {
