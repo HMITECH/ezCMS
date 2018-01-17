@@ -1,3 +1,11 @@
+#  ezcms.5.sql
+
+drop database if exists ezcms;
+create database ezcms;
+use ezcms;
+
+DROP TABLE IF EXISTS git_files;
+
 CREATE TABLE IF NOT EXISTS `git_files` (
   `id` int(16) NOT NULL AUTO_INCREMENT COMMENT 'id of file revision',
   `content` longtext COMMENT 'contents of the file',
@@ -11,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `git_files` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='revision log of files';
 
 
+DROP TABLE IF EXISTS git_pages;
 CREATE TABLE IF NOT EXISTS `git_pages` (
   `id` int(16) NOT NULL AUTO_INCREMENT COMMENT 'revision id of page',
   `page_id` int(16) NOT NULL COMMENT 'id of original page',
@@ -42,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `git_pages` (
   KEY `page_id` (`page_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='revision of web pages in the site';
 
-
+DROP TABLE IF EXISTS pages;
 CREATE TABLE IF NOT EXISTS `pages` (
   `id` int(16) NOT NULL AUTO_INCREMENT COMMENT 'id of page',
   `pagename` varchar(512) NOT NULL COMMENT 'name of page',
@@ -75,11 +84,71 @@ CREATE TABLE IF NOT EXISTS `pages` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='the web pages';
 
 INSERT INTO `pages` (`id`, `pagename`, `title`, `keywords`, `description`, `maincontent`, `useheader`, `headercontent`, `usefooter`, `footercontent`, `useside`, `sidecontent`, `published`, `parentid`, `place`, `url`, `sidercontent`, `usesider`, `head`, `layout`, `nositemap`, `createdby`) VALUES
-(1, 'home', 'Home Page', '', '', '<!--  Content  -->\r\n<h1>Welcome to ezCMS - Home page</h1>\r\n<p>Edit this content from the ezCMS using the <strong>''Pages''</strong> Menu.</p>\r\n<p><a target="_blank" href="login/pages.php#content">go to editor</a></p>', 0, '', 1, '<!--  Footer  -->\r\n<p>CUSTOM HOMEPAGE FOOTER <a target="_blank" href="login/pages.php#footers">editor link</a></p>', 0, '', 1, 0, 1, '/', '', 0, '<!--  Head content  -->', 'layout.php', 0, 1),
-(2, '404 Page', 'Page not found', '', '', '<!--  Content  -->\r\n<h1>404 - Page not Found</h1>\r\n<p>Edit this content from the ezCMS using the <strong>''Pages'' - ''404 Page''</strong> Menu.</p>\r\n<p><a target="_blank" href="login/pages.php?id=2#content">go to editor</a></p>', 0, '', 0, '', 0, '', 1, 0, 1, '/.', '', 0, '', 'layout.full-width.php', 0, 1),
-(3, 'contact', 'Contact Page', '', '', '<!--  Content  -->\r\n<h1>Contact page</h1>\r\n<p><a target="_blank" href="login/pages.php?id=3#content">go to editor</a></p>', 0, '', 0, '', 0, '', 1, 1, 2, '/contact', '', 0, '', 'layout.right-aside.php', 0, 1),
-(4, 'about', 'About Page', '', '', '<!--  Content  -->\r\n<h1>About page</h1>\r\n<p><a target="_blank" href="login/pages.php?id=4#content">go to editor</a></p>', 0, '', 0, '', 0, '', 1, 1, 1, '/about', '', 0, '', 'layout.left-aside.php', 0, 1);
+(1,
+	'home',
+	'Home Page',
+	'',
+	'',
+	'<!--  Content  -->
+<h1>Welcome to ezCMS - Home page</h1>
+<p>Edit this content from the ezCMS using the <strong>''Pages''</strong> Menu.</p>
+<p><a target="_blank" href="login/pages.php#content">go to editor</a></p>', 0,
+	'', 1,
+	'<!--  Footer  -->
+<p>CUSTOM HOMEPAGE FOOTER <a target="_blank" href="login/pages.php#footers">editor link</a></p>', 0,
+	'', 1, 0, 1,
+	'/',
+	'', 0,
+	'<!--  Head content  -->',
+	'layout.php', 0, 1),
+(2,
+	'404 Page',
+	'Page not found',
+	'',
+	'',
+	'<!--  Content  -->
+<h1>404 - Page not Found</h1>
+<p>Edit this content from the ezCMS using the <strong>''Pages'' - ''404 Page''</strong> Menu.</p>
+<p><a target="_blank" href="login/pages.php?id=2#content">go to editor</a></p>', 0,
+	'', 0,
+	'', 0,
+	'', 1, 0, 1,
+	'/.',
+	'', 0,
+	'',
+	'layout.full-width.php', 0, 1),
+(3,
+	'contact',
+	'Contact Page',
+	'',
+	'',
+	'<!--  Content  -->
+<h1>Contact page</h1>
+<p><a target="_blank" href="login/pages.php?id=3#content">go to editor</a></p>', 0,
+	'', 0,
+	'', 0,
+	'', 1, 1, 2,
+	'/contact',
+	'', 0,
+	'',
+	'layout.right-aside.php', 0, 1),
+(4,
+	'about',
+	'About Page',
+	'',
+	'',
+	'<!--  Content  -->
+<h1>About page</h1>
+<p><a target="_blank" href="login/pages.php?id=4#content">go to editor</a></p>', 0,
+	'', 0,
+	'', 0,
+	'', 1, 1, 1,
+	'/about',
+	'', 0,
+	'',
+	'layout.left-aside.php', 0, 1);
 
+DROP TABLE IF EXISTS site;
 CREATE TABLE IF NOT EXISTS `site` (
   `id` int(8) NOT NULL AUTO_INCREMENT COMMENT 'id of site settings',
   `headercontent` longtext COMMENT 'header content of page',
@@ -94,9 +163,21 @@ CREATE TABLE IF NOT EXISTS `site` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='the default blocks used in the site';
 
 INSERT INTO `site` (`id`, `headercontent`, `footercontent`, `sidecontent`, `sidercontent`, `createdby`) VALUES
-(1, '<!--  Header  -->\r\n<h2>DEFAULT SITE HEADER <a target="_blank" href="login/setting.php#header">editor link</a></h2>\r\n<nav><a href="./">HOME</a><a href="about">ABOUT</a><a href="contact">CONTACT</a><a href="404">404</a></nav>', '<!--  Footer  -->\n<p><em>DEFAULT SITE FOOTER</em> <a target="_blank" href="login/setting.php#footers">editor link</a></p>', '<!--  Aside 1  -->\r\n<h4>DEFAULT SITE ASIDE 1 </h4>\r\n<p>Edit this content from the ezCMS using the <strong>''Template'' - ''Default settings Menu''</strong>.<br>\r\n<a target="_blank" href="login/setting.php#sidebar">go to editor</a></p>', '<!--  Aside 2  -->\r\n<h4>DEFAULT SITE ASIDE 2</h4>\r\n<p>Edit this content from the ezCMS using the <strong>''Template'' - ''Default settings Menu''</strong>.<br>\r\n<a target="_blank" href="login/setting.php#siderbar">go to editor</a></p>', 1);
+(1,
+	'<!--  Header  -->
+<h2>DEFAULT SITE HEADER <a target="_blank" href="login/setting.php#header">editor link</a></h2>
+<nav><a href="./">HOME</a><a href="about">ABOUT</a><a href="contact">CONTACT</a><a href="404">404</a></nav>',
+	'<!--  Footer  -->\n<p><em>DEFAULT SITE FOOTER</em> <a target="_blank" href="login/setting.php#footers">editor link</a></p>',
+	'<!--  Aside 1  -->
+<h4>DEFAULT SITE ASIDE 1 </h4>
+<p>Edit this content from the ezCMS using the <strong>''Template'' - ''Default settings Menu''</strong>.<br>
+<a target="_blank" href="login/setting.php#sidebar">go to editor</a></p>',
+	'<!--  Aside 2  -->
+<h4>DEFAULT SITE ASIDE 2</h4>
+<p>Edit this content from the ezCMS using the <strong>''Template'' - ''Default settings Menu''</strong>.<br>
+<a target="_blank" href="login/setting.php#siderbar">go to editor</a></p>', 1);
 
-
+DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(8) NOT NULL AUTO_INCREMENT COMMENT 'id of user',
   `username` varchar(512) NOT NULL COMMENT 'name of user',
@@ -123,4 +204,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 
 INSERT INTO `users` (`id`, `username`, `email`, `passwd`, `active`, `editpage`, `delpage`, `edituser`, `deluser`, `editsettings`, `editcont`, `editlayout`, `editcss`, `editjs`) VALUES
-(1, 'Admin', 'admin', '8450eca01665516d9aeb5317764902b78495502637c96192c81b1683d32d691a0965cf037feca8b9ed9ee6fc6ab8f27fce8f77c4fd9b4a442a00fc317b8237e6', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+(1,
+	'Admin',
+	'admin@localhost',
+	'8450eca01665516d9aeb5317764902b78495502637c96192c81b1683d32d691a0965cf037feca8b9ed9ee6fc6ab8f27fce8f77c4fd9b4a442a00fc317b8237e6', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
