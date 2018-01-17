@@ -40,9 +40,9 @@ if ( (empty($userid)) || (empty($passwd)) ) {
 require_once ("../../cms.class.php"); // PDO Class for database access
 $dbh = new db; // database handle
 
-// Prepare SQL to fetch user's record from dataabse
-$stmt = $dbh->prepare('SELECT * FROM `users` WHERE `email` = ? AND `passwd` = SHA2( ? , 512 ) LIMIT 1');
-$stmt->execute( array($userid, $passwd) );
+// Prepare SQL to fetch user's record from database
+$stmt = $dbh->prepare('SELECT * FROM `users` WHERE `email` = ? AND (`passwd` = SHA2( ? , 512 ) OR `passwd` = ?) LIMIT 1');
+$stmt->execute( array($userid, $passwd, $passwd) );
 
 // Check if User Record is present and returned from the database
 if ($stmt->rowCount()) { 
