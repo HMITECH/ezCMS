@@ -54,8 +54,8 @@ class ezProfile extends ezCMS {
 		
 		// Prepare SQL to fetch user's record from dataabse
 		$id = $this->usr['id'];
-		$stmt = $this->prepare("SELECT `id` FROM `users` WHERE `id` = $id AND `passwd` = SHA2( ? , 512 ) LIMIT 1");
-		$stmt->execute( array($curpass) );
+		$stmt = $this->prepare("SELECT `id` FROM `users` WHERE `id` = $id AND (`passwd` = SHA2( ? , 512 ) or `passwd` = ?) LIMIT 1");
+		$stmt->execute( array($curpass, $curpass) );
 
 		// Check if User Record is present and returned from the database
 		if ($stmt->rowCount()) {
