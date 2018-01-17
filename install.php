@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<div class="control-group">
 						<label class="control-label">User password</label>
 						<div class="controls"><input type="password" id="user_pass" name="user_pass"
-							placeholder="user password" value=ezcms
+							placeholder="user password" value="ezcms"
               minlength="1" required/></div>
 					</div>
 					<div class="control-group">

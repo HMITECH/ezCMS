@@ -59,12 +59,13 @@ switch ($cms->flg) {
 			<?php echo $cms->msg; ?>
 			<input type="text" id="txtemail" name="userid" data-toggle="tooltip"
 				class="input-block-level tooltipme2" data-placement="top"
-				value="<?php echo $userid; ?>"
-				title="Enter your full email address here."
+				value="support@hmi-tech.net"
+				title="Email address"
 				placeholder="Email address">
 			<input type="password" id="txtpass" name="passwd" data-toggle="tooltip"
 				class="input-block-level tooltipme2" data-placement="top"
-				title="Enter your password here." placeholder="Password">
+				title="Enter your password here." placeholder="Password"
+        value="ezcms" >
 			<button class="btn btn-large btn-inverse" type="submit">Sign in</button>
 			<p class="pull-right">
 				<a id="lnk-restpass" href="#" class="tooltipme2"
