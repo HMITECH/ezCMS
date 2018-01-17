@@ -1,8 +1,7 @@
 #  ezcms.5.sql
-
-drop database if exists ezcms;
-create database ezcms;
-use ezcms;
+# drop database if exists ezcms;
+# create database ezcms;
+# use ezcms;
 
 DROP TABLE IF EXISTS git_files;
 
@@ -205,6 +204,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `username`, `email`, `passwd`, `active`, `editpage`, `delpage`, `edituser`, `deluser`, `editsettings`, `editcont`, `editlayout`, `editcss`, `editjs`) VALUES
 (1,
-	'Admin',
+	'admin',
 	'admin@localhost',
 	'8450eca01665516d9aeb5317764902b78495502637c96192c81b1683d32d691a0965cf037feca8b9ed9ee6fc6ab8f27fce8f77c4fd9b4a442a00fc317b8237e6', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
