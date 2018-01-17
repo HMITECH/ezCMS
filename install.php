@@ -111,22 +111,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<div class="control-group">
 						<label class="control-label">Database host</label>
 						<div class="controls"><input type="text" id="db_host" name="db_host"
-                  placeholder="db host" value=localhost minlength=4 required/></div>
+                  placeholder="db host" value="localhost" minlength=4 required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database name</label>
 						<div class="controls"><input type="text" name="db_name"
-                placeholder="db name" value="ezcms" minlength="1" required/></div>
+                placeholder="db name" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database user</label>
 						<div class="controls"><input type="text" name="db_user"
-                placeholder="db user" value="ezcms" minlength="1" required/></div>
+                placeholder="db user" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Database password</label>
 						<div class="controls"><input type="password" name="db_pass"
-              placeholder="db password" value="ezcms" /></div>
+              placeholder="db password" /></div>
 					</div>
 				</div>
 				<div class="span6 well">
@@ -135,18 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<div class="control-group">
 						<label class="control-label">User name</label>
 						<div class="controls"><input type="text" name="user_name"
-                placeholder="user name" value=admin minlength="2" required/></div>
+                placeholder="user name" minlength="2" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">User email</label>
 						<div class="controls"><input type="email" name="user_email"
-              placeholder="user email" value="support@hmi-tech.net" required/></div>
+              placeholder="user email" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">User password</label>
 						<div class="controls"><input type="password" id="user_pass" name="user_pass"
-							placeholder="user password" value="ezcms"
-              minlength="1" required/></div>
+							placeholder="user password" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
 						<label class="control-label">Confirm password (ezcms)</label>
