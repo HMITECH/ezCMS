@@ -16,7 +16,7 @@
 		<span class="icon-bar"></span> 
 		<span class="icon-bar"></span> 
 	  </button>
-	  <a class="brand" href="/"><small>ezCMS: <?php echo $_SERVER['HTTP_HOST']; ?></small></a>
+	  <a class="brand" href="../"><small>ezCMS: <?php echo $_SERVER['HTTP_HOST']; ?></small></a>
 	  <div class="nav-collapse collapse">
 		<ul class="nav" id="top-bar">
 		  <li class="dropdown">
