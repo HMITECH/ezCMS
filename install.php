@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<link href="login/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link href="login/css/custom.css" rel="stylesheet">
 	<script src="login/js/jquery-1.9.1.min.js"></script>
+	<script src="login/js/pass-strength.js"></script>
 	<style>
 	input {width: 100%; max-width:200px;}
 	ol li {margin: 10px;}
