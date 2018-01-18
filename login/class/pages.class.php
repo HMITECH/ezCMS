@@ -21,6 +21,7 @@ class ezPages extends ezCMS {
 	public $addNewBtn;
 	public $page;
 	public $btns;
+	private $childIDS = array(); // id of seclect page + its children.
 	
 	// Consturct the class
 	public function __construct () {
@@ -55,6 +56,9 @@ class ezPages extends ezCMS {
 
 			$this->setupCheckboxes();
 		}
+		
+		// Load childern ids
+		$this->getChildIDS($this->id);
 		
 		// Update the Controller of Posted
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') $this->update();
@@ -295,7 +299,7 @@ class ezPages extends ezCMS {
 		static $nestCount;
 
 		$treeSQL = $this->prepare(
-			"SELECT `id`, `title`, `url`, `published`, `description` 
+			"SELECT `id`, `title`, `pagename`, `url`, `published`, `description` 
 			FROM  `pages` WHERE `parentid` = ? order by place");
 		$treeSQL->execute( array($parentid) );
 
@@ -314,14 +318,13 @@ class ezPages extends ezCMS {
 				
 				$myclass = ($entry["id"] == $this->id) ? 'label label-info' : '';
 				$myPub   = ($entry["published"]) ? '' : ' <i class="icon-ban-circle" title="Page is not published"></i>';
-				// '<li draggable="true"  ondragstart="return dragStart();">'
 				$this->treehtml .= '<li data-id="'.$entry['id'].'">'.$action.' <a href="pages.php?id='.$entry['id'].
-							'" class="'.$myclass.'">'.$entry["title"].'</a>'.$myPub;
+							'" class="'.$myclass.'" title="'.$entry["title"].'">'.$entry["pagename"].'</a>'.$myPub;
 				$isSel = '';
-				if  ( ($entry['id'] != 2) && ($entry['id'] != $this->id) ){
+				if  ( ($entry['id'] != 2) && !(in_array($entry['id'], $this->childIDS)) ){
 					if ($this->page['parentid'] == $entry['id']) $isSel = 'selected';
 					$this->ddOptions .= '<option value="' . $entry['id'] . '" '.$isSel.'>'.
-						str_repeat(' - ',$nestCount - 1) . $entry['title'].'</option>';				
+						str_repeat(' - ',$nestCount - 1) . $entry['pagename'].'</option>';				
 				}
 				$this->buildTree($entry['id']);
 				$this->treehtml .= '</li>';
@@ -353,6 +356,14 @@ class ezPages extends ezCMS {
     	return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '-', 
 			html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', 
 			htmlentities($string, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '-'));
+	}
+	
+	// function to collect array with selected page and all its children
+	private function getChildIDS($id) {
+		$id = intval($id);
+		array_push($this->childIDS, $id);
+		foreach ($this->query("SELECT `id` FROM `pages` WHERE `parentid` = '$id'") as $entry)
+			if ($id >2) $this->getChildIDS($entry['id']);
 	}
 	
 	// Function to auto generate URL 
@@ -407,9 +418,9 @@ class ezPages extends ezCMS {
 		// Validate here ...
 		if (strlen(trim($data['pagename'])) < 2) die('Page Name must min 2 chars!');
 		if (strlen(trim($data['title'])) < 2) die('Page Title must min 2 chars!');
-		if (isset($data['parentid'])) 
-			if ($this->id == $data['parentid']) 
-				die('Parent cannot be same page');
+		if (isset($data['parentid']))
+			if  (in_array($data['parentid'], $this->childIDS))
+				die('Parent cannot be same page or its child');
 				
 		// if URL is empty ... auto generate it from path.
 		if (isset($data['url'])) {
