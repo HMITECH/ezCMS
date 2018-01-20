@@ -26,7 +26,7 @@ $cms = new ezUsers();
 	  <div class="row-fluid">
 		<div class="span3 white-boxed"><?php echo $cms->treehtml; ?></div>
 		<div class="span9 white-boxed">
-			<form id="frmUser" action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+			<form id="frmUser" action="" method="post" enctype="multipart/form-data" class="form-horizontal" autocomplete="off">
 				<div class="navbar"><div class="navbar-inner">
 					<?php echo $cms->barBtns; ?>
 					<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
@@ -44,7 +44,7 @@ $cms = new ezUsers();
 					<div class="span4">
 						<label for="inputName">User Name</label>
 						<input type="text" name="username" id="username" data-toggle="tooltip"
-							placeholder="Enter the full name"
+							placeholder="Enter the full name" autocomplete="off"
 							title="Enter the full name of the user here."
 							value="<?php echo $cms->thisUser['username']; ?>"
 							data-placement="top" minlength="2" class="input-block-level tooltipme2" required>
@@ -54,7 +54,7 @@ $cms = new ezUsers();
 						<input type="email" name="email" id="email" data-toggle="tooltip"
 							placeholder="Enter the full email address"
 							title="Enter the full email address of the user here."
-							value="<?php echo $cms->thisUser['email']; ?>"
+							value="<?php echo $cms->thisUser['email']; ?>"  autocomplete="off"
 							data-placement="top" class="input-block-level tooltipme2" required>
 					</div>
 					<div class="span4">
@@ -62,7 +62,7 @@ $cms = new ezUsers();
 						<input type="password" name="passwd" id="passwd" data-toggle="tooltip"
 							placeholder="<?php echo ($cms->id=='new') ? 'Enter the password' : 'Leave blank to keep unchanged' ?>"
 							title="<?php echo ($cms->id=='new') ? 'Enter the password here' : 'Enter a new password or leave blank to keep unchanged' ?>"
-							data-placement="top" minlength="8"
+							data-placement="top" minlength="8"  autocomplete="off"
 							class="input-block-level tooltipme2" <?php  if ($cms->id=='new') echo 'required'; ?>>
 					</div>
 				</div>

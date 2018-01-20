@@ -36,7 +36,7 @@ class ezUsers extends ezCMS {
 		// Check if delete ID is set
 		if (isset($_GET['delid'])) $this->deleteUser();
 		
-		if ($this->id <> 'new' ) {
+		if ($this->id != 'new' ) {
 			$this->thisUser = $this->query('SELECT * FROM `users` WHERE `id` = '.intval($this->id).' LIMIT 1')
 				->fetch(PDO::FETCH_ASSOC); // get the selected user details
 			
@@ -46,21 +46,30 @@ class ezUsers extends ezCMS {
 				exit;
 			}
 			
-			$this->setupCheckboxes();
 			$this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Save Changes">
 				 <a href="?id=new" class="btn btn-info">New User</a>';
 				
 			if ($this->id <> 1) $this->barBtns .=  
 				' <a href="?delid=' . $this->id .'" class="btn btn-danger conf-del">Delete</a>';
+				
+			// Get the Revisions
+			$this->getRevisions();			
 
-		} else $this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
-
+		} else {
+			// Set empty default values for new user
+			$this->thisUser = array( 'username' => '', 'email' => '@',
+				'active' => '1', 'editpage' => '1', 'delpage' => '',
+				'edituser' => '', 'deluser' => '', 'editsettings' => '1',
+				'editcont' => '', 'editlayout' => '', 'editcss' => '1', 'editjs' => '1');
+			$this->barBtns = '<input type="submit" name="Submit" class="btn btn-primary" value="Add New">';
+		}
+		
+		// Setup the checkboxes to display
+		$this->setupCheckboxes();
+		
 		//Build the HTML Treeview
 		$this->buildTree();
-		
-		// Get the Revisions
-		if ($this->id != 'new') $this->getRevisions();
-		
+	
 		// Get the Message to display if any
 		$this->getMessage();
 		$this->msg = str_replace('File','User',$this->msg);
