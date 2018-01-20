@@ -244,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			}
 
 			if (data != 'ezCMS Installed!') {
-				alert('Errors: '+data+'\nTry the manual installaions.');
+				alert('Errors: '+data+'\nTry the manual installation.');
 				$('form').find('.btn-primary').show().next().hide();
 				return false;
 			}
