@@ -133,22 +133,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					<h4>ADMINISTRATOR DETAILS</h4>
 					<p>Please enter the administrator information:</p>
 					<div class="control-group">
-						<label class="control-label">User name</label>
+						<label class="control-label">Admin Name</label>
 						<div class="controls"><input type="text" name="user_name"
                 placeholder="user name" minlength="2" required/></div>
 					</div>
 					<div class="control-group">
-						<label class="control-label">User email</label>
+						<label class="control-label">Admin email</label>
 						<div class="controls"><input type="email" name="user_email"
               placeholder="user email" required/></div>
 					</div>
 					<div class="control-group">
-						<label class="control-label">User password</label>
+						<label class="control-label">Admin password</label>
 						<div class="controls"><input type="password" id="user_pass" name="user_pass"
 							placeholder="user password" minlength="1" required/></div>
 					</div>
 					<div class="control-group">
-						<label class="control-label">Confirm password (ezcms)</label>
+						<label class="control-label">Confirm password</label>
 						<div class="controls"><input type="password" id="user_pass1" name="user_pass1"
 							placeholder="user password" minlength="1" required/></div>
 					</div>

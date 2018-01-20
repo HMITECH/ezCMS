@@ -60,6 +60,7 @@ switch ($cms->flg) {
 			<input type="text" id="txtemail" name="userid" data-toggle="tooltip"
 				class="input-block-level tooltipme2" data-placement="top"
 				title="Email address"
+				value="<?php echo $userid; ?>"
 				placeholder="Email address">
 			<input type="password" id="txtpass" name="passwd" data-toggle="tooltip"
 				class="input-block-level tooltipme2" data-placement="top"
@@ -69,7 +70,7 @@ switch ($cms->flg) {
 				<a id="lnk-restpass" href="#" class="tooltipme2"
 					data-toggle="tooltip" data-placement="top" style="display:none;"
 					title="Password Lost, recover your password here.">Lost your password?</a><br>
-				<a href="/" class="tooltipme2" data-toggle="tooltip" data-placement="top"
+				<a href="../" class="tooltipme2" data-toggle="tooltip" data-placement="top"
 					title="Are you lost? Go back to the main site.">&lt;&lt; Back to Site</a>
 			</p>
 			<p class="clearfix"></p>
