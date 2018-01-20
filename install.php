@@ -10,13 +10,13 @@
 
 // Do not run the installer if the config file is present.
 if (file_exists('config.php'))
-	die('FATAL : config.php exists. Delete before running this installer.');
+	die('FATAL : config.php exists. Delete before running this install.php');
 
-// The SQL must exisit.
+// The SQL must exist.
 if (!file_exists('login/_sql/ezcms.5.sql'))
 	 die('FATAL : login/_sql/ezcms.5.sql missing. Check repo for this file.');
 
-// INTSALL WHEN POSTED
+// INSTALL WHEN POSTED
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	// Get all the posted variables...
@@ -36,33 +36,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		die('dbfailed');
 	}
 
-  // check user_name
+  // Check user_name
 	$s = strlen($user_name); if ( ($s < 2) || ($s > 255) ) die('user name must be 2 to 255 chars');
   if( !ctype_alnum($user_name)) {
     die("user_name must be alphanumeric");
   }
 
-  // check email
+  // Check email
 	if(!filter_var($user_email, FILTER_VALIDATE_EMAIL)) die('Invalid Email address');
 
   // Hash a valid password
-	$s = strlen($user_pass); if ( ($s < 2) || ($s > 255) ) die('password must be 2 to 255 chars');
-	if ($user_pass != $user_pass1) die('password do not match.');
+	$s = strlen($user_pass);
+  if ( ($s < 2) || ($s > 255) )
+    die('password must be 2 to 255 chars');
+	if ($user_pass != $user_pass1)
+    die('password do not match.');
 	$user_pass = hash('sha512',$user_pass);
 
-	// Create the tables
+	// Create the db tables
 	$db->exec(file_get_contents('login/_sql/ezcms.5.sql'));
 
-	// Update the admin info ...
+	// Update the admin info
 	$stmt = $db->prepare("UPDATE `users` SET `username` = ?, `email` = ?, `passwd` = ? WHERE id = 1");
-	if (!$stmt->execute(array($user_name, $user_email, $user_pass))) die('updatefailed');
+	if (!$stmt->execute(array($user_name, $user_email, $user_pass)))
+    die('update failed');
 
 	// Create a config file
 	$conf = "<?php return array('dbHost'=>'$db_host', 'dbUser'=>'$db_user', 'dbPass'=>'$db_pass', 'dbName'=>'$db_name');?>";
-	if (file_put_contents("config.php", $conf ) === false) die('configfailed');
 
+	if (file_put_contents("config.php", $conf ) === false)
+    die('Cannot write config.php file');
 
-	// say all done !
+	// All done !
 	die('ezCMS Installed!');
 }
 
