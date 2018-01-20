@@ -18,12 +18,16 @@ class ezScripts extends ezCMS {
 	public $deletebtn = '';
 	public $content = '';
 	public $treehtml = '';
+	public $siteFolder; // Folder from which site is running
 	
 	// Consturct the class
 	public function __construct () {
 	
 		// call parent constuctor
 		parent::__construct();
+		
+		// Get the folder fro which site is running
+		$this->siteFolder =  substr(htmlspecialchars($_SERVER["PHP_SELF"]), 0, -18);
 		
 		// Check if file to display is set
 		if (isset($_GET['show'])) $this->filename = $_GET['show'];

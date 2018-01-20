@@ -17,6 +17,7 @@ class ezCMS extends db {
 	public $flg = ''; 	// Set the error message flag to none
 	public $msg = ''; 	// Message to disaply if any
 	public $usr; 		// Logged in user record
+
 	// Stores Revision Details
 	public $revs = array('log' => '', 'opt' => '', 'cnt' => 1, 'jsn' => array());
 	
