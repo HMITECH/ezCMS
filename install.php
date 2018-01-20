@@ -36,16 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		die('dbfailed');
 	}
 
-  // check user_name
+    // check user_name
 	$s = strlen($user_name); if ( ($s < 2) || ($s > 255) ) die('user name must be 2 to 255 chars');
-  if( !ctype_alnum($user_name)) {
-    die("user_name must be alphanumeric");
-  }
 
-  // check email
+    // check email
 	if(!filter_var($user_email, FILTER_VALIDATE_EMAIL)) die('Invalid Email address');
 
-  // Hash a valid password
+    // Hash a valid password
 	$s = strlen($user_pass); if ( ($s < 2) || ($s > 255) ) die('password must be 2 to 255 chars');
 	if ($user_pass != $user_pass1) die('password do not match.');
 	$user_pass = hash('sha512',$user_pass);
@@ -58,9 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if (!$stmt->execute(array($user_name, $user_email, $user_pass))) die('updatefailed');
 
 	// Create a config file
-	$conf = "<?php return array('dbHost'=>'$db_host', 'dbUser'=>'$db_user', 'dbPass'=>'$db_pass', 'dbName'=>'$db_name');?>";
+	$conf = "<?php return array(
+	'dbHost'=>'$db_host', 
+	'dbUser'=>'$db_user', 
+	'dbPass'=>'$db_pass', 
+	'dbName'=>'$db_name'); ?>";
 	if (file_put_contents("config.php", $conf ) === false) die('configfailed');
-
 
 	// say all done !
 	die('ezCMS Installed!');
