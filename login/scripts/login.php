@@ -61,9 +61,13 @@ if ($stmt->rowCount()) {
 	$_SESSION['EZUSERID']   = $user['id']; // User's ID
 	
 	// TODO - Move to database later ...
-	
 	$_SESSION['EDITORTYPE'] = $user['editor']; // Set editor to code mirror on login
 	$_SESSION["CMTHEME"]    = $user['cmtheme']; // Default Code Mirror theme
+	
+	// Encrypt the password on first login if is not.
+	if ($user['passwd'] == $passwd)
+		// $passwd is not hashed 
+		$dbh->query('UPDATE `users` SET `passwd` = SHA2( `passwd` , 512 ) WHERE `id`='.$user['id']);
 	
 	// Redirect to logged in page
 	if ( isset( $_SESSION['AFTERLOGINPAGE'] )) {
