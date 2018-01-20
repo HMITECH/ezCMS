@@ -84,7 +84,7 @@ $footer      = ($page["usefooter"] == 1) ? $page["footercontent"] : $site["foote
 
 
 // Set 404 header when severing page not found
-if ($page['url']=='/Page-Not-Found.html') {
+if ($page['id']==2) {
 	Header("HTTP/1.0 404 Not Found");
 }
 
