@@ -116,6 +116,7 @@ $cms = new ezUsers();
 								<?php echo $cms->thisUser['editjsCheck']; ?>>
 							Manage Javascripts</label><?php echo $cms->thisUser['editjsMsg']; ?><hr>
 					</div>
+					<?php echo $cms->createdText; ?>
 				</div><!-- / row -->
 			</form>
 		</div>

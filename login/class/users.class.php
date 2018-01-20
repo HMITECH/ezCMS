@@ -14,13 +14,11 @@ require_once ("ezcms.class.php"); // CMS Class for database access
 class ezUsers extends ezCMS {
 
 	public $id = 1;
-	
 	public $treehtml = '';
-	
-	public $barBtns;
-
+	public $barBtns = '';
+	public $createdText = '';
 	public $thisUser;
-	
+
 	// Consturct the class
 	public function __construct () {
 	
@@ -51,6 +49,10 @@ class ezUsers extends ezCMS {
 				
 			if ($this->id <> 1) $this->barBtns .=  
 				' <a href="?delid=' . $this->id .'" class="btn btn-danger conf-del">Delete</a>';
+				
+			// Get Created on String
+			$this->createdText = '<div class="clearfix"></div><p><em>Created on '.
+				$this->thisUser['createdon'].'</em></p>';
 				
 			// Get the Revisions
 			$this->getRevisions();			
