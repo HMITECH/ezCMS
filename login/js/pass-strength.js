@@ -23,8 +23,8 @@ $(document).ready(function() {
 
     var myid = $(this).attr("id");
     if (myid == 'password2') {
-        var password1 = $("#password1").val();
-        var password2 = $("#password2").val();
+        var password1 = $("#user_pass").val();
+        var password2 = $("#user_pass1").val();
         if(password1 == password2) {
             $("#validate-status").text("equal");
         } else {
