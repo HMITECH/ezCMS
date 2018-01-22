@@ -160,10 +160,10 @@ class ezPages extends ezCMS {
 		}
 		
 		if ($this->query("INSERT INTO `pages` ( `pagename`, `title`, `url`, `nositemap`, `keywords`, `description`, `maincontent`, 
-					`useheader`, `headercontent`, `head`, `layout`, `usefooter`, `footercontent`, `useside`, `sidecontent`, 
+					`useheader`, `headercontent`, `head`, `notes`, `layout`, `usefooter`, `footercontent`, `useside`, `sidecontent`, 
 					`usesider`, `sidercontent`, `published`, `parentid`) 
 				SELECT `pagename` , `title`, CONCAT(`url`,'-', UNIX_TIMESTAMP()), `nositemap`, 
-					`keywords`, `description`, `maincontent`, `useheader`, `headercontent` , `head`, `layout`, `usefooter`, 
+					`keywords`, `description`, `maincontent`, `useheader`, `headercontent` , `head`, `notes`, `layout`, `usefooter`, 
 					`footercontent`, `useside`, `sidecontent` , `usesider` , `sidercontent` , 0, IF(`parentid`=0 , 1 , `parentid`) 
 					FROM `pages` WHERE id=$id")) {
 			$id = $this->lastInsertId();
@@ -282,6 +282,7 @@ class ezPages extends ezCMS {
 		$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
 		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
 		$this->page['head'] = htmlspecialchars($this->page["head"]);
+		$this->page['notes'] = htmlspecialchars($this->page["notes"]);
 	}
 
 	private function setOptions($itm, $msgOn, $mgsOff) {
@@ -405,7 +406,7 @@ class ezPages extends ezCMS {
 		
 		// get the required post varables 
 		$txtFlds = array('pagename', 'title', 'keywords', 'description', 'maincontent', 'headercontent',
-			 'sidecontent', 'sidercontent', 'sidercontent', 'footercontent','head', 'layout' );
+			 'sidecontent', 'sidercontent', 'sidercontent', 'footercontent','head', 'notes', 'layout' );
 		if ( ($this->id != 1) && ($this->id != 2) )
 			array_push($txtFlds, 'parentid', 'url');
 		$this->fetchPOSTData($txtFlds, $data);
@@ -472,12 +473,12 @@ class ezPages extends ezCMS {
 				  `page_id`, `pagename`, `title`, `keywords`, `description`, `maincontent`,
 				  `useheader` , `headercontent` , `usefooter` , `footercontent` , `useside` ,
 				   `sidecontent` , `published` , `parentid` , `url` , `revmsg`,
-				   `sidercontent` , `usesider` ,`head` , `layout` , `nositemap` , `createdby` )
+				   `sidercontent` , `usesider` ,`head` , `notes`, `layout` , `nositemap` , `createdby` )
 				SELECT 
 				  `id` AS page_id, `pagename`, `title`, `keywords`, `description`, `maincontent`,
 				  `useheader` , `headercontent` , `usefooter` , `footercontent` ,
 				  `useside` , `sidecontent` , `published` , `parentid` , `url` , ".$this->quote($_POST['revmsg']).",
-				  `sidercontent` , `usesider` ,`head` , `layout` , `nositemap` , 
+				  `sidercontent` , `usesider` ,`head` , `notes`, `layout` , `nositemap` , 
 				  '".$_SESSION['EZUSERID']."' as `createdby`  FROM `pages` WHERE `id` = ".$this->id)) {
 				header("Location: ?flg=revfailed&id=".$this->id);
 				exit;

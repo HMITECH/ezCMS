@@ -64,6 +64,7 @@ $cms = new ezPages();
 				  <li><a href="#d-siderbar">Aside 2</a></li>
 				  <li><a href="#d-footers">Footer</a></li>
 				  <li><a href="#d-head">Head</a></li>
+				  <li><a href="#d-notes">Notes</a></li>
 				</ul>
 
 				<div class="tab-content">
@@ -244,6 +245,13 @@ $cms = new ezPages();
 				  	<textarea id="txtHead" name="head"><?php echo $cms->page['head']; ?></textarea>
 				  </div><!-- /d-head  -->
 
+ 				  <div class="tab-pane" id="d-notes">
+					<blockquote>
+          Your internal notes for this page.
+					</blockquote>
+				  	<textarea id="txtNotes" name="notes"><?php echo $cms->page['notes']; ?></textarea>
+				  </div><!-- /d-notes  -->
+ 
 				</div><!-- /tab-content  -->
 				</div><!-- /tabbable tabs-top  -->
 			  	</form>
@@ -271,6 +279,7 @@ $cms = new ezPages();
 				  <li><a href="#" data-block="siderbar">Aside 2</a></li>
 				  <li><a href="#" data-block="footer">Footer</a></li>
 				  <li><a href="#" data-block="head">Head</a></li>
+				  <li><a href="#" data-block="notes">Notes</a></li>
 				</ul>
 				<div id="diffviewer"></div>
 			</div><!-- /tabbable  -->
@@ -505,7 +514,7 @@ $cms = new ezPages();
 
 	var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
 
-	var myCodeMain, myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter, myCodeHead;
+	var myCodeMain, myCodeHeader, myCodeSide1, myCodeSide2, myCodeFooter, myCodeHead, myCodeNotes;
 
 	var codeMirrorJSON = {
 		lineNumbers: true,
@@ -542,6 +551,7 @@ $cms = new ezPages();
 		myCodeSide2.refresh();
 		myCodeFooter.refresh();
 		myCodeHead.refresh();
+		myCodeNotes.refresh();
 	}
 
 	// function to build DIFF UI
@@ -572,16 +582,17 @@ $cms = new ezPages();
 		var revIdxR = $('#diffviewerControld').find('select').eq(2).val();
 		var revIdxL = $('#diffviewerControld').find('select').eq(0).val();
 
-		// do nothing is same block is clicked
+		// do nothing if same block is clicked
 		if (block==openB) return false;
 
-		// now put the open back data back into the main editor
+		// Now put the open back data back into the main editor
 		if (openB == 'content') myCodeMain.setValue(dv.editor().getValue());
 		if (openB == 'header') myCodeHeader.setValue(dv.editor().getValue());
 		if (openB == 'sidebar') myCodeSide1.setValue(dv.editor().getValue());
 		if (openB == 'siderbar') myCodeSide2.setValue(dv.editor().getValue());
 		if (openB == 'footer') myCodeFooter.setValue(dv.editor().getValue());
 		if (openB == 'head') myCodeHead.setValue(dv.editor().getValue());
+		if (openB == 'notes') myCodeNotes.setValue(dv.editor().getValue());
 
 		if (block == 'content') {
 			codeMain = myCodeMain.getValue();
@@ -607,6 +618,10 @@ $cms = new ezPages();
 			codeMain = myCodeHead.getValue();
 			codeRight = getDiffCode(revIdxR, '#txtHead', 'head');
 			codeLeft  = getDiffCode(revIdxL, '#txtHead', 'head');
+ 		} else if (block == 'notes') {
+			codeMain = myCodeNotes.getValue();
+			codeRight = getDiffCode(revIdxR, '#txtNotes', 'notes');
+			codeLeft  = getDiffCode(revIdxL, '#txtNotes', 'notes'); 
 		} else return false;
 
 		buildDiffUI();
@@ -627,6 +642,7 @@ $cms = new ezPages();
 			if (openB == 'siderbar') codeMain = myCodeSide2.getValue();
 			if (openB == 'footer') codeMain = myCodeFooter.getValue();
 			if (openB == 'head') codeMain = myCodeHead.getValue();
+			if (openB == 'notes') codeMain = myCodeNotes.getValue();
 			buildDiffUI();
 		});
 		return false;
@@ -676,6 +692,7 @@ $cms = new ezPages();
 			myCodeSide2.setValue(revJson[loadID]['sidercontent']);
 			myCodeFooter.setValue(revJson[loadID]['footercontent']);
 			myCodeHead.setValue(revJson[loadID]['head']);
+			myCodeNotes.setValue(revJson[loadID]['notes']);
 			return false;
 		} else if ($(this).text() == 'Diff') {
 			var openB = $('#revTab').data('open');
@@ -686,6 +703,7 @@ $cms = new ezPages();
 			if (openB == 'siderbar') $("#txtTemps").val(revJson[loadID]['sidercontent']);
 			if (openB == 'footer') $("#txtTemps").val(revJson[loadID]['footercontent']);
 			if (openB == 'head') $("#txtTemps").val(revJson[loadID]['head']);
+			if (openB == 'notes') $("#txtTemps").val(revJson[loadID]['notes']);
 			codeRight= $("#txtTemps").val();
 			$('#diffviewerControld td:last-child select').val(loadID);
 			$('#showdiff').click();
@@ -703,6 +721,7 @@ $cms = new ezPages();
 		if (openB == 'siderbar') myCodeSide2.setValue(dv.editor().getValue());
 		if (openB == 'footer') myCodeFooter.setValue(dv.editor().getValue());
 		if (openB == 'head') myCodeHead.setValue(dv.editor().getValue());
+		if (openB == 'notes') myCodeNotes.setValue(dv.editor().getValue());
 		$('#editBlock').slideDown('slow', myCodeRefresh);
 		$('#diffBlock').slideUp('slow');
 		return false;
@@ -725,10 +744,25 @@ $cms = new ezPages();
 	// Change Rev in Diff Viewer select dropdown
 	$('#diffviewerControld select').change( function () {
 		var revID2Load = $(this).val();
+		var openB = $('#revTab').data('open');
+
 		if (revID2Load == '0') {
-			var revContentLoad = $("#txtMain").val(); // shoe last saved
+			var revContentLoad; // show last saved
+      if (openB == 'content') revContentLoad = $("#txtMain").val();
+      if (openB == 'header') revContentLoad = $("#txtHeader").val();
+      if (openB == 'sidebar') revContentLoad = $("#txtSide").val();
+      if (openB == 'siderbar') revContentLoad = $("#txtrSide").val();
+      if (openB == 'footer') revContentLoad = $("#txtfooter").val();
+      if (openB == 'head') revContentLoad = $("#txtHead").val();
+      if (openB == 'notes') revContentLoad = $("#txtNotes").val();
 		} else {
-			$("#txtTemps").val(revJson[revID2Load]['maincontent']);
+      if (openB == 'content') $("#txtTemps").val(revJson[revID2Load]['maincontent']);
+      if (openB == 'header') $("#txtTemps").val(revJson[revID2Load]['headercontent']);
+      if (openB == 'sidebar') $("#txtTemps").val(revJson[revID2Load]['sidecontent']);
+      if (openB == 'siderbar') $("#txtTemps").val(revJson[revID2Load]['sidercontent']);
+      if (openB == 'footer') $("#txtTemps").val(revJson[revID2Load]['footercontent']);
+      if (openB == 'head') $("#txtTemps").val(revJson[revID2Load]['head']);
+      if (openB == 'notes') $("#txtTemps").val(revJson[revID2Load]['notes']);
 			var revContentLoad = $("#txtTemps").val();
 		}
 		if ($(this).parent().index() == 0) codeLeft = revContentLoad;
@@ -747,6 +781,7 @@ $cms = new ezPages();
 	myCodeSide1 = CodeMirror.fromTextArea(document.getElementById("txtSide"), codeMirrorJSON);
 	myCodeSide2 = CodeMirror.fromTextArea(document.getElementById("txtrSide"), codeMirrorJSON);
 	myCodeHead = CodeMirror.fromTextArea(document.getElementById("txtHead"), codeMirrorJSON);
+	myCodeNotes = CodeMirror.fromTextArea(document.getElementById("txtNotes"), codeMirrorJSON);
 
 </script>
 <?php } ?>

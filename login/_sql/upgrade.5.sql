@@ -63,7 +63,10 @@ ALTER TABLE `site`
 
 
 ALTER TABLE `git_pages` ADD `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message' AFTER `nositemap`;
+ALTER TABLE `git_pages` ADD `notes`  TEXT NULL DEFAULT NULL COMMENT 'Notes' AFTER `revmsg`;
+
 ALTER TABLE `git_files` ADD `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message' AFTER `fullpath`;
+
 ALTER TABLE `site` ADD `revmsg` TEXT NULL DEFAULT NULL COMMENT 'Revision Message' AFTER `sidercontent`;
 
 UPDATE `users` SET `passwd` = SHA2 (`passwd`, 512);
@@ -91,24 +94,5 @@ ALTER TABLE `pages` CHANGE `url` `url` VARCHAR(2048) CHARACTER SET latin1 COLLAT
 ALTER TABLE `pages` ADD UNIQUE(`url`);
 ALTER TABLE `pages` ADD INDEX(`createdby`);
 ALTER TABLE `pages` ADD INDEX(`place`);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ALTER TABLE `pages` ADD `notes` text NOT NULL COMMENT 'contents of internal notes' after `head`;
 
