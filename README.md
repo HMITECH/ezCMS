@@ -35,11 +35,12 @@ It has a graphical editor but is mainly intended for use by coders.
 * Login = '*admin@localhost*'.
 * Password = '*ezcms*'
 
-### Contribution guidelines ###
+### Contributors ###
 
 * Mohd Ahmed
 * Mosh Ahmed
 * Avinash Jagwani
+* Kavya NM
 * Firdaus Nagree
 
 ### Who do I talk to? ###
