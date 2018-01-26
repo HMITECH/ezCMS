@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					[<strong>config.sample.php</strong>] file and rename it [<strong>config.php</strong>]</li>
 				<li>Login to the backend using the details below and update the admin users details from the users pages in ezCMS.
 					<ul>
-						<li>Login=support@hmi-tech.net</li>
+						<li>Login=admin@localhost</li>
 						<li>Password=ezcms</li>
 					</ul>
 				</li>
