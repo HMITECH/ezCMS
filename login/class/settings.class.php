@@ -4,7 +4,7 @@
  *
  * HMI Technologies Mumbai
  *
- * Class: ezCMS Users Class 
+ * Class: ezCMS Set Defaults Class 
  * 
  */
 
@@ -33,10 +33,21 @@ class ezSettings extends ezCMS {
 		
 		// Purge Revision
 		if (isset($_GET['purgeRev'])) $this->delRevision();
+
+		// process variable for html display
+		$this->setPageVariables();
 		
 		// Get the Revisions
 		$this->getRevisions();
 
+	}
+
+	// Function to Setup page variable and checkboxes
+	private function setPageVariables() {	
+		$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
+		$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
+		$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
+		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
 	}
 
 	// Function to Update the Defaults Settings

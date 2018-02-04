@@ -4,7 +4,7 @@
  *
  * HMI Technologies Mumbai
  *
- * Class: ezCMS Users Class 
+ * Class: ezCMS Pages Class 
  * 
  */
 
