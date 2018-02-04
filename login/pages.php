@@ -255,6 +255,7 @@ $cms = new ezPages();
 				</div><!-- /tab-content  -->
 				</div><!-- /tabbable tabs-top  -->
 			  	</form>
+			  	<?php echo $cms->createdText; ?>
 			</div><!-- /span9 white-boxed  -->
 			<div class="clearfix"></div>
 		</div><!-- /editBlock row-fluid  -->

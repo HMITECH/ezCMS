@@ -18,6 +18,7 @@ class ezPages extends ezCMS {
 	public $treehtml = '';
 	public $ddOptions = '';
 	public $slOptions = '';	
+	public $createdText = '';
 	public $addNewBtn;
 	public $page;
 	public $btns;
@@ -52,9 +53,15 @@ class ezPages extends ezCMS {
 			if (!isset($this->page['id'])) {
 				header("Location: ?flg=yell");
 				exit;
-			}		 
+			}
 
 			$this->setupCheckboxes();
+
+			// Get Created on String
+			$this->createdText = '<div class="clearfix"></div><p><em>Created on '.
+				$this->page['createdon'].'</em> by <strong>'.
+				chkTableForVal('users', 'id', 'username', $this->page['createdby'])
+				.'</strong></p>';
 		}
 		
 		// Load childern ids
