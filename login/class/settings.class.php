@@ -44,10 +44,10 @@ class ezSettings extends ezCMS {
 
 	// Function to Setup page variable and checkboxes
 	private function setPageVariables() {	
-		$this->page['headercontent'] = htmlspecialchars($this->page["headercontent"]);
-		$this->page['sidecontent'] = htmlspecialchars($this->page["sidecontent"]);
-		$this->page['sidercontent'] = htmlspecialchars($this->page["sidercontent"]);		
-		$this->page['footercontent'] = htmlspecialchars($this->page["footercontent"]);		
+		$this->site['headercontent'] = htmlspecialchars($this->site["headercontent"]);
+		$this->site['sidecontent'] = htmlspecialchars($this->site["sidecontent"]);
+		$this->site['sidercontent'] = htmlspecialchars($this->site["sidercontent"]);		
+		$this->site['footercontent'] = htmlspecialchars($this->site["footercontent"]);		
 	}
 
 	// Function to Update the Defaults Settings
