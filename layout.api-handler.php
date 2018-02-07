@@ -7,7 +7,19 @@
  * API Service: Client end point.
  *
  */
+class ezAPI {
+	
+	// Add your code to handle any API requests ...
 
-// Add your code to handle any API requests ...
+	// Consturct the class
+	public function __construct () {
+		
+		echo 'ma';
 
- ?>
+	}
+	
+}
+
+$api = new ezAPI;
+
+?>
