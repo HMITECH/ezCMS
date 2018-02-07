@@ -66,8 +66,9 @@ a.label.label-info {
 	width:100%;
 	min-height:500px;
 }
-#revBlock {display:none;}
+#revBlock, #pagesBlock {display:none;}
 #revBlock,
+#pagesBlock,
 #difBlockHeader,
 #difBlockContent,
 #difBlockSide1,
@@ -83,6 +84,7 @@ a.label.label-info {
 	border-radius: 4px;
 }
 #revBlock:after,
+#pagesBlock:after,
 #difBlockHeader:after,
 #difBlockContent:after,
 #difBlockSide1:after,
@@ -100,13 +102,14 @@ a.label.label-info {
 	-moz-border-radius: 4px 0 4px 0;
 	border-radius: 4px 0 4px 0;
 }
-#revBlock {
+#revBlock, #pagesBlock {
     max-height: 300px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 #revBlock .nomargin { margin-bottom:0; }
 #revBlock:after        {content: "Revision Log" ;}
+#pagesBlock:after      {content: "Pages using this layout" ;}
 #difBlockHeader:after  {content: "Header Block" ;}
 #difBlockContent:after {content: "Content Block";}
 #difBlockSide1:after   {content: "Aside 1 Block";}

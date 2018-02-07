@@ -56,12 +56,14 @@ $cms = new ezLayouts();
 
 							</div>
 							<?php echo $cms->deletebtn; ?>
+							<a id="showPages" href="#" class="btn btn btn-warning">Pages<sup><?php echo $cms->usage['cnt']; ?></sup></a>
 							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 							<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
 							<?php } ?>
 							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 							<a id="showdiff" href="#" class="btn btn-inverted btn-danger">Review DIFF</a>
 							<?php } ?>
+							
 						</div>
 					</div>
 					<?php echo $cms->msg; ?>
@@ -70,6 +72,11 @@ $cms = new ezLayouts();
 						<tr><th>#</th><th>User Name</th><th>Message</th><th>Date &amp; Time</th><th>Action</th></tr>
 					  </thead><tbody><?php echo $cms->revs['log']; ?></tbody></table>
 					</div>
+					<div id="pagesBlock">
+					  <table class="table table-striped"><thead>
+						<tr><th>ID</th><th>Page Name</th><th>URL</th></tr>
+					  </thead><tbody><?php echo $cms->usage['log']; ?></tbody></table>
+					</div>					
 					<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
 					<div class="control-group">
 						<label class="control-label" for="txtGitMsg">Revision Message</label>
@@ -129,7 +136,11 @@ $cms = new ezLayouts();
 		$('#Submit').click();
 		return false;
 	});
-
+	// Show the pages used in block
+	$('#showPages').click(function () {
+		$('#pagesBlock').slideToggle();
+		return false;
+	});
 </script>
 <?php if ($_SESSION['EDITORTYPE'] == 3) { ?>
 

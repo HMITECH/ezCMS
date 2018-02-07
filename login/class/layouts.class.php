@@ -18,6 +18,8 @@ class ezLayouts extends ezCMS {
 	public $deletebtn = '';
 	public $content = '';
 	public $treehtml = '';
+	// Stores Pages usage Details
+	public $usage = array('log' => '', 'cnt' => 0);
 	
 	// Consturct the class
 	public function __construct () {
@@ -53,6 +55,9 @@ class ezLayouts extends ezCMS {
 		
 		//Build the HTML Treeview
 		$this->buildTree();
+		
+		// Get the Usage of this layout in pages
+		$this->getPageUse();		
 		
 		// Get the Revisions
 		$this->getRevisions();
@@ -134,6 +139,20 @@ class ezLayouts extends ezCMS {
 			$this->revs['log'] = '<tr><td colspan="4">There are no revisions.</td></tr>';	
 	}
 
+	// Function to fetch the pages this layout is used in
+	private function getPageUse() {
+
+		foreach ($this->query("SELECT `id`, `pagename`, `url` FROM `pages`
+				WHERE `layout` = '".$this->filename."' ORDER BY id") as $entry) {
+			$this->usage['log'] .= '<tr><td>'.$entry['id'].'</td>
+				<td><a href="pages.php?id='.$entry['id'].'" target="_blank">'.$entry['pagename'].'</a></td>	
+				<td><a href="'.$entry['url'].'" target="_blank">'.$entry['url'].'</a></td></tr>';
+			$this->usage['cnt']++;
+		}
+		
+		if ($this->usage['log'] == '') 
+			$this->usage['log'] = '<tr><td colspan="3">There are no pages using this layout.</td></tr>';	
+	}
 	
 	// Function to Delete the Layout
 	private function deleteFile() {
