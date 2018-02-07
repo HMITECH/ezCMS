@@ -8,9 +8,8 @@ CKEDITOR.editorConfig = function( config ) {
 	// For the complete reference:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 	
-	config.extraPlugins = 'stylesheetparser';
-	config.contentsCss = '../style.css';
-	
+	// config.extraPlugins = 'stylesheetparser';
+	// config.contentsCss = '../style.css';
 	config.toolbar = 'ezToolbar';
 	
 	//config.autoParagraph = false; 

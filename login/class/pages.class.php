@@ -60,7 +60,7 @@ class ezPages extends ezCMS {
 			// Get Created on String
 			$this->createdText = '<div class="clearfix"></div><p><em>Created on '.
 				$this->page['createdon'].'</em> by <strong>'.
-				chkTableForVal('users', 'id', 'username', $this->page['createdby'])
+				$this->chkTableForVal('users', 'id', 'username', $this->page['createdby'])
 				.'</strong></p>';
 		}
 		
