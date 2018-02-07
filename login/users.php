@@ -128,7 +128,7 @@ $cms = new ezUsers();
 <?php include('include/footer.php'); ?>
 <script type="text/javascript">
 	$("#top-bar li").removeClass('active');
-	$("#top-bar li:eq(10)").addClass('active');
+	$("#top-bar li:eq(11)").addClass('active');
 </script>
 </body>
 </html>

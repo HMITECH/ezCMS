@@ -33,7 +33,8 @@
 			  </ul>
 		  </li>	
 		  
-		  <li class="active"><a href="pages.php"><i class="icon-file"></i> Pages</a></li>
+		  <li><a href="pages.php"><i class="icon-file"></i> Pages</a></li>
+		  <li><a href="find.php"><i class="icon-search"></i> Find</a></li>
 		  <li><a href="users.php"><i class="icon-user"></i> Users</a></li>
 		  <li class="dropdown">
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-edit"></i> CMS Style <b class="caret"></b></a>
