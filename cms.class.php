@@ -18,8 +18,6 @@ class db extends PDO {
 			exit; 
 		}
 
-		$config = include("config.php");
-
 		try {
 
 			parent::__construct( 'mysql:host='.
@@ -38,7 +36,6 @@ class db extends PDO {
 			/** MySQL Connection error message */
 			header('HTTP/1.0 500 Internal Server Error');
 			die("<h1>Connection to Database failed.</h1><p>Check config.php file</p>");
-
 
 		}
 	}
