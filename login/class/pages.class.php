@@ -60,7 +60,7 @@ class ezPages extends ezCMS {
 			// Get Created on String
 			$this->createdText = '<div class="clearfix"></div><p><em>Created on '.
 				$this->page['createdon'].'</em> by <strong>'.
-				chkTableForVal('users', 'id', 'username', $this->page['createdby'])
+				$this->chkTableForVal('users', 'id', 'username', $this->page['createdby'])
 				.'</strong></p>';
 		}
 		
@@ -421,7 +421,7 @@ class ezPages extends ezCMS {
 		// get the required post checkboxes 
 		$cksFlds = array('published','useheader','useside','usesider','usefooter','nositemap');
 		$this->fetchPOSTCheck($cksFlds, $data);
-		$data['createdby'] = $_SESSION['EZUSERID'];
+		
 		
 		// Validate here ...
 		if (strlen(trim($data['pagename'])) < 2) die('Page Name must min 2 chars!');
@@ -441,6 +441,7 @@ class ezPages extends ezCMS {
 
 		if ($this->id == 'new') {
 			// add new
+			$data['createdby'] = $_SESSION['EZUSERID'];
 			
 			// Test for URL Duplicatoin
 			if ($dupCheckID) {
