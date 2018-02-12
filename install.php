@@ -10,13 +10,13 @@
 
 // Do not run the installer if the config file is present.
 if (file_exists('config.php'))
-	die('FATAL : config.php exists. Delete before running this installer.');
+	die('FATAL : config.php exists. Delete before running this install.php');
 
-// The SQL must exisit.
+// The SQL must exist.
 if (!file_exists('login/_sql/ezcms.5.sql'))
 	 die('FATAL : login/_sql/ezcms.5.sql missing. Check repo for this file.');
 
-// INTSALL WHEN POSTED
+// INSTALL WHEN POSTED
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	// Get all the posted variables...
@@ -47,12 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	if ($user_pass != $user_pass1) die('password do not match.');
 	$user_pass = hash('sha512',$user_pass);
 
-	// Create the tables
+	// Create the db tables
 	$db->exec(file_get_contents('login/_sql/ezcms.5.sql'));
 
-	// Update the admin info ...
+	// Update the admin info
 	$stmt = $db->prepare("UPDATE `users` SET `username` = ?, `email` = ?, `passwd` = ? WHERE id = 1");
-	if (!$stmt->execute(array($user_name, $user_email, $user_pass))) die('updatefailed');
+	if (!$stmt->execute(array($user_name, $user_email, $user_pass)))
+    die('update failed');
 
 	// Create a config file
 	$conf = "<?php return array(

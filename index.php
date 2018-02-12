@@ -29,13 +29,13 @@ if ($siteFolder) $uri = substr( $uri , strlen($siteFolder) );
 $stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `url` = ? ORDER BY `id` DESC LIMIT 1');
 $stmt->execute( array($uri) );
 
-// Check if page is found in database.
+// Check if page is in database.
 if ($stmt->rowCount()) {
 
-	// Page is found in Database
+	// Page is in Database
 	$page = $stmt->fetch(PDO::FETCH_ASSOC);
 
-	// Check if page is published or not.
+	// Check if page is published?
 	if (!$page["published"]) {
 
 		// Start session if not started to check ADMIN login status
@@ -43,7 +43,7 @@ if ($stmt->rowCount()) {
 			session_start();
 		}
 
-		// Set SESSION ADMIN Login Flag to false if not set
+		// Set SESSION ADMIN Login flag to false if not set
 		if (!isset($_SESSION['LOGGEDIN'])) {
 			$_SESSION['LOGGEDIN'] = false;
 		}
@@ -58,19 +58,19 @@ if ($stmt->rowCount()) {
 
 	}
 } else {
-	// Page is NOT found, server 404 page
+	// Page is NOT found, serve 404 page
 	$stmt = $dbh->prepare('SELECT * FROM `pages` WHERE `id` = 2 LIMIT 1');
 	$stmt->execute();
 	$page = $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-// Verify the layout files to be used,
-// fall back to default if not found
+// Find the layout files to be used,
+// else fall back to default.
 if (!file_exists($page['layout'])) {
 	$page['layout'] = 'layout.php';
 }
 
-// build canonical URL
+// Build canonical URL
 $page['canonical'] = $protocol.$_SERVER['HTTP_HOST'].$page["url"];
 
 // Setup CMS Template variable to be used in the layouts
@@ -79,8 +79,9 @@ $header      = ($page["useheader"] == 1) ? $page["headercontent"] : $site["heade
 $sidebar     = ($page["useside"]   == 1) ? $page["sidecontent"]   : $site["sidecontent"];
 $siderbar    = ($page["usesider"]  == 1) ? $page["sidercontent"]  : $site["sidercontent"];
 $footer      = ($page["usefooter"] == 1) ? $page["footercontent"] : $site["footercontent"];
+
 // you can add your own variable here, eg: $mymodscrp = '';
-// This variable are available in layout files for use.
+// This variable is available in layout files.
 
 
 // Set 404 header when severing page not found
@@ -88,7 +89,7 @@ if ($page['id']==2) {
 	Header("HTTP/1.0 404 Not Found");
 }
 
-// Serve the selected layout file
+// Serve the selected layout file.
 include($page['layout']);
 die();
 
