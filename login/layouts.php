@@ -160,6 +160,18 @@ $cms = new ezLayouts();
 	<script src="codemirror/mode/css/css.js"></script>
 	<script src="codemirror/mode/clike/clike.js"></script>
 	<script src="codemirror/mode/php/php.js"></script>
+
+  <link rel="stylesheet" href="codemirror/doc/docs.css">
+  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+  <link rel="stylesheet" href="codemirror/addon/dialog/dialog.css">
+  <link rel="stylesheet" href="codemirror/addon/search/matchesonscrollbar.css">
+  <script                 src="codemirror/addon/dialog/dialog.js"></script>
+  <script                 src="codemirror/addon/search/searchcursor.js"></script>
+  <script                 src="codemirror/addon/search/search.js"></script>
+  <script                 src="codemirror/addon/scroll/annotatescrollbar.js"></script>
+  <script                 src="codemirror/addon/search/matchesonscrollbar.js"></script>
+  <script                 src="codemirror/addon/search/jump-to-line.js"></script>
+
 	<script language="javascript" type="text/javascript">
 		var revJson = <?php echo json_encode($cms->revs['jsn']); ?>;
 		var	cmTheme = '<?php echo $_SESSION["CMTHEME"]; ?>',
