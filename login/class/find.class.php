@@ -24,77 +24,54 @@ class ezFind extends ezCMS {
 			$r = new stdClass();
 			$r->success = true;
 			$findin = $_POST['findinTxt'];
-			if ($findin == 'body') $this->findBody();
-			if ($findin == 'head') $this->findHead();
-			if ($findin == 'php' ) $this->findLayouts();
-			if ($findin == 'css' ) $this->findCSS();
-			if ($findin == 'js'  ) $this->findJS();
+			if ($findin == 'page') 
+				$r->results = $this->findPages();
+			if ($findin == 'php' ) 
+				$r->results = $this->findFiles ('layout.php', '../layout.', '*.php'); //findLayouts();
+			if ($findin == 'css' ) 
+				$r->results = $this->findFiles ('style.css', '../site-assets/css/', '*.css'); //findCSS();
+			if ($findin == 'js'  ) 
+				$r->results = $this->findFiles ('main.js', '../site-assets/js/', '*.js'); //findJS();
 			die(json_encode($r));
 		}
 
 	}
-	
-	private function findBody () {
 
-	}
-	
-	private function findHead () {
-
-	}
-	
-	private function findLayouts () {
-		foreach (glob("../layout.*.php") as $entry) {
-			// open and find in this file ... 
+	private function findFiles ($mainFile, $path, $type) {	
+		$results = array();
+		$content = file_get_contents("../$mainFile"); 
+		if (strpos($content, $_POST['find']) !== false)
+			array_push($results, array('name' => $mainFile));
+		$pathLen = strlen($path);
+		foreach (glob($path.$type) as $entry) {
 			$content = file_get_contents($entry);
-			
+			if (strpos($content, $_POST['find']) !== false)
+				array_push($results, array('name' => substr($entry, $pathLen , strlen($entry)-$pathLen)));
 		}
-	}	
-	
-	private function findCSS () {
-		foreach (glob("../site-assets/css/*.css") as $entry) {
-			// open and find in this file ... 
-		}
+		return $results;
 	}
 	
-	private function findJS () {
-		foreach (glob("../site-assets/js/*.js") as $entry) {
-			// open and find in this file ... 
-		}
+	private function findPages () {	
+		return array_merge(
+			$this->findPagesBlk('title'),
+			$this->findPagesBlk('maincontent'),
+			$this->findPagesBlk('headercontent'),
+			$this->findPagesBlk('footercontent'),
+			$this->findPagesBlk('sidecontent'),
+			$this->findPagesBlk('sidercontent'),
+			$this->findPagesBlk('head'),
+			$this->findPagesBlk('description'),
+			$this->findPagesBlk('keywords'));
 	}
-/*	
-	private function findinhead () {
-		$stmt = $this->prepare("SELECT id, pagename, url FROM `pages` WHERE 
-			`head` LIKE CONCAT ('%' , :findstr , '%') OR 
-			`title` LIKE CONCAT ('%' , :findstr , '%') OR 
-			`keywords` LIKE CONCAT ('%' , :findstr , '%') OR 
-			`description` LIKE CONCAT ('%' , :findstr , '%') ");
+	
+	private function findPagesBlk ( $fld ) {
+		$stmt = $this->prepare(
+			"SELECT `id` , `pagename` as `name`, '$fld' as `block`, `url`, `published` FROM `pages` 
+			WHERE `$fld` LIKE CONCAT ('%' , :findstr , '%')" );
 		$stmt->bindParam(':findstr', $_POST['find'], PDO::PARAM_STR);
 		$stmt->execute();
-		$r = new stdClass();
-		$r->success = true;
-		$r->pages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		die(json_encode($r));		
-	}	
-	
-	private function findinbody($findstr) {
-		$stmt = $this->prepare("SELECT id, pagename, url FROM `pages` WHERE 
-			`maincontent` LIKE CONCAT ('%' , :findstr , '%') OR
-			`headercontent` LIKE CONCAT ('%' , :findstr , '%') OR
-			`footercontent` LIKE CONCAT ('%' , :findstr , '%') ");
-		$stmt->bindParam(':findstr', $_POST['find'], PDO::PARAM_STR);
-		$stmt->execute();
-		$r = new stdClass();
-		$r->success = true;
-		$r->pages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		die(json_encode($r));		
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
 	}
-	
-	private function replace($findstr, $replacestr) {
-		$r = new stdClass();
-		$r->success = true;
-		//$r->pages = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		die(json_encode($r));		
-	}
-*/
+
 }
 ?>
