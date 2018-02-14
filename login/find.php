@@ -23,9 +23,7 @@ $cms = new ezFind();
 	.row-fluid > .span9 {min-height: 240px;}
 	.icon-ok { background-color: green; }
 	.icon-remove { background-color: red; }
-	td.title, td.keywords, td.description {
-	    text-transform: capitalize;
-	}
+	td.title, td.keywords, td.description { text-transform: capitalize;	}
 	</style>
 
 </head><body>
@@ -65,7 +63,7 @@ $cms = new ezFind();
 			<input type="hidden" name="findinTxt" id="findinTxt" />
 		  </form></div><br>
 
-		  <div id="frmreplace" class="white-boxed"><form method="post" action="#">
+		  <!--<div id="frmreplace" class="white-boxed"><form method="post" action="#">
 			<div class="navbar"><div class="navbar-inner">
 				<a id="repall" href="#" class="btn btn-danger">Replace</a>
 			</div></div>
@@ -77,7 +75,7 @@ $cms = new ezFind();
 						class="input-block-level"></textarea>
 				</div>
 			</div>			
-		  </form></div>
+		  </form></div>-->
 			
 		</div>
 		<div class="span9 white-boxed">
