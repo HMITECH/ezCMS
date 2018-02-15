@@ -14,3 +14,4 @@ UPDATE NOTES:
 
 3. Hash all the passwd in the database using 
 
+ADDED new repo in login
