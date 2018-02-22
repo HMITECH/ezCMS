@@ -1,10 +1,11 @@
 <?php
 /*
- * Code written by mo.ahmed@hmi-tech.net
- * Version 2.010413 Dated 20/March/2013
- * Rev: 04-Octr-2016 (4.161005) * HMI Technologies Mumbai (2016-17)
- * $Header: /cygdrive/c/cvs/repo/xampp/htdocs/hmi/ezsite/login/scripts.php,v 1.2 2017-12-02 09:33:28 a Exp $
+ * ezCMS Code written by mo.ahmed@hmi-tech.net & mosh.ahmed@gmail.com
+ *
+ * HMI Technologies Mumbai
+ *
  * View: Displays the js files in the site
+ * 
  */
 
 // **************** ezCMS SCRIPTS CLASS ****************
@@ -38,7 +39,7 @@ $cms = new ezScripts();
 		  <form id="frm" action="scripts.php" method="post" enctype="multipart/form-data">
 			<div class="navbar">
 				<div class="navbar-inner">
-					<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary" style="padding:5px 12px;">
+					<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary">
 					<div class="btn-group">
 					  <a class="btn dropdown-toggle btn-info" data-toggle="dropdown" href="#">
 						Save As <span class="caret"></span></a>
@@ -76,14 +77,13 @@ $cms = new ezScripts();
 					<input type="text" id="txtGitMsg" name="revmsg"
 						placeholder="Enter a description for this revision"
 						title="Enter a message to describe this revision."
-						data-toggle="tooltip"
-						value=""
+						data-toggle="tooltip" value=""
 						data-placement="top" minlength="2"
 						class="input-block-level tooltipme2">
 				</div>
 			</div>
-			<input border="0" class="input-block-level" name="txtlnk" onFocus="this.select();"
-				style="cursor: pointer;" onClick="this.select();"  type="text" title="include this link in layouts or page head"
+			<input border="0" class="input-block-level tooltipme2" name="txtlnk" onFocus="this.select();"
+				style="cursor: pointer;" onClick="this.select();"  type="text" title="Include this link in layouts or page head"
 				value="&lt;script src=&quot;<?php echo $cms->siteFolder.substr($cms->filename, 2); ?>&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;" readonly/>
 			<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
 			<textarea name="txtContents" id="txtContents" class="input-block-level"
@@ -113,10 +113,10 @@ $cms = new ezScripts();
 </div><!-- /wrap  -->
 
 <?php include('include/footer.php'); ?>
-<script type="text/javascript">
+<script>
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(0)").addClass('active');
-	$("#top-bar li:eq(0) ul li:eq(5)").addClass('active');
+	$("#top-bar li:eq(0) ul li:eq(7)").addClass('active');
 	$('#btnsaveas').click( function () {
 		var saveasfile = $('#txtSaveAs').val().trim();
 		if (saveasfile.length < 1) {
@@ -124,7 +124,7 @@ $cms = new ezScripts();
 			$('#txtSaveAs').focus();
 			return false;
 		}
-		if (!saveasfile.match(/^[a-z0-9]+$/ig)) {
+		if (!saveasfile.match(/^[a-z0-9_\-\.]+$/ig)) {
 			alert('Enter a valid filename with lower case alphabets and numbers only.');
 			$('#txtSaveAs').focus();
 			return false;

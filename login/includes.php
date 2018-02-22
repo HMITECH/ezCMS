@@ -4,19 +4,19 @@
  *
  * HMI Technologies Mumbai
  *
- * View: Displays the layouts in the site
+ * View: Displays the php include blocks in the site
  * 
  */
 
 // **************** ezCMS LAYOUTS CLASS ****************
-require_once ("class/layouts.class.php");
+require_once ("class/includes.class.php");
 
 // **************** ezCMS LAYOUTS HANDLE ****************
-$cms = new ezLayouts();
+$cms = new ezIncludes();
 
 ?><!DOCTYPE html><html lang="en"><head>
 
-	<title>PHP Layouts : ezCMS Admin</title>
+	<title>PHP Includes : ezCMS Admin</title>
 	<?php include('include/head.php'); ?>
 
 </head><body>
@@ -27,14 +27,14 @@ $cms = new ezLayouts();
 		  <div id="editBlock" class="row-fluid">
 			<div class="span3 white-boxed">
 				<ul id="left-tree">
-				  <li><i class="icon-list-alt"></i>
-					<a class="<?php echo $cms->homeclass; ?>" href="layouts.php">layout.php</a>
+				  <li><i class="icon-plus"></i>
+					<a class="<?php echo $cms->homeclass; ?>" href="includes.php">include.php</a>
 					<?php echo $cms->treehtml; ?>
 				  </li>
 				</ul>
 			</div>
 			<div class="span9 white-boxed">
-				<form id="frmlayout" action="layouts.php" method="post" enctype="multipart/form-data">
+				<form id="frmlayout" action="includes.php" method="post" enctype="multipart/form-data">
 					<div class="navbar">
 						<div class="navbar-inner">
 							<input type="submit" name="Submit" id="Submit" value="Save Changes" class="btn btn-primary">
@@ -43,20 +43,20 @@ $cms = new ezLayouts();
 								Save As <span class="caret"></span></a>
 							  <div id="SaveAsDDM" class="dropdown-menu" style="padding:10px;">
 								<blockquote>
-								  <p>Save layout as</p>
-								  <small>Only Alphabets and Numbers, no spaces</small>
+								  <p>Save Include as</p>
+								  <small>Only Alphabets - . _ and Numbers, no spaces</small>
 								</blockquote>
 								<div class="input-prepend input-append">
-								  <span class="add-on">layout.</span>
+								  <span class="add-on">includes/</span>
 								  <input id="txtSaveAs" name="txtSaveAs" type="text" class="input-medium appendedPrependedInput">
 								  <span class="add-on">.php</span>
 								</div><br>
-								<p><a id="btnsaveas" href="#" class="btn btn-large btn-info">Save Now</a></p>
+								<p><a id="btnsaveas" href="#" class="btn btn-info">Save Now</a></p>
 							  </div>
 
 							</div>
 							<?php echo $cms->deletebtn; ?>
-							<a id="showPages" href="#" class="btn btn btn-warning">Pages<sup><?php echo $cms->usage['cnt']; ?></sup></a>
+							<a id="showPages" href="#" class="btn btn btn-warning">Layouts<sup><?php echo $cms->usage['cnt']; ?></sup></a>
 							<?php if ($_SESSION['EDITORTYPE'] == 3) {?>
 							<a id="showrevs" href="#" class="btn btn-secondary">Revisions <sup><?php echo $cms->revs['cnt']; ?></sup></a>
 							<?php } ?>
@@ -74,7 +74,7 @@ $cms = new ezLayouts();
 					</div>
 					<div id="pagesBlock">
 					  <table class="table table-striped"><thead>
-						<tr><th>ID</th><th>Page Name</th><th>URL</th></tr>
+						<tr><th>#</th><th>Layout Name</th><th>Action</th></tr>
 					  </thead><tbody><?php echo $cms->usage['log']; ?></tbody></table>
 					</div>					
 					<input type="hidden" name="txtName" id="txtName" value="<?php echo $cms->filename; ?>">
@@ -84,12 +84,15 @@ $cms = new ezLayouts();
 							<input type="text" id="txtGitMsg" name="revmsg"
 								placeholder="Enter a description for this revision"
 								title="Enter a message to describe this revision."
-								data-toggle="tooltip"
-								value=""
+								data-toggle="tooltip" value=""
 								data-placement="top" minlength="2"
 								class="input-block-level tooltipme2">
 						</div>
 					</div>
+				<input border="0" class="input-block-level tooltipme2" name="txtlnk" onFocus="this.select();"
+				style="cursor: pointer;" onClick="this.select();"  type="text" title="Include this in your layouts"
+				value="&lt;?php include ( &quot;includes/<?php echo $cms->filename; ?>&quot; ); ?&gt;" readonly/>
+
 					<textarea name="txtContents" id="txtContents" class="input-block-level"><?php echo $cms->content; ?></textarea>
 				</form>
 			</div>
@@ -119,7 +122,7 @@ $cms = new ezLayouts();
 <script>
 	$("#top-bar li").removeClass('active');
 	$("#top-bar li:eq(0)").addClass('active');
-	$("#top-bar li:eq(0) ul li:eq(3)").addClass('active');
+	$("#top-bar li:eq(0) ul li:eq(4)").addClass('active');
 	$('#btnsaveas').click( function () {
 		var saveasfile = $('#txtSaveAs').val().trim();
 		if (saveasfile.length < 1) {
@@ -132,7 +135,7 @@ $cms = new ezLayouts();
 			$('#txtSaveAs').focus();
 			return false;
 		}
-		$('#txtName').val('layout.'+saveasfile+'.php');
+		$('#txtName').val(saveasfile+'.php');
 		$('#Submit').click();
 		return false;
 	});
