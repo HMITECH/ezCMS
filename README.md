@@ -1,5 +1,10 @@
 # ezCMS README #
 
+This repo has been decapitated now.
+Please use the ezCMS-login repo to intall the latest version:
+
+https://github.com/HMITECH/ezcms-login
+
 ezCMS is website content management system for coders, providing access to the code directly. 
 It has a graphical editor but is mainly intended for use by coders.
 
